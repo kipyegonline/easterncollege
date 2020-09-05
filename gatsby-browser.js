@@ -5,3 +5,7 @@
  */
 
 // You can delete this file if you're not using it
+import "typeface-raleway"
+import "typeface-roboto"
+import "./src/css/main.css"
+export { default as wrapRootElement } from "./src/redux/store"
