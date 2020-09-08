@@ -1,14 +1,68 @@
-import React from "react"
-import Layout from "../components/layout"
-
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "@reach/router";
+import Layout from "../components/layout";
+import { rootState } from "../redux/reducer";
+import { RenderList } from "./index";
+import {
+  Grid,
+  Typography,
+  Card,
+  CardHeader,
+  CardContent,
+} from "@material-ui/core";
+import { addNotice } from "../redux/updatesReducer/actions";
 function Notice(): React.ReactNode {
+  const path = useLocation();
+  const dispatch = useDispatch();
+  const { notices, notice } = useSelector((state: rootState) => ({
+    notices: state.updates.notices,
+    notice: state.updates.notice,
+  }));
+
+  React.useEffect(() => {
+    if (path.search) {
+      const keyword = path.search.split("-");
+      const id = Number(keyword[keyword.length - 1]);
+      if (!!id) {
+        console.log("Drew", id);
+        dispatch(addNotice(id));
+      } else {
+        console.log("Drew", id);
+      }
+    } else {
+      console.log("Load data");
+    }
+  }, []);
+  console.log(notice);
   return (
     <Layout siteTitle="post">
-      <p>TPost</p>
+      <Grid container justify="center" alignItems="flex-start">
+        <Grid item md={8} xs={12} lg={8}>
+          <Card>
+            <CardHeader
+              title={
+                <Typography align="center" variant="h6" className="font-bold">
+                  {notice.title || ""}
+                </Typography>
+              }
+            />
+            <CardContent>{notice.body || ""}</CardContent>
+          </Card>
+        </Grid>
+        <Grid item md={4} xs={12} lg={4} className="ml-2">
+          <Typography
+            align="center"
+            className="font-bold bg-yellow-500 py-2 text-white "
+          >
+            Recent Notices
+          </Typography>
+        </Grid>
+      </Grid>
     </Layout>
-  )
+  );
 }
-export default Notice
+export default Notice;
 
 /*
 < !DOCTYPE html > 

@@ -1,29 +1,45 @@
-import React from "react"
-import { Link } from "gatsby"
-import { fade, makeStyles, Theme, createStyles } from "@material-ui/core/styles"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import IconButton from "@material-ui/core/IconButton"
-import Typography from "@material-ui/core/Typography"
-import InputBase from "@material-ui/core/InputBase"
-import Badge from "@material-ui/core/Badge"
-import MenuItem from "@material-ui/core/MenuItem"
-import Menu from "@material-ui/core/Menu"
-import MenuIcon from "@material-ui/icons/Menu"
-import SearchIcon from "@material-ui/icons/Search"
-import AccountCircle from "@material-ui/icons/AccountCircle"
-import MailIcon from "@material-ui/icons/Mail"
-import NotificationsIcon from "@material-ui/icons/Notifications"
-import MoreIcon from "@material-ui/icons/MoreVert"
-import { List, ListItem } from "@material-ui/core"
+import React from "react";
+import { Link } from "gatsby";
+import {
+  fade,
+  makeStyles,
+  Theme,
+  createStyles,
+} from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import InputBase from "@material-ui/core/InputBase";
+import Badge from "@material-ui/core/Badge";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MailIcon from "@material-ui/icons/Mail";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import Twitter from "@material-ui/icons/Twitter";
+import Facebook from "@material-ui/icons/Facebook";
+import Linkedin from "@material-ui/icons/LinkedIn";
+import WhatsApp from "@material-ui/icons/WhatsApp";
 
-const logo = require("../../../public/icons/icon-72x72.png")
-const smallLogo = require("../../../public/icons/icon-48x48.png")
+import { List, ListItem, ListItemIcon } from "@material-ui/core";
+
+const logo = require("../../../public/icons/icon-72x72.png");
+const smallLogo = require("../../../public/icons/icon-48x48.png");
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     grow: {
       flexGrow: 1,
+      "@media (max-width:480px)": {
+        display: "none",
+      },
+      "@media (max-width:768px)": {
+        display: "none",
+      },
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -61,6 +77,7 @@ const useStyles = makeStyles((theme: Theme) =>
     inputRoot: {
       color: "inherit",
     },
+
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
@@ -84,19 +101,28 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
   })
-)
+);
 
 export default function PrimarySearchAppBar() {
-  const classes = useStyles()
-  const w: number = globalThis.window && document.documentElement.clientWidth
+  const [pos, setPos] = React.useState(false);
+  const classes = useStyles();
+  const w: number = globalThis.window && document.documentElement.clientWidth;
+
   const activeStyle = {
     color: "green",
     marginBottom: ".35rem",
     borderBottom: "1px solid yellow",
     padding: ".25rem",
     transition: "all .5s ease-in .5s ",
-  }
-
+  };
+  const handleScroll = () => {
+    const scrollH = window.scrollY;
+    scrollH >= 100 ? setPos(true) : setPos(false);
+  };
+  React.useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   const searchBar = (
     <div className={classes.search}>
       <div className={classes.searchIcon}>
@@ -111,23 +137,30 @@ export default function PrimarySearchAppBar() {
         inputProps={{ "aria-label": "search" }}
       />
     </div>
-  )
+  );
 
   return (
     <div className={classes.grow}>
-      <AppBar position="relative" className="h-12 " color="transparent">
-        <List className="lg:flex flex-row justify-space-evenly  items-start block md:block sm:hidden  ">
+      <AppBar
+        position={pos ? "fixed" : "relative"}
+        className="h-12 mb-3 transition-all duration-500 ease-linear delay-500 "
+        color={pos ? "primary" : "transparent"}
+      >
+        <List className={`lg:flex  flex-row justify-space-evenly items-start`}>
           <ListItem dense className="px-2">
             <div
               style={{ height: 40, width: 200 }}
               className="ml-10 my-0 pb-1 absolute  "
             >
               {" "}
-              <img
-                src={w >= 768 ? smallLogo : smallLogo}
-                className="pt-0 mt-2  "
-                height={40}
-              />
+              <Link to={"/"}>
+                <img
+                  src={w >= 768 ? smallLogo : smallLogo}
+                  className="pt-0 mt-2  "
+                  height={40}
+                  alt="Logo"
+                />
+              </Link>
             </div>
           </ListItem>
           <ListItem dense className="px-2">
@@ -175,7 +208,7 @@ export default function PrimarySearchAppBar() {
               Admissions
             </Link>
           </ListItem>
-          <ListItem dense className="px-2">
+          <ListItem dense className="px-2 ">
             <Link
               activeStyle={activeStyle}
               to="/schools"
@@ -184,104 +217,39 @@ export default function PrimarySearchAppBar() {
               Schools
             </Link>{" "}
           </ListItem>
+          <ListItem dense className="px-2 pt-10">
+            <Socials
+              color={pos ? "#fff" : "#333"}
+              classes="flex flex-row top-10 pt-0 my-auto justify-start "
+            />
+          </ListItem>
         </List>
       </AppBar>
     </div>
-  )
+  );
 }
-
-/*
-<!-- MOBILE MENU -->
-  <section><div class="ed-mob-menu">
-            <div class="ed-mob-menu-con">
-                <div class="ed-mm-left">
-                    <div class="wed-logo">
-                        <a href="/"> <img style="max-height:55px; max-width:50px" src="images/theme-tum-logo.png" alt="logo"> </a>
-                    </div>
-                </div>
-                <div class="ed-mm-right">
-                    <div class="ed-mm-menu">
-                        <a href="#!" class="ed-micon"><i class="fa fa-bars"></i></a>
-                        <div class="ed-mm-inn">
-                            <a href="#!" class="ed-mi-close"><i class="fa fa-times"></i></a>
-                            <ul><li><a href="/">Home</a></li>
-                                <li><a href="/about-us">About Us</a></li>
-                                <li><a href="/index/courses">Courses</a></li>
-                                <li><a href="/index/campus-life?d=communicationsdesk">Campus Life</a></li>
-                                <li><a href="/login">E-Registrar</a></li>
-                                <li><a href="https://portal.easterncollege.so">Portal</a></li>
-                                <li><a href="/index/downloads">Downloads</a></li>
-                            </ul></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section><!--HEADER SECTION-->
-    <section class='mb-n3'><div class="ed-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="ed-com-t1-left">
-                            <ul><li>
-                                    <ul id="menu"><li><a href="#">E-Registrar</a>
-                                          <ul class="menus"><li><a href="/login">Local </a></li>
-                                          </ul></li>
-                                    </ul></li>
-                                <li><a href="/index/tenders">Tenders</a></li>
-                                <li><a href="/index/vacancies">Job Vacancies</a></li>
-                                <li><a href="/index/apply-online">Apply Online</a></li>
-                                
-                                 <li>
-                                    <ul id="menu">
-                                        <li><a href="#">Portals</a>
-                                          <ul class="menus">
-                                              <li><a href="https://portal.easterncollege.so">Students  </a></li>
-                                            <li><a href="https://portal.easterncollege.so">Staff  </a></li>
-                                          </ul>
-                                        </li>
-                                    </ul></li>
-                                <li><a href="/contact-us">Get In Touch</a></li>
-                            </ul></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- LOGO AND MENU SECTION -->
-        <div class="top-logo" data-spy="affix" data-offset-top="250">
-            <div class="container">
-                <div class="row">
-                        
-                    <div class="col-md-12">
-                        <div class="logo_fixed" id="logo_wrap" style="background-image:url(/views/assets/uploads/ico.png);"></div>
-
-                        <div class="main-menu" >
-                            <ul>
-                                <li><a href="/">Home</a></li>                                 
-                                <li><a href="/about-us">About Us</a></li>
-                                    
-                                </li>                            
-                                <li><a href="/index/campus-life?d=communicationsdesk">Campus Life</a> </li>
-                                <li><a href="/index/admissions">Admissions</a> </li>
-                                <li><a href="/index/downloads">Downloads</a></li>
-                                <li>
-                                    <ul id="menu">
-                                        <li><a href="#">Our School</a> 
-                                          <ul class="menus">
-                                              <li><a href="/index/courses">Courses  </a></li>
-                                          </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="all-drop-down-menu">
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-            </section><!--END HEADER SECTION--><!-- SLIDER -->
-
-            */
+type Socials = { classes: string; color?: string };
+export const Socials = ({ classes = "", color = "#333" }): JSX.Element => (
+  <List className={classes}>
+    <li>
+      <ListItemIcon>
+        <Facebook className="cursor-pointer" htmlColor={color} />
+      </ListItemIcon>
+    </li>
+    <li>
+      <ListItemIcon>
+        <Twitter className="cursor-pointer" htmlColor={color} />
+      </ListItemIcon>
+    </li>
+    <li>
+      <ListItemIcon>
+        <Linkedin className="cursor-pointer" htmlColor={color} />
+      </ListItemIcon>
+    </li>
+    <li>
+      <ListItemIcon>
+        <WhatsApp className="cursor-pointer" htmlColor={color} />
+      </ListItemIcon>
+    </li>
+  </List>
+);

@@ -1,5 +1,5 @@
-import React from "react"
-import { Link } from "gatsby"
+import React from "react";
+import { Link } from "gatsby";
 import {
   Box,
   Grid,
@@ -10,29 +10,24 @@ import {
   ListItemIcon,
   Typography,
   Divider,
-} from "@material-ui/core"
-import Telephone from "@material-ui/icons/PhoneCallback"
-import Envelope from "@material-ui/icons/Mail"
-import ArrowRight from "@material-ui/icons/ArrowRight"
-import LocationPlace from "@material-ui/icons/PinDrop"
-enum Color {
-  secondary = "secondary",
-  primary = "primary",
-  inherit = "inherit",
-  logo = "red",
-}
+} from "@material-ui/core";
+import Telephone from "@material-ui/icons/PhoneCallback";
+import Envelope from "@material-ui/icons/Mail";
+import ArrowRight from "@material-ui/icons/ArrowRight";
+import LocationPlace from "@material-ui/icons/PinDrop";
+import { Socials } from "./navbar";
 const Footer: React.FC = (): JSX.Element => {
   const changeFlex = (a: string, b: string, c: string) => {
-    const w: number = globalThis.window && document.documentElement.clientWidth
+    const w: number = globalThis.window && document.documentElement.clientWidth;
     if (w <= 480) {
-      return a
+      return a;
     } else if (w <= 768) {
-      return b
+      return b;
     }
-    return c
-  }
+    return c;
+  };
   return (
-    <Box className="bg-gray-900 font-raleway  text-white lg:fixed left-0 bottom-0 w-screen md:relative  sm:relative ">
+    <Box className="bg-gray-900 font-raleway mt-10 text-white lg:relative z-auto left-0 bottom-0 w-screen md:relative  sm:relative ">
       <Grid
         container
         justify="space-around"
@@ -189,7 +184,7 @@ const Footer: React.FC = (): JSX.Element => {
         </Grid>
       </Grid>
 
-      <Box className="w-auto">
+      <Box className="w-auto   ">
         <Typography
           variant="body2"
           className="text-center text-xs text-white bg-blue-900 py-2"
@@ -200,6 +195,6 @@ const Footer: React.FC = (): JSX.Element => {
         </Typography>
       </Box>
     </Box>
-  )
-}
-export default Footer
+  );
+};
+export default Footer;

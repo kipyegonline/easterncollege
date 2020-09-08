@@ -1,14 +1,14 @@
-import React from "react"
-import Layout from "../components/layout"
+import React from "react";
+import Layout from "../components/layout";
 
 function Event(): React.ReactNode {
   return (
     <Layout siteTitle="post">
-      <p>TPost</p>
+      <p>The event</p>
     </Layout>
-  )
+  );
 }
-export default Event
+export default Event;
 
 /*
 

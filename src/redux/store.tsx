@@ -1,27 +1,27 @@
-import React from "react"
-import { createStore, applyMiddleware, compose } from "redux"
-import { Provider } from "react-redux"
-import thunk from "redux-thunk"
-import reducer from "./reducer"
+import React from "react";
+import { createStore, applyMiddleware, compose } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import reducer from "./reducer";
 
 // redux devtools
 const devtools = (): any => {
-  let window: any = globalThis
+  const window: any = globalThis;
   if (window) {
-    let tools = window.__REDUX_DEVTOOLS_EXTENSION__
+    const tools = window.__REDUX_DEVTOOLS_EXTENSION__
       ? window.__REDUX_DEVTOOLS_EXTENSION__()
-      : (f: any) => f
-    return tools
+      : (f: any) => f;
+    return tools;
   } else {
-    return null
+    return null;
   }
-}
+};
 // create store
-const store = createStore(reducer, compose(applyMiddleware(thunk), devtools()))
+const store = createStore(reducer, compose(applyMiddleware(thunk), devtools()));
 
 // redux wrapper for gatsby js
-type element = { element: React.ReactNode }
+type element = { element: React.ReactNode };
 
-export default function ({ element }: element) {
-  return <Provider store={store}>{element}</Provider>
+export default function wrapperElement({ element }: element) {
+  return <Provider store={store}>{element}</Provider>;
 }

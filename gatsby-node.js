@@ -5,3 +5,23 @@
  */
 
 // You can delete this file if you're not using it
+// gatsby-node.js
+// Implement the Gatsby API “onCreatePage”. This is
+// called after every page is created.
+const path = require("path")
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage } = actions
+
+  // page.matchPath is a special key that's used for matching pages
+  // only on the client.
+  if (page.path.match(/^\/notice/)) {
+    page.matchPath = "/notice/*"
+
+    // Update the page.
+    createPage({
+      path: "/notice/",
+      matchPath: "/notice/*",
+      component: path.resolve("./src/pages/notice.tsx"),
+    })
+  }
+}

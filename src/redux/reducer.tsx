@@ -1,16 +1,6 @@
-type state = { user: string }
-type action = { type: string; payload: string }
+import { combineReducers } from "redux";
+import UpdatesReducer from "./updatesReducer/UpdatesReducer";
 
-export const initState: state = { user: "" }
-
-export default function (state = initState, action: action) {
-  switch (action.type) {
-    case "ADD_USER":
-      return { ...state, user: action.payload }
-
-    default:
-      return state
-      break
-  }
-  return state
-}
+const rootReducer = combineReducers({ updates: UpdatesReducer });
+export type rootState = ReturnType<typeof rootReducer>;
+export default rootReducer;
