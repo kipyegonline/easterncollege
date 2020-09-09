@@ -16,6 +16,7 @@ import Envelope from "@material-ui/icons/Mail";
 import ArrowRight from "@material-ui/icons/ArrowRight";
 import LocationPlace from "@material-ui/icons/PinDrop";
 import { Socials } from "./navbar";
+import { EasternContacts } from "../../pages/contact-us";
 const Footer: React.FC = (): JSX.Element => {
   const changeFlex = (a: string, b: string, c: string) => {
     const w: number = globalThis.window && document.documentElement.clientWidth;
@@ -40,7 +41,7 @@ const Footer: React.FC = (): JSX.Element => {
             <ListItem
               dense
               divider
-              className="px-1 pl-4 ml-3 mb-3 text-center lg:text-left md:text-center sm:text-center"
+              className="px-1 pl-4 ml-3 mb-3 text-center border-b border-green-500 lg:text-left md:text-center sm:text-center"
             >
               {" "}
               Campus Life
@@ -50,19 +51,40 @@ const Footer: React.FC = (): JSX.Element => {
                 htmlColor="white"
                 className="mr-0 pr-0 sm:text-center"
               />
-              Communication Desk
+              <Link
+                className="text-sm  hover:underline"
+                to="/campus-life#communication-desk"
+              >
+                Communication Desk
+              </Link>
             </ListItem>
             <ListItem button dense>
               <ArrowRight htmlColor="white" className="mr-0" />
-              Campus Facilities
+              <Link
+                className="text-sm  hover:underline"
+                to="/campus-life#campus-facilities"
+              >
+                {" "}
+                Campus Facilities
+              </Link>
             </ListItem>
             <ListItem button dense>
               <ArrowRight htmlColor="white" />
-              Student Services
+              <Link
+                className="text-sm  hover:underline"
+                to="/campus-life#student-services"
+              >
+                Student Services
+              </Link>
             </ListItem>
             <ListItem button dense>
               <ArrowRight htmlColor="white" />
-              Community Outreach
+              <Link
+                className="text-sm  hover:underline"
+                to="/campus-life#community-outreach"
+              >
+                Community Outreach
+              </Link>
             </ListItem>
           </List>
         </Grid>
@@ -71,7 +93,7 @@ const Footer: React.FC = (): JSX.Element => {
             <ListItem
               dense
               divider
-              className="px-1 pl-4 ml-3 my-0 text-center lg:text-left md:text-center sm:text-center"
+              className="px-1 pl-4 ml-3 my-0 text-center border-b border-green-500  lg:text-left md:text-center sm:text-center"
             >
               Study at Eastern College
             </ListItem>
@@ -149,38 +171,40 @@ const Footer: React.FC = (): JSX.Element => {
           </List>
         </Grid>
         <Grid item lg={3} xs={12} md={3} className="p-4 m-3">
-          <ListItem
-            dense
-            divider
-            className="px-1 pl-4 ml-3 my-0 text-center lg:text-left md:text-center sm:text-center"
-          >
-            Reach Us
-          </ListItem>
-          <Typography variant="body2">
-            <IconButton>
-              <Telephone htmlColor="gray" fontSize="small" />
-            </IconButton>
-            +252613778899
-          </Typography>
-          <Typography variant="body2">
-            <IconButton>
-              <Envelope htmlColor="gray" fontSize="small" />
-            </IconButton>{" "}
-            <a
-              target="_blank"
-              className="text-yellow-500 "
-              href="mailto:info@easterncollege.so"
+          <List>
+            <ListItem
+              dense
+              divider
+              className="px-1 pl-4 underline ml-3 my-0 text-center  border-b-2 border-green-500 lg:text-left md:text-center sm:text-center"
             >
-              info@easterncollege.so
-            </a>
-          </Typography>
-          <Typography variant="body2" className="text-sm m-12 " align="left">
-            <IconButton>
-              <LocationPlace fontSize="small" htmlColor="gray" />
-            </IconButton>
-            Makkah Al-mukarah street, <br />
-            KM5 ( Soobe), Hodan , <br /> Mogadishu, Somalia
-          </Typography>
+              Reach Us
+            </ListItem>
+            <Typography variant="body2">
+              <IconButton>
+                <Telephone htmlColor="gray" fontSize="small" />
+              </IconButton>
+              +252613778899
+            </Typography>
+            <Typography variant="body2">
+              <IconButton>
+                <Envelope htmlColor="gray" fontSize="small" />
+              </IconButton>{" "}
+              <a
+                target="_blank"
+                className="text-yellow-500 "
+                href="mailto:info@easterncollege.so"
+              >
+                info@easterncollege.so
+              </a>
+            </Typography>
+            <Typography variant="body2" className="text-sm m-12 " align="left">
+              <IconButton>
+                <LocationPlace fontSize="small" htmlColor="gray" />
+              </IconButton>
+              Makkah Al-mukarah street, <br />
+              KM5 ( Soobe), Hodan , <br /> Mogadishu, Somalia
+            </Typography>
+          </List>
         </Grid>
       </Grid>
 

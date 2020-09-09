@@ -1,17 +1,277 @@
-import React from "react"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import React from "react";
+import { makeStyles } from "@material-ui/styles";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import {
+  Box,
+  Typography,
+  IconButton,
+  FormControl,
+  InputLabel,
+  Input,
+  FormHelperText,
+  TextField,
+  Grid,
+  Button,
+} from "@material-ui/core";
+import Mail from "@material-ui/icons/Mail";
+import Telephone from "@material-ui/icons/PhoneInTalk";
+import Pin from "@material-ui/icons/PinDrop";
+import Email from "@material-ui/icons/Email";
+import Call from "@material-ui/icons/Call";
+import Subject from "@material-ui/icons/Subject";
+import Message from "@material-ui/icons/Message";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
+
+const useStyles = makeStyles({
+  iframe: {
+    border: 0,
+    width: "100%",
+    minWidth: 300,
+    height: 400,
+    maxWidth: 1260,
+    padding: ".5rem",
+    margin: "0 auto",
+
+    "@media (max-width:480px)": {
+      height: 200,
+    },
+    "@media (max-width:768px)": {
+      height: 300,
+    },
+  },
+  form: {
+    width: 500,
+    background: "#ddd",
+    padding: "1.3rem",
+    margin: " .5rem 1rem",
+    "@media (max-width:480px)": {
+      maxWidth: 360,
+      margin: ".25rem auto",
+    },
+    "@media (max-width:768px)": {
+      maxWidth: 500,
+      margin: ".25rem auto",
+    },
+  },
+  formControl: {
+    width: "100%",
+    padding: ".5rem",
+    margin: " .25rem",
+  },
+
+  label: {
+    padding: ".5rem",
+  },
+  input: {
+    padding: ".5rem",
+  },
+  textarea: {
+    padding: ".5rem",
+    margin: " 0 .5rem",
+  },
+  btn: {
+    outline: "none",
+    display: "block",
+    width: "100%",
+    margin: ".5rem auto",
+  },
+});
 
 function ContactUs(): React.ReactNode {
   return (
     <Layout siteTitle="Contact us">
       <SEO title="Contact us" meta="Eastern College" />
-      <p>Ccontact us</p>
+      <Box>
+        <Typography align="center">
+          You are always welcome to visit Eastern College.
+        </Typography>
+        <Map />
+      </Box>
+      <Grid container>
+        <Grid item lg={4} xs={12} md={4}>
+          <EasternContacts />
+        </Grid>
+        <Grid item lg={4} xs={12} md={4}>
+          {" "}
+          <ContactForm />
+        </Grid>
+      </Grid>
     </Layout>
-  )
+  );
 }
-export default ContactUs
+export default ContactUs;
+export const EasternContacts = () => (
+  <Box
+    className="mr-3"
+    style={{ boxShadow: "2px 2px 5px #fff", background: "none" }}
+  >
+    <Typography
+      variant="h6"
+      className="border-b border-green-500"
+      align="center"
+    >
+      Reach Us
+    </Typography>
+    <div>
+      <Typography variant="body1" className="my-1 py-1 break-words ">
+        <IconButton>
+          <Pin />
+        </IconButton>
+        Makkah Al-mukarah street,{" "}
+        <span className="ml-8 md:ml-2 sm:ml-2"> KM5 ( Soobe), Hodan ,</span>
+        <span className="ml-8 md:ml-2 sm:ml-2"> Mogadishu, Somalia </span>
+      </Typography>
+    </div>
+    <Typography variant="body1" className="my-1 py-1">
+      <IconButton>
+        <Telephone />
+      </IconButton>
+      +252-613-778-899
+    </Typography>
+    <Typography variant="body1" className="my-1 py-1 text-yellow-900">
+      <IconButton>
+        <Mail />
+      </IconButton>
+      info@easterncollege.so
+    </Typography>
+  </Box>
+);
+const Map = () => {
+  const classes = useStyles();
+  return (
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.2443492108187!2d45.32665021432442!3d2.058193759464508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3d58433f2603c0f7%3A0x1bdb0b2afcd8ebc6!2sEastern%20College!5e0!3m2!1sen!2ske!4v1599652819372!5m2!1sen!2ske"
+      frameBorder="0"
+      title="Eastern college coords"
+      className={classes.iframe}
+      allowFullScreen={true}
+      aria-hidden={false}
+    ></iframe>
+  );
+};
 
+const ContactForm = () => {
+  const [message, setMessage] = React.useState("");
+
+  const classes = useStyles();
+
+  const getValue = (value: string) => {
+    console.log(value);
+  };
+  const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const target = e.target as HTMLTextAreaElement;
+  };
+  const encode = data => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  };
+  const handleSubmit = e => {
+    e.preventDefault();
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode({ "form-name": "contact" }),
+    })
+      .then(() => alert("Success!"))
+      .catch(error => alert(error));
+  };
+  return (
+    <form
+      className={classes.form}
+      name="contact-form"
+      data-netlify="true"
+      onSubmit={handleSubmit}
+      data-netlify-honeypot="bot-field"
+    >
+      <Typography align="center" className="border-b border-green-500">
+        {" "}
+        <Message />
+        Direct Message
+      </Typography>
+      <input type="hidden" name="form-name" value="contact-form" />
+      <FormInput
+        name="Email"
+        type="email"
+        Icon={Email}
+        getValue={getValue}
+        label="Enter email address"
+      />
+      <FormInput
+        name="Phone"
+        type="number"
+        Icon={Call}
+        getValue={getValue}
+        label="Enter Phone number"
+      />
+      <FormInput
+        name="Subject"
+        type="text"
+        Icon={Subject}
+        getValue={getValue}
+        label="Enter subject"
+      />
+      <TextField
+        variant="filled"
+        multiline
+        onChange={handleMessage}
+        className={classes.textarea}
+        rows={3}
+        label="Enter message"
+        value={message}
+        fullWidth
+      />
+      <Button
+        type="submit"
+        className={classes.btn}
+        variant="contained"
+        color="primary"
+      >
+        Submit
+      </Button>
+    </form>
+  );
+};
+type FormInput = {
+  label: string;
+  type: string;
+  multiline?: boolean;
+  getValue: (value: string) => void;
+  Icon: any;
+  name: string;
+};
+const FormInput: React.FC<FormInput> = ({
+  label,
+  type = "text",
+  getValue = f => f,
+  multiline = false,
+  Icon = Message,
+  name = "",
+}) => {
+  const classes = useStyles();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+  };
+  return (
+    <FormControl className={classes.formControl}>
+      <InputLabel className={classes.label}> {label} </InputLabel>
+      <Input
+        onChange={handleChange}
+        type={type}
+        multiline={multiline}
+        name={name}
+        className={classes.input}
+        fullWidth
+        startAdornment={
+          <InputAdornment position="start">
+            <Icon />
+          </InputAdornment>
+        }
+      />
+    </FormControl>
+  );
+};
 /* 
 
 <? php
