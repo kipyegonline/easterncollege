@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+//import { useQuery } from "react-query";
 import { Link } from "gatsby";
 import { useSelector, useDispatch } from "react-redux";
 import Announce from "@material-ui/icons/Announcement";
@@ -40,7 +41,7 @@ const IndexPage: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const postsurl = "https://jsonplaceholder.typicode.com/posts";
 
-  const fetchData = async (url: string, callback) => {
+  const fetchData = async (url: string, callback = f => f) => {
     try {
       setPspinner(true);
       const { data } = await axios.get(url);
@@ -64,6 +65,10 @@ const IndexPage: React.FC = (): JSX.Element => {
       fetchData(postsurl, actions.addEvents);
       fetchData(postsurl, actions.addNews);
     }
+    /* const resd = useQuery("Fetch res", () =>
+      fetch(postsurl).then(res => res.json())
+    );
+    console.log("Use query: ", resd);*/
   }, []);
 
   return (
@@ -235,7 +240,7 @@ const WelcomeNote = () => (
       empowerment based in Mogadishu,Somalia.
     </Typography>
 
-    <Typography variant="body1" className="mb-2 p-1">
+    <Typography variant="body1" className="mb-2 p-1" style={{ textIndent: 16 }}>
       {" "}
       With Somalia opening up to the rest of the world, Eastern College was
       founded in 2018 to help improve the English language skills capacity for
@@ -246,7 +251,7 @@ const WelcomeNote = () => (
       from Certificate, Diploma and Undergraduate degree.
     </Typography>
 
-    <Typography variant="body1" className="mb-2 p-1">
+    <Typography variant="body1" className="mb-2 p-1" style={{ textIndent: 16 }}>
       {" "}
       As believers of quality education, we have always insited on offering our
       students a learning experience that is a result of research adn has been

@@ -16,7 +16,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Home from "@material-ui/icons/Home";
 import Download from "@material-ui/icons/CloudDownload";
 import Close from "@material-ui/icons/Close";
-
+import { Socials } from "./navbar";
+import { EasternContacts } from "../../pages/contact-us";
 const smallLogo = require("../../../public/icons/icon-72x72.png");
 const logosm = require("../../../public/icons/icon-48x48.png");
 
@@ -83,6 +84,10 @@ export default function TemporaryDrawer(): JSX.Element {
         ))}
       </List>
       <Divider />
+      <div className="mt-5">
+        <EasternContacts />
+        <Socials classes="flex flex-row justify-center " />
+      </div>
     </div>
   );
 
@@ -111,13 +116,15 @@ export default function TemporaryDrawer(): JSX.Element {
         open={state["right"]}
         onClose={toggleDrawer("right", false)}
       >
-        <img
-          src={smallLogo}
-          width={100}
-          className="mx-auto  my-2"
-          height={50}
-          alt="Logo"
-        />
+        <Link to="/">
+          <img
+            src={smallLogo}
+            width={100}
+            className="mx-auto  my-2"
+            height={50}
+            alt="Logo"
+          />
+        </Link>
         <Typography variant="body1" className="text-center font-bold">
           Eastern College
         </Typography>

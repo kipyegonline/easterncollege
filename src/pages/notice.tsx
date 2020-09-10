@@ -50,7 +50,7 @@ function Notice(): React.ReactNode {
             <CardContent>{notice.body || ""}</CardContent>
           </Card>
         </Grid>
-        <Grid item md={4} xs={12} lg={4} className="ml-2">
+        <Grid item md={4} xs={12} lg={4} className="ml-2 ">
           <Typography
             align="center"
             className="font-bold bg-yellow-500 py-2 text-white "

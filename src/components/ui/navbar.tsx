@@ -107,13 +107,13 @@ export default function PrimarySearchAppBar() {
   const [pos, setPos] = React.useState(false);
   const classes = useStyles();
   const w: number = globalThis.window && document.documentElement.clientWidth;
-
+  let yellow = "rgba( 236,201,71,1)";
   const activeStyle = {
-    color: "green",
     marginBottom: ".35rem",
-    borderBottom: "1px solid yellow",
-    padding: ".25rem",
-    transition: "all .5s ease-in .5s ",
+    top: -10,
+    borderBottom: "2px solid " + yellow,
+    padding: "0rem",
+    transition: "all 1s ease-in-out .5s ",
   };
   const handleScroll = () => {
     const scrollH = window.scrollY;
@@ -143,8 +143,9 @@ export default function PrimarySearchAppBar() {
     <div className={classes.grow}>
       <AppBar
         position={pos ? "fixed" : "relative"}
-        className="h-12 mb-3 transition-all duration-500 ease-linear delay-500 "
+        className="h-12 mb-0 py-auto leading-tight transition duration-500 ease-linear delay-500 "
         color={pos ? "primary" : "transparent"}
+        style={{ borderBottom: "1px solid #ddd" }}
       >
         <List className={`lg:flex  flex-row justify-space-evenly items-start`}>
           <ListItem dense className="px-2">
@@ -167,7 +168,7 @@ export default function PrimarySearchAppBar() {
             <Link
               activeStyle={activeStyle}
               to="/"
-              className="transition duration-500 ease-linear hover:text-green-600 "
+              className="font-bold block transition duration-500 ease-linear hover:text-yellow-900 "
             >
               Home
             </Link>
@@ -176,34 +177,17 @@ export default function PrimarySearchAppBar() {
             <Link
               activeStyle={activeStyle}
               to="/about-us"
-              className="transition duration-500 ease-linear hover:text-green-500 "
+              className="font-bold block transition duration-500 ease-linear hover:text-yellow-600  "
             >
               About Us
             </Link>
           </ListItem>
-          <ListItem dense className="px-2 ">
-            <Link
-              activeStyle={activeStyle}
-              to="/campus-life"
-              className="transition duration-500 ease-linear hover:text-green-500 "
-            >
-              Campus Life
-            </Link>
-          </ListItem>
-          <ListItem dense className="px-2">
-            <Link
-              activeStyle={activeStyle}
-              to="/downloads"
-              className="transition duration-500 ease-linear hover:text-green-500 "
-            >
-              Downloads
-            </Link>
-          </ListItem>
+
           <ListItem dense className="px-2">
             <Link
               activeStyle={activeStyle}
               to="/admissions"
-              className="transition duration-500 ease-linear hover:text-green-500 "
+              className="font-bold block transition duration-500 ease-linear hover:text-yellow-600  "
             >
               Admissions
             </Link>
@@ -212,10 +196,28 @@ export default function PrimarySearchAppBar() {
             <Link
               activeStyle={activeStyle}
               to="/schools"
-              className="transition duration-500 ease-linear hover:text-green-500  "
+              className="font-bold block transition duration-500 ease-linear hover:text-yellow-600  "
             >
               Schools
             </Link>{" "}
+          </ListItem>
+          <ListItem dense className="px-2 ">
+            <Link
+              activeStyle={activeStyle}
+              to="/campus-life"
+              className="font-bold block transition duration-500 ease-linear hover:text-yellow-600 "
+            >
+              Campus Life
+            </Link>
+          </ListItem>
+          <ListItem dense className="px-2">
+            <Link
+              activeStyle={activeStyle}
+              to="/downloads"
+              className="font-bold block transition duration-500 ease-linear hover:text-yellow-600 "
+            >
+              Downloads
+            </Link>
           </ListItem>
           <ListItem dense className="px-2 pt-10">
             <Socials
@@ -229,26 +231,29 @@ export default function PrimarySearchAppBar() {
   );
 }
 type Socials = { classes: string; color?: string };
-export const Socials = ({ classes = "", color = "#333" }): JSX.Element => (
+export const Socials = ({
+  classes = "",
+  color = "#333",
+}: Socials): JSX.Element => (
   <List className={classes}>
     <li>
       <ListItemIcon>
-        <Facebook className="cursor-pointer" htmlColor={color} />
+        <Facebook className="cursor-pointer" htmlColor={"#3b5998"} />
       </ListItemIcon>
     </li>
     <li>
       <ListItemIcon>
-        <Twitter className="cursor-pointer" htmlColor={color} />
+        <Twitter className="cursor-pointer" htmlColor={"#1DA1F2"} />
       </ListItemIcon>
     </li>
     <li>
       <ListItemIcon>
-        <Linkedin className="cursor-pointer" htmlColor={color} />
+        <Linkedin className="cursor-pointer" htmlColor="#0e76a8" />
       </ListItemIcon>
     </li>
     <li>
       <ListItemIcon>
-        <WhatsApp className="cursor-pointer" htmlColor={color} />
+        <WhatsApp className="cursor-pointer" htmlColor={"#075e54"} />
       </ListItemIcon>
     </li>
   </List>

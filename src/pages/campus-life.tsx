@@ -132,7 +132,12 @@ function CampusTabs() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" className="flex flex-col">
+      <AppBar
+        style={{ background: "rgba(42, 67,101,1)", color: "#fff" }}
+        position="static"
+        color="transparent"
+        className="bg-blue-900  flex flex-col mb-3"
+      >
         <Tabs
           value={value}
           onChange={handleChange}

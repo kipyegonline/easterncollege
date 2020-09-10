@@ -45,15 +45,6 @@ function AboutUs(): React.ReactNode {
   return (
     <Layout siteTitle="About us">
       <Box>
-        <AppBar position="relative" color="transparent">
-          <Typography
-            align="center"
-            variant="h4"
-            className="  p-0 text-blue-900"
-          >
-            About Us
-          </Typography>
-        </AppBar>
         <Carousel />
         <Box component="div">
           <ul
@@ -85,7 +76,7 @@ export default AboutUs;
 
 const Background = () => {
   return (
-    <Paper className="px-3 py-3 mx-20 my-5 transition-all duration-500 ease-linear sm:mx-5 px-1 md:mx-10">
+    <Paper className="px-3 py-3 mx-20 my-5 transition-all duration-500 ease-linear sm:w-full mx-auto px-1 my-2 md:mx-5 my-2">
       <Typography variant="h5" align="center">
         Background
       </Typography>

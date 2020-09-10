@@ -57,15 +57,30 @@ Layout.propTypes = {
 };
 
 const MoveTop = () => {
+  const [nav, setNav] = React.useState(false);
+  const handleNav = (): void => {
+    const h: number = window.scrollY;
+    console.log(h);
+    h >= 500 ? setNav(true) : setNav(false);
+  };
+  React.useEffect(() => {
+    addEventListener("scroll", handleNav);
+  }, []);
   return (
-    <div className="fixed z-30 right-0 ml-5 bottom-0">
+    <div
+      className="fixed z-30 right-0 ml-5 bottom-0 "
+      style={{
+        visibility: nav ? "visible" : "hidden",
+        transition: "visibility 0.3s ease-in-out 1s",
+      }}
+    >
       <IconButton
         onClick={() =>
           globalThis.window &&
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
         }
       >
-        <Navigation fontSize="large" htmlColor="green" />
+        <Navigation fontSize="large" className="rounded" htmlColor="green" />
       </IconButton>
     </div>
   );
