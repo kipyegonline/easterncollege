@@ -103,7 +103,7 @@ function ContactUs(): React.ReactNode {
 export default ContactUs;
 export const EasternContacts = () => (
   <Box
-    className="mr-3"
+    className="mr-3 p-3"
     style={{ boxShadow: "2px 2px 5px #fff", background: "none" }}
   >
     <Typography

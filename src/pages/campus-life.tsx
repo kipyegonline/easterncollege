@@ -122,10 +122,7 @@ function CampusTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLElement>,
-    newValue: number
-  ) => {
+  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     console.log(newValue, event.target as HTMLElement);
     setValue(newValue);
   };

@@ -77,7 +77,7 @@ const IndexPage: React.FC = (): JSX.Element => {
       <Carousel />
       <Typography
         variant="h5"
-        className="text-white bg-blue-900 py-3 leading-tight  mb-2  text-center md:py-2 sm:py-1"
+        className="text-white bg-blue-900 py-4 leading-tight  mb-2  text-center md:py-2 sm:py-1"
       >
         Welcome to Eastern College, Somalia
       </Typography>

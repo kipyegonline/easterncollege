@@ -14,7 +14,7 @@ import Footer from "./ui/footer";
 import NavBar, { Socials } from "./ui/navbar";
 import Drawer from "./ui/sideMenu";
 import "./layout.css";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Fab } from "@material-ui/core";
 
 type Props = {
   children?: any;
@@ -60,7 +60,7 @@ const MoveTop = () => {
   const [nav, setNav] = React.useState(false);
   const handleNav = (): void => {
     const h: number = window.scrollY;
-    console.log(h);
+
     h >= 500 ? setNav(true) : setNav(false);
   };
   React.useEffect(() => {
@@ -74,14 +74,16 @@ const MoveTop = () => {
         transition: "visibility 0.3s ease-in-out 1s",
       }}
     >
-      <IconButton
+      <Fab
         onClick={() =>
           globalThis.window &&
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
         }
+        className="mx-3 px-3"
+        size="small"
       >
         <Navigation fontSize="large" className="rounded" htmlColor="green" />
-      </IconButton>
+      </Fab>
     </div>
   );
 };

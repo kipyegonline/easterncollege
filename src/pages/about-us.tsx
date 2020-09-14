@@ -14,6 +14,12 @@ import {
 function AboutUs(): React.ReactNode {
   let Jsx: JSX.Element = <Background />;
   const [JsxEl, setJsx] = React.useState<JSX.Element>(Jsx);
+  React.useEffect(() => {
+    setTimeout(
+      () => window.scrollTo({ top: 50, left: 0, behavior: "smooth" }),
+      500
+    );
+  }, []);
 
   const handleClick = (id: number): void => {
     window.scrollTo({ top: 50, left: 0, behavior: "smooth" });
@@ -76,7 +82,11 @@ export default AboutUs;
 
 const Background = () => {
   return (
-    <Paper className="px-3 py-3 mx-20 my-5 transition-all duration-500 ease-linear sm:w-full mx-auto px-1 my-2 md:mx-5 my-2">
+    <Paper
+      id="background"
+      className="p-3  mx-20 my-5 sm:w-full mx-5 px-1 my-2 md:mx-5 my-2 transition-all duration-500 ease-linear 
+      "
+    >
       <Typography variant="h5" align="center">
         Background
       </Typography>
@@ -131,7 +141,7 @@ const Background = () => {
 
 const Mission = () => {
   return (
-    <Paper className="py-2 px-3 mx-20 my-5">
+    <Paper className="p-3  mx-20 my-5">
       <Typography variant="h5" align="center">
         Mission and vision
       </Typography>
@@ -154,7 +164,7 @@ const Mission = () => {
 
 const Policy = () => {
   return (
-    <Paper className="py-2 px-3 mx-20 my-5">
+    <Paper className=" p-3 mx-20 my-5">
       <Typography variant="h5" align="center">
         Policy Statement
       </Typography>
@@ -182,7 +192,7 @@ const Policy = () => {
 
 const CoreValues = () => {
   return (
-    <Paper className="py-2 px-3 mx-20 my-5">
+    <Paper className="p-3  mx-20 my-5">
       <Typography variant="h5" align="center">
         Core Values
       </Typography>

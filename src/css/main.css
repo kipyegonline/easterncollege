@@ -5,9 +5,10 @@
 body {
   font-family: raleway, helvetica;
   background-color: #fff;
-  width: 100% !important;
+  width: 80% !important;
   font-size: 1rem;
   max-width: 1260px;
+  margin: auto;
 }
 .footer {
   position: fixed;

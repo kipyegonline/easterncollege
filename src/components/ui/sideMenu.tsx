@@ -79,7 +79,9 @@ export default function TemporaryDrawer(): JSX.Element {
         {menu.map((text: menu, index: number) => (
           <ListItem button key={index}>
             <ListItemIcon>{<text.icon />}</ListItemIcon>
-            <Link to={text.value}>{text.name}</Link>
+            <Link className="font-bold" to={text.value}>
+              {text.name}
+            </Link>
           </ListItem>
         ))}
       </List>
@@ -93,22 +95,20 @@ export default function TemporaryDrawer(): JSX.Element {
 
   return (
     <div>
-      <div className="z-10 lg:hidden  md: block absolute top-0 right-0 mt-0  sm:block mt-0 mr-2">
-        <IconButton
-          className="active:bg-red-500"
-          edge="end"
+      <div className="z-10 lg:hidden  md: block absolute top-0 right-0 mt-2  sm:block mt-0 mr-2">
+        <Button
+          className=" p-0 border-2 bg-gray-500 active:bg-green-500 md:mt-4 sm:mt2"
+          size="small"
+          variant="outlined"
           onClick={toggleDrawer("right", true)}
         >
-          {showing ? (
-            <Close htmlColor="white" />
-          ) : (
-            <MenuIcon
-              className="fill-current"
-              fontSize="large"
-              htmlColor="white"
-            />
-          )}
-        </IconButton>
+          <span
+            style={{ transform: "rotate(90deg)", color: "#ddd" }}
+            className=" block font-extrabold text-center text-2xl w-full "
+          >
+            |||
+          </span>
+        </Button>
       </div>
 
       <Drawer
