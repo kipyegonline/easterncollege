@@ -22,6 +22,6 @@ const store = createStore(reducer, compose(applyMiddleware(thunk), devtools()));
 // redux wrapper for gatsby js
 type element = { element: React.ReactNode };
 
-export default function wrapperElement({ element }: element) {
+export default function wrapperElement({ element }: element): React.ReactNode {
   return <Provider store={store}>{element}</Provider>;
 }

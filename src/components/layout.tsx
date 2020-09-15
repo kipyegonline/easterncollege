@@ -68,10 +68,9 @@ const MoveTop = () => {
   }, []);
   return (
     <div
-      className="fixed z-30 right-0 ml-5 bottom-0 "
+      className="fixed z-30 right-0 ml-5 bottom-0  transition-all duration-500 ease-in-out "
       style={{
         visibility: nav ? "visible" : "hidden",
-        transition: "visibility 0.3s ease-in-out 1s",
       }}
     >
       <Fab
@@ -79,10 +78,11 @@ const MoveTop = () => {
           globalThis.window &&
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
         }
-        className="mx-3 px-3"
-        size="small"
+        className="mx-3 px-3 hover:bg-yellow-500 rounded"
+        size="medium"
+        style={{ margin: "1rem" }}
       >
-        <Navigation fontSize="large" className="rounded" htmlColor="green" />
+        <Navigation fontSize="large" className="rounded  " htmlColor="green" />
       </Fab>
     </div>
   );

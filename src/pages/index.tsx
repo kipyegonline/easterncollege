@@ -24,7 +24,7 @@ import {
   CardContent,
   CircularProgress,
 } from "@material-ui/core";
-import { rootState } from "../redux/reducer";
+import { rootState, fetchData } from "../redux/reducer";
 import Layout from "../components/layout";
 import * as actions from "../redux/updatesReducer/actions";
 import SEO from "../components/seo";
@@ -41,29 +41,12 @@ const IndexPage: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const postsurl = "https://jsonplaceholder.typicode.com/posts";
 
-  const fetchData = async (url: string, callback = f => f) => {
-    try {
-      setPspinner(true);
-      const { data } = await axios.get(url);
-      if (!!!data) {
-        throw new Error("No data!");
-      } else {
-        setTimeout(() => {
-          setPspinner(false);
-          dispatch(callback(data));
-        }, 2000);
-      }
-    } catch (error) {
-      setPspinner(false);
-      setErrmsg(error.message);
-      console.log(error.message);
-    }
-  };
   React.useEffect(() => {
     if (!!!news.length || !!!events.length || !!!notices.length) {
-      fetchData(postsurl, actions.addNotices);
-      fetchData(postsurl, actions.addEvents);
-      fetchData(postsurl, actions.addNews);
+      fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addNotices);
+      fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addEvents);
+      fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addNews);
+      fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addTenders);
     }
     /* const resd = useQuery("Fetch res", () =>
       fetch(postsurl).then(res => res.json())

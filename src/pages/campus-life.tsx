@@ -23,8 +23,10 @@ import SEO from "../components/seo";
 import { EasternContacts } from "./contact-us";
 import { Socials } from "../components/ui/navbar";
 
-const image: string = require("../../public/images/ec_random_1596306732.jpeg");
-const principal: string = require("../../public/images/ec_random_1597490926.jpeg");
+const image: string = require("../../public/images/slide1.jpg");
+const image_md: string = require("../../public/images/slide1_md.jpg");
+const image_sm: string = require("../../public/images/slide1_sm.jpg");
+const principal: string = require("../../public/images/principal.jpg");
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -33,6 +35,7 @@ interface TabPanelProps {
 }
 
 function CampusLife(): React.ReactNode {
+  const w = globalThis.window && document.documentElement.clientWidth;
   return (
     <Layout siteTitle="Campus life">
       <SEO title="Campus life" meta="Eastern College" />
@@ -44,8 +47,8 @@ function CampusLife(): React.ReactNode {
         Campus Life at Eastern College
       </Typography>
       <img
-        src={image}
-        style={{ height: 400, width: "100%" }}
+        src={w < 380 ? image_sm : w < 768 ? image_md : image}
+        style={{ height: w < 380 ? 200 : w < 768 ? 300 : 400, width: "100%" }}
         alt="Eastern students"
       />
       <Box>

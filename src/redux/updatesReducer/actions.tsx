@@ -25,3 +25,10 @@ export const addEvents = (
   type: C.ADD_EVENTS,
   payload,
 });
+
+export const addTenders = (
+  payload: any[]
+): { type: string; payload: any[] } => ({
+  type: C.ADD_TENDERS,
+  payload,
+});

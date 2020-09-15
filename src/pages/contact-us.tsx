@@ -11,8 +11,12 @@ import {
   FormHelperText,
   TextField,
   Grid,
+  Snackbar,
   Button,
+  CircularProgress,
 } from "@material-ui/core";
+
+import Alert from "@material-ui/lab/Alert";
 import Mail from "@material-ui/icons/Mail";
 import Telephone from "@material-ui/icons/PhoneInTalk";
 import Pin from "@material-ui/icons/PinDrop";
@@ -42,7 +46,7 @@ const useStyles = makeStyles({
   },
   form: {
     width: 500,
-    background: "#ddd",
+    background: "#fff",
     padding: "1.3rem",
     margin: " .5rem 1rem",
     "@media (max-width:480px)": {
@@ -103,7 +107,7 @@ function ContactUs(): React.ReactNode {
 export default ContactUs;
 export const EasternContacts = () => (
   <Box
-    className="mr-3 p-3"
+    className="mr-3 p-2"
     style={{ boxShadow: "2px 2px 5px #fff", background: "none" }}
   >
     <Typography
@@ -113,16 +117,7 @@ export const EasternContacts = () => (
     >
       Reach Us
     </Typography>
-    <div>
-      <Typography variant="body1" className="my-1 py-1 break-words ">
-        <IconButton>
-          <Pin />
-        </IconButton>
-        Makkah Al-mukarah street,{" "}
-        <span className="ml-8 md:ml-2 sm:ml-2"> KM5 ( Soobe), Hodan ,</span>
-        <span className="ml-8 md:ml-2 sm:ml-2"> Mogadishu, Somalia </span>
-      </Typography>
-    </div>
+
     <Typography variant="body1" className="my-1 py-1">
       <IconButton>
         <Telephone />
@@ -135,6 +130,16 @@ export const EasternContacts = () => (
       </IconButton>
       info@easterncollege.so
     </Typography>
+    <div>
+      <Typography variant="body1" className="my-1 py-1 break-words ">
+        <IconButton>
+          <Pin />
+        </IconButton>
+        Makkah Al-mukarah street,{" "}
+        <span className="ml-8 md:ml-2 sm:ml-2"> KM5 ( Soobe), Hodan ,</span>
+        <span className="ml-8 md:ml-2 sm:ml-2"> Mogadishu, Somalia </span>
+      </Typography>
+    </div>
   </Box>
 );
 const Map = () => {
@@ -153,36 +158,84 @@ const Map = () => {
 
 const ContactForm = () => {
   const [message, setMessage] = React.useState("");
+  const [subject, setSubject] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [errmsg, setError] = React.useState("");
+  const [success, setSuccess] = React.useState("");
+  const [spinner, setSpinner] = React.useState(false);
+  const form = React.useRef<HTMLFormElement | null>(null!);
 
   const classes = useStyles();
 
-  const getValue = (value: string) => {
-    console.log(value);
+  const getValue = (name: string, value: string) => {
+    const setState = eval("set" + name);
+
+    setState(value);
   };
   const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const target = e.target as HTMLTextAreaElement;
+    setMessage(target.value);
   };
   const encode = data => {
     return Object.keys(data)
       .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
       .join("&");
   };
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": "contact" }),
-    })
-      .then(() => alert("Success!"))
-      .catch(error => alert(error));
+    if (
+      message.trim().length > 0 &&
+      email.trim().length > 9 &&
+      phone.trim().length > 5 &&
+      subject.trim().length > 5
+    ) {
+      setSpinner(true);
+      fetch("https:www.easterncollege.so/contactus/contactform", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({
+          "form-name": "contact",
+          message,
+          phone,
+          email,
+          subject,
+        }),
+      })
+        .then(res => {
+          setSpinner(false);
+          if (res.ok) {
+            setSuccess("Message submittted. We will revert shortly");
+            setTimeout(() => {
+              setPhone("");
+              setMessage("");
+              setSubject("");
+              setEmail("");
+              setSuccess("");
+              if (form.current) form.current.reset();
+            }, 4000);
+          } else {
+            throw new Error(res.statusText);
+          }
+        })
+        .catch(error => {
+          setSpinner(false);
+          setError(error.message);
+          setTimeout(() => setError(""), 4000);
+        });
+    } else {
+      setError("All fields are required");
+      setTimeout(() => setError(""), 4000);
+    }
   };
+
   return (
     <form
       className={classes.form}
       name="contact-form"
       data-netlify="true"
       onSubmit={handleSubmit}
+      ref={form}
       data-netlify-honeypot="bot-field"
     >
       <Typography align="center" className="border-b border-green-500">
@@ -220,8 +273,11 @@ const ContactForm = () => {
         rows={3}
         label="Enter message"
         value={message}
-        fullWidth
+        fullWidth={true}
       />
+      <div className="text-center p-2">
+        {spinner ? <CircularProgress /> : null}
+      </div>
       <Button
         type="submit"
         className={classes.btn}
@@ -230,6 +286,12 @@ const ContactForm = () => {
       >
         Submit
       </Button>
+      <Snackbar open={!!errmsg.length}>
+        <Alert severity="error">{errmsg}</Alert>
+      </Snackbar>
+      <Snackbar open={!!success.length}>
+        <Alert severity="success">{success}</Alert>
+      </Snackbar>
     </form>
   );
 };
@@ -237,7 +299,7 @@ type FormInput = {
   label: string;
   type: string;
   multiline?: boolean;
-  getValue: (value: string) => void;
+  getValue: (name: string, value: string) => void;
   Icon: any;
   name: string;
 };
@@ -252,6 +314,7 @@ const FormInput: React.FC<FormInput> = ({
   const classes = useStyles();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
+    getValue(target.name, target.value);
   };
   return (
     <FormControl className={classes.formControl}>
@@ -262,7 +325,7 @@ const FormInput: React.FC<FormInput> = ({
         multiline={multiline}
         name={name}
         className={classes.input}
-        fullWidth
+        fullWidth={true}
         startAdornment={
           <InputAdornment position="start">
             <Icon />

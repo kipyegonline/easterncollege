@@ -6,11 +6,11 @@ import ArrowRight from "@material-ui/icons/NavigateNext";
 import ArrowLeft from "@material-ui/icons/NavigateBefore";
 import Arrow from "@material-ui/icons/Navigation";
 
-const slide1 = require("../../public/images/8197EC_slider_1596227339.jpeg");
-const slide2 = require("../../public/images/3305EC_slider_1598126235.jpeg");
-import slide3 from "../../public/images/9683EC_slider_1598823318.jpeg";
-import slide4 from "../../public/images/3265EC_slider_1598126279.jpeg";
-const slide5 = require("../../public/images/ec_random_1596306732.jpeg");
+const slide1 = require("../../public/images/slide1.jpg");
+const slide2 = require("../../public/images/slide3.jpg");
+const slide3 = require("../../public/images/slide4.jpg");
+const slide4 = require("../../public/images/slide5.jpg");
+const slide5 = require("../../public/images/slide2.jpg");
 //const slide6 = require("../../public/images/slide6.JPG");
 const slides = [
   { pic: slide1, caption: "Eastern College 1", id: 1 },

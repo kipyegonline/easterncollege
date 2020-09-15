@@ -14,6 +14,7 @@ import {
 function AboutUs(): React.ReactNode {
   let Jsx: JSX.Element = <Background />;
   const [JsxEl, setJsx] = React.useState<JSX.Element>(Jsx);
+  const [current, setCurrent] = React.useState(1);
   React.useEffect(() => {
     setTimeout(
       () => window.scrollTo({ top: 50, left: 0, behavior: "smooth" }),
@@ -23,6 +24,7 @@ function AboutUs(): React.ReactNode {
 
   const handleClick = (id: number): void => {
     window.scrollTo({ top: 50, left: 0, behavior: "smooth" });
+    setCurrent(id);
     switch (id) {
       case 1:
         Jsx = <Background />;
@@ -47,27 +49,51 @@ function AboutUs(): React.ReactNode {
         break;
     }
   };
-
+  const activeStyle = { background: "yellow" };
   return (
     <Layout siteTitle="About us">
       <Box>
         <Carousel />
         <Box component="div">
           <ul
-            className=" m-2 py-2 leading-tight flex flex-row justify-evenly items-center flex-wrap bg-blue-900 text-white 
-         lg:relative md:fixed w-full z-10 sm:fixed"
+            className=" m-2 py-2 leading-none bg-blue-900 text-white
+             flex flex-row justify-evenly items-center 
+            
+             "
           >
-            <li onClick={() => handleClick(1)}>
-              <Link to="/about-us#background">Background </Link>
+            <li
+              className="border-r border-yellow-500 pr-2"
+              onClick={() => handleClick(1)}
+              style={{ color: current === 1 ? " yellow" : "" }}
+            >
+              <Link to="/about-us#background" activeStyle={activeStyle}>
+                Background{" "}
+              </Link>
             </li>
-            <li onClick={() => handleClick(2)}>
-              <Link to="/about-us#vision-mission">Mission {"&"} Vision </Link>
+            <li
+              className="border-r border-yellow-500 pr-2"
+              style={{ color: current === 2 ? " yellow" : "" }}
+              onClick={() => handleClick(2)}
+            >
+              <Link to="/about-us#vision-mission" activeStyle={activeStyle}>
+                Mission {"&"} Vision{" "}
+              </Link>
             </li>
-            <li onClick={() => handleClick(3)}>
-              <Link to="/about-us#values">Our Core values </Link>
+            <li
+              className="border-r border-yellow-500 pr-2"
+              style={{ color: current === 3 ? " yellow" : "" }}
+              onClick={() => handleClick(3)}
+            >
+              <Link to="/about-us#values" activeStyle={activeStyle}>
+                Our Core values{" "}
+              </Link>
             </li>
-            <li onClick={() => handleClick(4)}>
-              <Link to="/about-us#policy-statement">
+            <li
+              className="border-r border-yellow-500 pr-2"
+              style={{ color: current === 4 ? " yellow" : "" }}
+              onClick={() => handleClick(4)}
+            >
+              <Link to="/about-us#policy-statement" activeStyle={activeStyle}>
                 Quality Policy Statement{" "}
               </Link>
             </li>
@@ -84,7 +110,7 @@ const Background = () => {
   return (
     <Paper
       id="background"
-      className="p-3  mx-20 my-5 sm:w-full mx-5 px-1 my-2 md:mx-5 my-2 transition-all duration-500 ease-linear 
+      className="p-3  mx-20 my-5 sm:w-full mx-auto p-4 my-2 md:mx-auto p-4 my-2 transition-all duration-500 ease-linear 
       "
     >
       <Typography variant="h5" align="center">
@@ -141,7 +167,7 @@ const Background = () => {
 
 const Mission = () => {
   return (
-    <Paper className="p-3  mx-20 my-5">
+    <Paper className="p-3  mx-20 my-5 sm:w-full mx-auto p-4  my-2 md:mx-auto p-4 my-2">
       <Typography variant="h5" align="center">
         Mission and vision
       </Typography>
@@ -164,7 +190,7 @@ const Mission = () => {
 
 const Policy = () => {
   return (
-    <Paper className=" p-3 mx-20 my-5">
+    <Paper className=" p-3 mx-20 my-5 sm:w-full mx-auto p-4 my-2 md:mx-auto p-4 my-2">
       <Typography variant="h5" align="center">
         Policy Statement
       </Typography>
@@ -192,7 +218,7 @@ const Policy = () => {
 
 const CoreValues = () => {
   return (
-    <Paper className="p-3  mx-20 my-5">
+    <Paper className="lg:p-3  mx-20 my-5 sm:w-full mx-auto p4 my-2 md:mx-auto p-4 my-2">
       <Typography variant="h5" align="center">
         Core Values
       </Typography>

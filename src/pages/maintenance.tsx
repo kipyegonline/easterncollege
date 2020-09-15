@@ -1,14 +1,40 @@
-import React from "react"
-import Layout from "../components/layout"
+import {
+  Backdrop,
+  Typography,
+  Card,
+  CircularProgress,
+} from "@material-ui/core";
+import React from "react";
+import Layout from "../components/layout";
 
+const logo = require("../../public/images/logomm.png");
 function Maintenance(): React.ReactNode {
   return (
-    <Layout siteTitle="post">
-      <p>TPost</p>
+    <Layout siteTitle="Site under maintenance">
+      <Card
+        className="z-100 w-full  fixed top-0 left-0 bg-gray-800 "
+        style={{ height: "100%", zIndex: 2000, background: "gray" }}
+      >
+        <div className="text-center my-40">
+          <img
+            src={logo}
+            className="my-2 mx-auto border border-gray-300 p-2"
+            alt="Eastern college"
+          />
+          <CircularProgress size={100} />
+          <Typography align="center" variant="h5" className="py-auto my-auto">
+            The website is under routine maintenance...Try again later today...
+          </Typography>
+          <Typography variant="body1" className="font-bold block">
+            {new Date().toDateString()}
+          </Typography>
+          <small>inconvenience regretted</small>
+        </div>
+      </Card>
     </Layout>
-  )
+  );
 }
-export default Maintenance
+export default Maintenance;
 /*
 
 <html>

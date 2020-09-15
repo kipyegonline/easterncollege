@@ -13,10 +13,21 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
+import Notifications from "@material-ui/icons/Notifications";
 import Home from "@material-ui/icons/Home";
 import Download from "@material-ui/icons/CloudDownload";
+import Contacts from "@material-ui/icons/Contacts";
 import Close from "@material-ui/icons/Close";
-import { Socials } from "./navbar";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import {
+  Socials,
+  schools,
+  aboutUs,
+  campusLife,
+  mediaInfo,
+  AboutUs,
+  Input,
+} from "./navbar";
 import { EasternContacts } from "../../pages/contact-us";
 const smallLogo = require("../../../public/icons/icon-72x72.png");
 const logosm = require("../../../public/icons/icon-48x48.png");
@@ -32,14 +43,31 @@ const useStyles = makeStyles({
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
-type menu = { name: string; value: string; icon: any };
+type menu = { name: string; value: string; icon: any; submenu?: Input[] };
 const menu: menu[] = [
   { name: "home", value: "/", icon: Home },
-  { name: "About Us", value: "/about-us", icon: Home },
-  { name: "campus Life", value: "/campus-life", icon: Home },
+  {
+    name: "About Us",
+    value: "/about-us",
+    icon: ArrowDropDownIcon,
+    submenu: aboutUs,
+  },
+  { name: "Academics", value: "/admissions", icon: ArrowDropDownIcon },
+  {
+    name: "campus Life",
+    value: "/campus-life",
+    icon: ArrowDropDownIcon,
+    submenu: campusLife,
+  },
+  { name: "Media desk", value: "/notice", icon: Notifications },
   { name: "Downloads", value: "/downloads", icon: Download },
-  { name: "Admissions", value: "/admissions", icon: Home },
-  { name: "Schools", value: "/schools", icon: Home },
+
+  {
+    name: "Contact Us",
+    value: "/contact-us",
+    icon: Contacts,
+    submenu: schools,
+  },
 ];
 export default function TemporaryDrawer(): JSX.Element {
   const classes = useStyles();
@@ -92,19 +120,29 @@ export default function TemporaryDrawer(): JSX.Element {
       </div>
     </div>
   );
+  React.useEffect(() => {
+    window.addEventListener("load", function () {
+      toggleDrawer("right", true);
 
+      const timer: ReturnType<typeof setTimeout> = setTimeout(
+        () => toggleDrawer("right", false),
+        5000
+      );
+      return () => clearTimeout(timer);
+    });
+  }, []);
   return (
     <div>
-      <div className="z-10 lg:hidden  md: block absolute top-0 right-0 mt-2  sm:block mt-0 mr-2">
+      <div className="z-10 sm:block mt-3 bg-gray-700 mr-1 md: block absolute top-0 right-0 mt-2 lg:hidden  ">
         <Button
-          className=" p-0 border-2 bg-gray-500 active:bg-green-500 md:mt-4 sm:mt2"
+          className=" p-0 border-2 active:bg-green-500 md:mt-4 sm:mt2"
           size="small"
           variant="outlined"
           onClick={toggleDrawer("right", true)}
         >
           <span
             style={{ transform: "rotate(90deg)", color: "#ddd" }}
-            className=" block font-extrabold text-center text-2xl w-full "
+            className=" block font-extrabold text-center text-lg w-full "
           >
             |||
           </span>

@@ -27,17 +27,20 @@ import Twitter from "@material-ui/icons/Twitter";
 import Facebook from "@material-ui/icons/Facebook";
 import Linkedin from "@material-ui/icons/LinkedIn";
 import WhatsApp from "@material-ui/icons/WhatsApp";
+import Home from "@material-ui/icons/Home";
 
 import { List, ListItem, ListItemIcon, Fab } from "@material-ui/core";
 
 const logo = require("../../../public/icons/icon-72x72.png");
 const smallLogo = require("../../../public/icons/icon-48x48.png");
-type Input = { name: string; value: string };
+const mlogo = require("../../../public/images/logoB.png");
+export type Input = { name: string; value: string };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     grow: {
       flexGrow: 1,
+
       "@media (max-width:480px)": {
         display: "none",
       },
@@ -136,21 +139,7 @@ export default function PrimarySearchAppBar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  const searchBar = (
-    <div className={classes.search}>
-      <div className={classes.searchIcon}>
-        <SearchIcon />
-      </div>
-      <InputBase
-        placeholder="Search…"
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        }}
-        inputProps={{ "aria-label": "search" }}
-      />
-    </div>
-  );
+
   const { campus, about, academic, media } = dropdown;
   return (
     <div className={classes.grow}>
@@ -163,29 +152,29 @@ export default function PrimarySearchAppBar() {
         <List
           className={`lg:flex  flex-row justify-space-evenly items-start py-4`}
         >
-          <ListItem dense className="px-1">
+          <ListItem dense className="px-1 ">
             <div
               style={{ height: 40, width: 200 }}
-              className="ml-8 my-0 pb-1 absolute  "
+              className="ml-0 my-0 pb-0 absolute  "
             >
               {" "}
               <Link to={"/"}>
                 <img
-                  src={w >= 768 ? smallLogo : smallLogo}
-                  className="pt-0 mt-2  "
+                  src={!pos ? mlogo : logo}
+                  className="pt-0 mt-3  "
                   height={40}
                   alt="Logo"
                 />
               </Link>
             </div>
           </ListItem>
-          <ListItem dense className="px-1">
+          <ListItem dense className="px-1 mx-1 ">
             <Link
               activeStyle={activeStyle}
               to="/"
               className="font-bold block transition duration-500 ease-linear hover:text-yellow-900 "
             >
-              Home
+              <Home />
             </Link>
           </ListItem>
           <ListItem dense className="px-1  mx-1 relative">
@@ -207,7 +196,7 @@ export default function PrimarySearchAppBar() {
               onMouseLeave={() => setDropDown({ ...dropdown, academic: false })}
               activeStyle={activeStyle}
               to="/admissions"
-              className="font-bold block transition duration-500 ease-linear hover:text-yellow-600  "
+              className="font-bold block transition duration-500 ease-linear  "
             >
               Academics <ArrowDropDownIcon fontSize="small" />
               <AboutUs display={academic} input={schools} />
@@ -219,7 +208,7 @@ export default function PrimarySearchAppBar() {
               onMouseEnter={() => setDropDown({ ...dropdown, campus: true })}
               onMouseLeave={() => setDropDown({ ...dropdown, campus: false })}
               to="/campus-life"
-              className="font-bold text-sm  block transition duration-500 ease-linear hover:text-yellow-600  "
+              className="font-bold text-sm  block transition duration-500 ease-linear  "
             >
               Campus Life <ArrowDropDownIcon fontSize="small" />
               <AboutUs display={campus} input={campusLife} />
@@ -231,7 +220,7 @@ export default function PrimarySearchAppBar() {
               onMouseEnter={() => setDropDown({ ...dropdown, media: true })}
               onMouseLeave={() => setDropDown({ ...dropdown, media: false })}
               to="/notice"
-              className="font-bold block text-sm transition t duration-500 ease-linear hover:text-yellow-600  "
+              className="font-bold block text-sm transition t duration-500 ease-linear   "
             >
               Media Desk <ArrowDropDownIcon />
               <AboutUs display={media} input={mediaInfo} />
@@ -267,42 +256,46 @@ export default function PrimarySearchAppBar() {
 type Socials = { classes: string; color?: string };
 export const Socials = ({ classes = "", color = "" }: Socials): JSX.Element => (
   <ul className={classes}>
-    <li>
+    <li className="py-0 my-0">
       <ListItemIcon className="py-0 my-0">
-        <Fab size="small" color="inherit" className="my-auto py-0">
+        <Fab size="small" color="inherit" className="my-auto py-0 w-2/5">
           <Facebook
-            className="cursor-pointer"
+            className="cursor-pointer "
+            fontSize="small"
             htmlColor={!!color ? color : "#3b5998"}
           />
         </Fab>
       </ListItemIcon>
     </li>
-    <li>
+    <li className="py-0 my-0">
       <ListItemIcon>
         <Fab size="small">
           {" "}
           <Twitter
             className="cursor-pointer"
+            fontSize="small"
             htmlColor={!!color ? color : "#1DA1F2"}
           />
         </Fab>
       </ListItemIcon>
     </li>
-    <li>
+    <li className="py-0 my-0">
       <ListItemIcon>
         <Fab size="small">
           <Linkedin
             className="cursor-pointer"
+            fontSize="small"
             htmlColor={!!color ? color : "#0e76a8"}
           />
         </Fab>
       </ListItemIcon>
     </li>
-    <li>
+    <li className="py-0 my-0">
       <ListItemIcon>
         <Fab size="small">
           <WhatsApp
             className="cursor-pointer"
+            fontSize="small"
             htmlColor={!!color ? color : "#075e54"}
           />
         </Fab>
@@ -311,13 +304,13 @@ export const Socials = ({ classes = "", color = "" }: Socials): JSX.Element => (
   </ul>
 );
 
-const AboutUs: React.FC<{ input: Input[]; display: boolean }> = ({
+export const AboutUs: React.FC<{ input: Input[]; display: boolean }> = ({
   display,
   input = [],
 }) => {
   return (
     <List
-      className="mt-10 mx-3 px-2 bg-white z-100 transition-all duration-100 ease-linear"
+      className="mt-10 mx-3 px-2 border-t-2 text-gray-700 border-blue-700 bg-white z-100 transition-all duration-100 ease-linear"
       style={{
         width: 150,
         marginTop: 0,
@@ -330,7 +323,10 @@ const AboutUs: React.FC<{ input: Input[]; display: boolean }> = ({
     >
       {input.map((item, index) => (
         <ListItem key={index} dense className="my-0 z-30 py-2 text-sm">
-          <Link to={item.value} className="font-normal py-1">
+          <Link
+            to={item.value}
+            className="font-normal py-1 hover:text-blue-700"
+          >
             {item.name}
           </Link>{" "}
         </ListItem>
@@ -339,28 +335,28 @@ const AboutUs: React.FC<{ input: Input[]; display: boolean }> = ({
   );
 };
 
-const aboutUs: Input[] = [
+export const aboutUs: Input[] = [
   { name: "Background", value: "/about-us#background" },
   { name: "Vision  & Mission", value: "/about-us#vision-mission" },
   { name: "Core values", value: "/about-us#values" },
   { name: " Quality Policy Statement", value: "/about-us#policy-statement" },
 ];
-const schools: Input[] = [
+export const schools: Input[] = [
   { name: "Schools", value: "/schools" },
   { name: "Admissions", value: "/admissions" },
 
   { name: " Apply online", value: "/apply-online" },
-  { name: "Research", value: "/admissions" },
+  { name: "Research", value: "/research-and-development" },
 ];
 
-const campusLife: Input[] = [
+export const campusLife: Input[] = [
   { name: "Communication desk", value: "/campus-life" },
   { name: "Campus Facilities", value: "/campus-life" },
 
   { name: " Student Services", value: "/campus-life" },
   { name: "Community Outreach", value: "/campus-life" },
 ];
-const mediaInfo: Input[] = [
+export const mediaInfo: Input[] = [
   { name: "Latest news", value: "/post" },
   { name: "Events", value: "/event" },
 

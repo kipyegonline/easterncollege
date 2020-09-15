@@ -1,17 +1,135 @@
-import React from "react"
-import SEO from "../components/seo"
-import Layout from "../components/layout"
-
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import SEO from "../components/seo";
+import Layout from "../components/layout";
+import {
+  Box,
+  Table,
+  TableCell,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+  Chip,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
+import { rootState, fetchData } from "../redux/reducer";
+import * as actions from "../redux/updatesReducer/actions";
 function Tenders(): React.ReactNode {
+  const [spinner, setSpinner] = React.useState(false);
+  const [err, setErr] = React.useState("");
+  const postsurl = "https://jsonplaceholder.typicode.com/posts";
+
+  const dispatch = useDispatch();
+  const { tenders } = useSelector((state: rootState) => ({
+    tenders: state.updates.tenders,
+  }));
+  React.useEffect(() => {
+    if (!!!tenders.length)
+      fetchData(postsurl, dispatch, setSpinner, setErr, actions.addTenders);
+  }, []);
+  console.log(tenders);
+
   return (
     <Layout siteTitle="tenders">
       <SEO title="Tenders" meta="Home" lang="en" />
-      <p>Tenders..</p>
+      <Box className="sm: mx-auto my-2 p-2 md:mx-10 my-3  p-3 lg:mx-20 my-5 p-4">
+        <Typography align="center" variant="h6">
+          Tender Notices {new Date().getFullYear()}
+        </Typography>
+        {!!tenders.length ? (
+          <TendersTable tenders={tenders.slice(0, 10)} />
+        ) : spinner ? (
+          <div className="text-center p-2 mt-4">
+            <CircularProgress />
+          </div>
+        ) : (
+          <p className="font-bold">There are no tenders at the moment</p>
+        )}
+      </Box>
     </Layout>
-  )
+  );
 }
-export default Tenders
-
+export default Tenders;
+type Tender = {
+  id?: number;
+  title?: string;
+  status?: boolean;
+  deadline?: Date;
+  file?: string;
+};
+const tenders = [
+  {
+    id: 1,
+    title: "Cloud services",
+    status: true,
+    deadline: new Date().toDateString(),
+    file: "ffff",
+  },
+  {
+    id: 1,
+    title: "Serverless Technology",
+    status: false,
+    deadline: new Date().toDateString(),
+    file: "ffff",
+  },
+];
+const TendersTable: React.FC<{ tenders: Tender[] }> = ({ tenders = [] }) => {
+  return (
+    <TableContainer>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell>Title</TableCell>
+            <TableCell>Deadline</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Download</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tenders.map((tender, i) => (
+            <TenderList key={tender.id} index={i} {...tender} />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+type Index = { index: number };
+const TenderList = ({
+  index,
+  title,
+  deadline,
+  status,
+  file,
+}: Tender & Index): JSX.Element => (
+  <TableRow>
+    <TableCell>{index + 1}</TableCell>
+    <TableCell>{title}</TableCell>
+    <TableCell>{deadline}</TableCell>
+    <TableCell>
+      {status ? (
+        <Chip label="Active" className="bg-green-500 text-white" />
+      ) : (
+        <Chip label="closed" color="secondary" />
+      )}
+    </TableCell>
+    <TableCell>
+      <Button
+        component="a"
+        variant="contained"
+        href={file}
+        target="_blank"
+        color="primary"
+      >
+        Download
+      </Button>
+    </TableCell>
+  </TableRow>
+);
 /*  
     
     !DOCTYPE html >
