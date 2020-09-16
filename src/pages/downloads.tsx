@@ -13,6 +13,7 @@ import {
   TableBody,
 } from "@material-ui/core";
 import Layout from "../components/layout";
+import SEO from "../components/seo";
 
 type Data = {
   id?: string | number;
@@ -73,7 +74,7 @@ function Downloads(): React.ReactNode {
       <Layout siteTitle="Downloads">
         <Paper className="lg:mx-20 md:mx-2 sm:mx-2 p-2 my-2">
           <div className="text-center my-4">
-            <CircularProgress />
+            <CircularProgress size="4rem" />
           </div>
         </Paper>
       </Layout>
@@ -81,6 +82,12 @@ function Downloads(): React.ReactNode {
   if (!!err)
     return (
       <Layout siteTitle="Downloads">
+        <SEO
+          title="Eastern College courses"
+          description="Downloads"
+          lang="en"
+          meta=""
+        />
         <Paper className="lg:mx-20 md:mx-2 sm:mx-2 p-2 my-2">
           <Typography className="text-red-600 text-center">{err}</Typography>
         </Paper>

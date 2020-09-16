@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+
 //import { useQuery } from "react-query";
 import { Link } from "gatsby";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,25 +33,23 @@ import Carousel from "../components/carousel";
 const IndexPage: React.FC = (): JSX.Element => {
   const [postSpinner, setPspinner] = React.useState(false);
   const [errmsg, setErrmsg] = React.useState("");
+
+  const dispatch = useDispatch();
+  const postsurl = "https://jsonplaceholder.typicode.com/posts";
   const { news, events, notices } = useSelector((state: rootState) => ({
     news: state.updates.news,
     events: state.updates.events,
     notices: state.updates.notices,
   }));
-  const dispatch = useDispatch();
-  const postsurl = "https://jsonplaceholder.typicode.com/posts";
 
   React.useEffect(() => {
     if (!!!news.length || !!!events.length || !!!notices.length) {
       fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addNotices);
       fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addEvents);
       fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addNews);
-      fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addTenders);
+      // fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addTenders);
+      //fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addCareers);
     }
-    /* const resd = useQuery("Fetch res", () =>
-      fetch(postsurl).then(res => res.json())
-    );
-    console.log("Use query: ", resd);*/
   }, []);
 
   return (
@@ -132,7 +130,7 @@ type Notice = {
 
 const Notice = ({ item, component, Icon }: Notice) => {
   return (
-    <Card className="py-1 mx-2 ">
+    <Card className="py-1 mx-2 " raised>
       <CardHeader
         className="text-center rounded text-white  bg-blue-700"
         title={
@@ -217,7 +215,7 @@ const TheList = ({
 );
 
 const WelcomeNote = () => (
-  <Paper className="my-3 p-3" elevation={10}>
+  <Paper className="my-3 p-3" elevation={10} style={{ background: "#ccc" }}>
     <Typography variant="body1" className="mb-2 p-1 rounded">
       Eastern College is a premier institution of learning, growth and
       empowerment based in Mogadishu,Somalia.

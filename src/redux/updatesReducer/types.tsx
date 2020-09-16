@@ -4,6 +4,7 @@ export interface Constants {
   ADD_NOTICES: string;
   ADD_NOTICE: string;
   ADD_TENDERS: string;
+  ADD_CAREERS: string;
 }
 
 export type Notice = {
@@ -18,4 +19,5 @@ export const C: Constants = {
   ADD_NOTICES: "ADD_NOTICES",
   ADD_NOTICE: "ADD_NOTICE",
   ADD_TENDERS: "ADD_TENDERS",
+  ADD_CAREERS: "ADD_CAREERS",
 };

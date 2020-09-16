@@ -1,14 +1,21 @@
-import React from "react"
-import Layout from "../components/layout"
+import React from "react";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
 
 function Faqs(): React.ReactNode {
   return (
     <Layout siteTitle="Frequently Asked questions">
+      <SEO
+        title="Eastern College courses"
+        description="Frequently Asked questions"
+        lang="en"
+        meta=""
+      />
       <p>FAQ</p>
     </Layout>
-  )
+  );
 }
-export default Faqs
+export default Faqs;
 
 /*< !DOCTYPE html >
 <html class="no-js">

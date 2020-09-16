@@ -32,3 +32,10 @@ export const addTenders = (
   type: C.ADD_TENDERS,
   payload,
 });
+
+export const addCareers = (
+  payload: any[]
+): { type: string; payload: any[] } => ({
+  type: C.ADD_CAREERS,
+  payload,
+});

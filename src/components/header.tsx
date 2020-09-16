@@ -12,7 +12,8 @@ import {
 import Search from "@material-ui/icons/Search";
 import BusinessCenter from "@material-ui/icons/BusinessCenter";
 import Work from "@material-ui/icons/Work";
-import HowToRegIcon from "@material-ui/icons/HowToReg";
+import { HowToReg, Announcement } from "@material-ui/icons";
+import School from "@material-ui/icons/School";
 import People from "@material-ui/icons/People";
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import { PageProps, Link, graphql } from "gatsby";
@@ -32,7 +33,7 @@ const Header: React.FC<Props> = () => {
   return (
     <Box
       className=" relative  py-3 px-2 bg-blue-800 text-white 
-      sm: flex flex-wrap justify-start items-stretch m-0 pr-10  pr-2   leading-none
+      sm: flex flex-wrap justify-start items-start m-0 pr-10 pl-0 ml-0 pr-2   leading-none
        md:flex flex-wrap items-center
       lg:flex flex-row flex-wrap  justify-center items-center
       
@@ -45,7 +46,7 @@ const Header: React.FC<Props> = () => {
         align="left"
       >
         <Link to={"/login"} style={{ marginRight: "1rem" }} activeStyle={style}>
-          <HowToRegIcon className="mr-0 pb-1" /> E-Registar
+          <HowToReg className="mr-0 pb-1" /> E-Registar
         </Link>
       </Typography>
       <Typography
@@ -58,12 +59,30 @@ const Header: React.FC<Props> = () => {
         </Link>
       </Typography>
       <Typography
+        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-0"
+        variant="body2"
+      >
+        <Link to={"/courses"} style={{ margin: "0 1rem" }} activeStyle={style}>
+          <School className="mr-0 pb-1" fontSize="small" />
+          Courses
+        </Link>
+      </Typography>
+      <Typography
         className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500"
         variant="body2"
       >
         <Link activeStyle={style} className="my-auto" to={"/vacancies"}>
           <Work className="mr-0 pb-1" fontSize="small" />
           Careers
+        </Link>
+      </Typography>
+      <Typography
+        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500"
+        variant="body2"
+      >
+        <Link activeStyle={style} className="my-auto" to={"/post"}>
+          <Announcement className="mr-0 pb-1" fontSize="small" />
+          News
         </Link>
       </Typography>
 
@@ -135,7 +154,7 @@ const SearchHeader = ({ handleSearch }: Search) => {
       type="search"
       className="w-50 my-auto py-auto transition-all 1s ease-in-out"
       style={{
-        width: focus ? 150 : 75,
+        width: focus ? 150 : 100,
         padding: "0 .5rem",
         color: "white",
         height: 20,
@@ -144,6 +163,9 @@ const SearchHeader = ({ handleSearch }: Search) => {
       ref={search}
       value={text}
       onFocus={() => setFocus(true)}
+      onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
+        e.key === "Enter" ? handleChange() : null
+      }
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         setText((e.target as HTMLInputElement).value)
       }

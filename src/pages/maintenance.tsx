@@ -1,10 +1,7 @@
-import {
-  Backdrop,
-  Typography,
-  Card,
-  CircularProgress,
-} from "@material-ui/core";
 import React from "react";
+import { Backdrop, Typography, Card, Chip } from "@material-ui/core";
+import { Error } from "@material-ui/icons";
+
 import Layout from "../components/layout";
 
 const logo = require("../../public/images/logomm.png");
@@ -21,10 +18,11 @@ function Maintenance(): React.ReactNode {
             className="my-2 mx-auto border border-gray-300 p-2"
             alt="Eastern college"
           />
-          <CircularProgress size={100} />
+          <Error fontSize="large" />
           <Typography align="center" variant="h5" className="py-auto my-auto">
-            The website is under routine maintenance...Try again later today...
+            The website is currently under routine maintenance...
           </Typography>
+          <Chip label="Come back soon" color="primary" size="large" />
           <Typography variant="body1" className="font-bold block">
             {new Date().toDateString()}
           </Typography>

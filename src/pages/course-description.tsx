@@ -1,14 +1,20 @@
-import React from "react"
-import Layout from "../components/layout"
-
+import React from "react";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
 function CourseDescription(): React.ReactNode {
   return (
     <Layout siteTitle="Content">
+      <SEO
+        title="Course description"
+        description="Course description"
+        lang="en"
+        meta=""
+      />
       <p>Course description</p>
     </Layout>
-  )
+  );
 }
-export default CourseDescription
+export default CourseDescription;
 
 /*
 < !DOCTYPE html > 

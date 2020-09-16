@@ -1,14 +1,35 @@
-import React from "react"
-import Layout from "../components/layout"
-
+import { CircularProgress, Paper, Typography } from "@material-ui/core";
+import React from "react";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
 function Courses(): React.ReactNode {
+  const [loaded, setLoaded] = React.useState(false);
+  React.useEffect(() => {
+    setTimeout(() => setLoaded(!loaded), 3000);
+  }, []);
   return (
     <Layout siteTitle="Courses">
-      <p>Courses</p>
+      <SEO
+        title="Eastern College courses"
+        description="Courses"
+        lang="en"
+        meta=""
+      />
+      <Paper className="sm:mx-auto p-2 my-2 md:mx-10 p-3 my-3 lg:mx-20 my-4 p-4">
+        {!loaded ? (
+          <div className="text-center my-5 p-4">
+            <CircularProgress size="5rem" value={50} />
+          </div>
+        ) : (
+          <Typography className="text-center">
+            There are no courses at the moment.. <b>Check back soon</b>
+          </Typography>
+        )}
+      </Paper>
     </Layout>
-  )
+  );
 }
-export default Courses
+export default Courses;
 
 /*
 < !DOCTYPE html >

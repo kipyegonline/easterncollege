@@ -1,10 +1,25 @@
+import { CircularProgress, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import Layout from "../components/layout";
 
 function Post(): React.ReactNode {
+  const [loaded, setLoaded] = React.useState(false);
+  React.useEffect(() => {
+    setTimeout(() => setLoaded(true), 3000);
+  }, []);
   return (
     <Layout siteTitle="post">
-      <p>The Post</p>
+      <Paper className="sm:mx-auto p-2 my-2 md:mx-10 my-3 p-2 lg:mx-20 p-4 my-4">
+        {loaded ? (
+          <Typography className="text-center my-4">
+            There are no news items at the moment...<b>Check back soon </b>
+          </Typography>
+        ) : (
+          <div className="text-center my-4 py-3">
+            <CircularProgress size="4rem" />
+          </div>
+        )}
+      </Paper>
     </Layout>
   );
 }

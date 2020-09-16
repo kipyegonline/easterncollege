@@ -17,7 +17,7 @@ const devtools = (): any => {
   }
 };
 // create store
-const store = createStore(reducer, compose(applyMiddleware(thunk), devtools()));
+const store = createStore(reducer, devtools());
 
 // redux wrapper for gatsby js
 type element = { element: React.ReactNode };

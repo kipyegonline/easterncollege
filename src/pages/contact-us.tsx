@@ -17,6 +17,8 @@ import {
 } from "@material-ui/core";
 
 import Alert from "@material-ui/lab/Alert";
+import CheckIcon from "@material-ui/icons/CheckOutlined";
+import ErrorIcon from "@material-ui/icons/ErrorOutlined";
 import Mail from "@material-ui/icons/Mail";
 import Telephone from "@material-ui/icons/PhoneInTalk";
 import Pin from "@material-ui/icons/PinDrop";
@@ -220,6 +222,7 @@ const ContactForm = () => {
         })
         .catch(error => {
           setSpinner(false);
+          console.log(error);
           setError(error.message);
           setTimeout(() => setError(""), 4000);
         });
@@ -280,6 +283,7 @@ const ContactForm = () => {
       </div>
       <Button
         type="submit"
+        disabled={spinner}
         className={classes.btn}
         variant="contained"
         color="primary"
@@ -287,10 +291,24 @@ const ContactForm = () => {
         Submit
       </Button>
       <Snackbar open={!!errmsg.length}>
-        <Alert severity="error">{errmsg}</Alert>
+        <Alert
+          icon={<ErrorIcon />}
+          variant="filled"
+          color="error"
+          severity="error"
+        >
+          {errmsg}
+        </Alert>
       </Snackbar>
       <Snackbar open={!!success.length}>
-        <Alert severity="success">{success}</Alert>
+        <Alert
+          icon={<CheckIcon />}
+          variant="filled"
+          color="success"
+          severity="success"
+        >
+          {success}
+        </Alert>
       </Snackbar>
     </form>
   );

@@ -1,15 +1,170 @@
-import React from "react"
-import Layout from "../components/layout"
+import React from "react";
+import { Link } from "gatsby";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Typography,
+  Paper,
+  Table,
+  TableContainer,
+  TableCell,
+  TableHead,
+  TableBody,
+  TableRow,
+  Button,
+  CircularProgress,
+  Chip,
+} from "@material-ui/core";
+import Layout from "../components/layout";
+import { rootState, fetchData } from "../redux/reducer";
+import * as actions from "../redux/updatesReducer/actions";
+import { Pagination } from "@material-ui/lab";
 
+type Careers = {
+  title?: string;
+  file?: string;
+  id?: string;
+  uploaded?: Date;
+  deadline?: Date;
+  status?: boolean;
+};
+type Index = { index: number };
 function Vacancies(): React.ReactNode {
+  const [spinner, setSpinner] = React.useState(false);
+  const [err, setErr] = React.useState("");
+  const [current, setCurrent] = React.useState(0);
+
+  const postsurl = "https://jsonplaceholder.typicode.com/posts";
+
+  const dispatch = useDispatch();
+  const { careers } = useSelector((state: rootState) => ({
+    careers: state.updates.careers,
+  }));
+  const perpage = careers.length > 10 ? 10 : careers.length;
+  const pages = Math.ceil(careers.length / perpage);
+  const start = current * perpage;
+  const end = current * perpage + perpage;
+  const handleChange = (event: React.ChangeEvent<unknown>, p: number) =>
+    setCurrent(p - 1);
+  React.useEffect(() => {
+    if (!!!careers.length)
+      fetchData(postsurl, dispatch, setSpinner, setErr, actions.addCareers);
+  }, []);
+
   return (
     <Layout siteTitle="Vacancies">
-      <p>Vacancies</p>
+      <Paper
+        style={{ background: "#ccc" }}
+        className="sm:mx-auto my-2 p-2 md:mx-10 p-3 my-2 lg:mx-20 p-4 my-2"
+      >
+        <Typography
+          variant="h6"
+          className="border-b border-green-500"
+          align="center"
+        >
+          Vacancies
+        </Typography>
+        {!!careers.length ? (
+          <>
+            <VacanciesTable careers={careers.slice(start, end)} start={start} />
+            <span>
+              {" "}
+              page <b>{current + 1}</b> of {pages}
+            </span>
+            <Pagination
+              count={pages}
+              onChange={handleChange}
+              className="mx-auto text-center"
+              color="secondary"
+              showFirstButton={true}
+              showLastButton={true}
+              defaultPage={current}
+              page={current + 1}
+            />
+          </>
+        ) : spinner ? (
+          <div className="text-center my-2 p-2">
+            <CircularProgress />
+          </div>
+        ) : (
+          <Typography variant="body1" align="center">
+            {err}
+          </Typography>
+        )}
+      </Paper>
     </Layout>
-  )
+  );
 }
-export default Vacancies
+export default Vacancies;
+const VacanciesTable: React.FC<{ careers: Careers[]; start: number }> = ({
+  careers = [],
+  start = 0,
+}) => {
+  return (
+    <TableContainer>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell>Job title</TableCell>
+            <TableCell>Uploaded</TableCell>
+            <TableCell>Deadline</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Download</TableCell>
+            <TableCell>Apply</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {careers.map((career: Careers, i: number) => (
+            <VacancyList key={career.id} {...career} index={i + start} />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
+const VacancyList = ({
+  index,
+  title,
+  uploaded,
+  deadline,
+  status,
+  file,
+}: Careers & Index) => {
+  return (
+    <TableRow>
+      <TableCell>{index + 1}</TableCell>
+      <TableCell>{title}</TableCell>
+      <TableCell>{new Date().toDateString()}</TableCell>
+      <TableCell>{new Date().toDateString()}</TableCell>
+      <TableCell>
+        {status ? (
+          <Chip color="primary" size="small" label="closed" />
+        ) : (
+          <Chip color="secondary" size="small" label="closed" />
+        )}
+      </TableCell>
+      <TableCell>
+        <Button
+          href={file}
+          size="small"
+          target="_blank"
+          variant="contained"
+          color="primary"
+          component="a"
+        >
+          Download
+        </Button>
+      </TableCell>
+      <TableCell>
+        <Button size="small" variant="outlined" color="primary">
+          {" "}
+          <Link to={"/apply-online"}>Apply</Link>
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
+};
 /*
 
 < !DOCTYPE html >

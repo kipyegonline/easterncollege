@@ -30,13 +30,19 @@ function Tenders(): React.ReactNode {
     if (!!!tenders.length)
       fetchData(postsurl, dispatch, setSpinner, setErr, actions.addTenders);
   }, []);
-  console.log(tenders);
 
   return (
     <Layout siteTitle="tenders">
       <SEO title="Tenders" meta="Home" lang="en" />
-      <Box className="sm: mx-auto my-2 p-2 md:mx-10 my-3  p-3 lg:mx-20 my-5 p-4">
-        <Typography align="center" variant="h6">
+      <Box
+        className="rounded sm: mx-auto my-2 p-2 md:mx-10 my-3  p-3 lg:mx-20 my-2 p-4"
+        style={{ background: "#ddd" }}
+      >
+        <Typography
+          align="center"
+          className="border-b border-green-500 mb-3"
+          variant="h6"
+        >
           Tender Notices {new Date().getFullYear()}
         </Typography>
         {!!tenders.length ? (
@@ -60,22 +66,7 @@ type Tender = {
   deadline?: Date;
   file?: string;
 };
-const tenders = [
-  {
-    id: 1,
-    title: "Cloud services",
-    status: true,
-    deadline: new Date().toDateString(),
-    file: "ffff",
-  },
-  {
-    id: 1,
-    title: "Serverless Technology",
-    status: false,
-    deadline: new Date().toDateString(),
-    file: "ffff",
-  },
-];
+
 const TendersTable: React.FC<{ tenders: Tender[] }> = ({ tenders = [] }) => {
   return (
     <TableContainer>

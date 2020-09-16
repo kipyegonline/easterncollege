@@ -10,9 +10,9 @@ export const fetchData = async (
   url: string,
   dispatch = f => f,
   setSpinner = f => f,
-  setError = f => false,
+  setError = f => f,
   callback = f => f
-): void => {
+) => {
   try {
     setSpinner(true);
     const { data } = await axios.get(url);

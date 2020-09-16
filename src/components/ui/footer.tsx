@@ -28,7 +28,7 @@ const Footer: React.FC = (): JSX.Element => {
     return c;
   };
   return (
-    <Box className="bg-gray-900 font-raleway mt-10 text-white lg:relative z-auto left-0 bottom-0 w-screen md:relative  sm:relative ">
+    <Box className=" relative bg-gray-900 font-raleway mt-10 text-white lg:relative z-auto left-0 bottom-0 w-screen md:relative  sm:relative ">
       <Grid
         container
         justify="space-around"
@@ -36,6 +36,7 @@ const Footer: React.FC = (): JSX.Element => {
         wrap="wrap"
         alignItems="center"
       >
+        <Socials classes="absolute flex  flex-end flex-row z-100 px-auto mx-auto bottom-0 left-0" />
         <Grid item lg={3} xs={12} md={3} className="pl-4 ml-4  ">
           <List>
             <ListItem
@@ -179,6 +180,7 @@ const Footer: React.FC = (): JSX.Element => {
             >
               Reach Us
             </ListItem>
+            <Divider variant="middle" light />
             <Typography variant="body2">
               <IconButton>
                 <Telephone htmlColor="gray" fontSize="small" />

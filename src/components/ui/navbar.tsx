@@ -139,18 +139,22 @@ export default function PrimarySearchAppBar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
+  //2a4365
   const { campus, about, academic, media } = dropdown;
   return (
     <div className={classes.grow}>
       <AppBar
         position={pos ? "fixed" : "relative"}
-        className="h-12 mb-0 py-auto leading-tight transition duration-500 ease-linear delay-500 "
-        color={pos ? "primary" : "transparent"}
-        style={{ borderBottom: "1px solid #ddd" }}
+        className=" bg-blue-900  h-12 mb-0 py-auto leading-tight transition duration-500 ease-linear delay-500 "
+        style={{
+          borderBottom: "1px solid #ddd",
+          color: pos ? "#fff" : "#2d3748",
+
+          background: pos ? "#2a4365" : "transparent",
+        }}
       >
         <List
-          className={`lg:flex  flex-row justify-space-evenly items-start py-4`}
+          className={`lg:flex  flex-row justify-space-evenly  items-start py-4`}
         >
           <ListItem dense className="px-1 ">
             <div
@@ -254,7 +258,11 @@ export default function PrimarySearchAppBar() {
   );
 }
 type Socials = { classes: string; color?: string };
-export const Socials = ({ classes = "", color = "" }: Socials): JSX.Element => (
+type Styles = { top?: string; left?: string };
+export const Socials = ({
+  classes = "",
+  color = "",
+}: Socials & Styles): JSX.Element => (
   <ul className={classes}>
     <li className="py-0 my-0">
       <ListItemIcon className="py-0 my-0">
@@ -352,6 +360,7 @@ export const schools: Input[] = [
 export const campusLife: Input[] = [
   { name: "Communication desk", value: "/campus-life" },
   { name: "Campus Facilities", value: "/campus-life" },
+  { name: " Student tales", value: "/content#student-tales" },
 
   { name: " Student Services", value: "/campus-life" },
   { name: "Community Outreach", value: "/campus-life" },
