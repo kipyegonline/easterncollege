@@ -6,11 +6,11 @@ import ArrowRight from "@material-ui/icons/NavigateNext";
 import ArrowLeft from "@material-ui/icons/NavigateBefore";
 import Arrow from "@material-ui/icons/Navigation";
 
-const slide1 = require("../../public/images/slide1.jpg");
-const slide2 = require("../../public/images/slide3.jpg");
-const slide3 = require("../../public/images/slide4.jpg");
-const slide4 = require("../../public/images/slide5.jpg");
-const slide5 = require("../../public/images/slide2.jpg");
+const slide1 = require("../images/slide1.jpg");
+const slide2 = require("../images/slide3.jpg");
+const slide3 = require("../images/slide4.jpg");
+const slide4 = require("../images/slide5.jpg");
+const slide5 = require("../images/slide2.jpg");
 //const slide6 = require("../../public/images/slide6.JPG");
 const slides = [
   { pic: slide1, caption: "Eastern College 1", id: 1 },

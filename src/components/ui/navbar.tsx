@@ -31,9 +31,9 @@ import Home from "@material-ui/icons/Home";
 
 import { List, ListItem, ListItemIcon, Fab } from "@material-ui/core";
 
-const logo = require("../../../public/icons/icon-72x72.png");
-const smallLogo = require("../../../public/icons/icon-48x48.png");
-const mlogo = require("../../../public/images/logoB.png");
+const logo = require("../../images/icon-72x72.png");
+const smallLogo = require("../../images/icon-48x48.png");
+const mlogo = require("../../images/logoB.png");
 export type Input = { name: string; value: string };
 
 const useStyles = makeStyles((theme: Theme) =>
