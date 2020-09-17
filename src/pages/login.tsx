@@ -20,7 +20,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Layout from "../components/layout";
 import { Visibility, Email } from "@material-ui/icons";
 
-const logo = require("../../public/images/logomedium.png");
+const logo = require("../images/logomedium.png");
 
 function Login(): React.ReactNode {
   const [resetPassword, setPassword] = React.useState(false);

@@ -4,7 +4,7 @@ import { Error } from "@material-ui/icons";
 
 import Layout from "../components/layout";
 
-const logo = require("../../public/images/logomm.png");
+const logo: string = require("../images/logomm.png");
 function Maintenance(): React.ReactNode {
   return (
     <Layout siteTitle="Site under maintenance">
