@@ -29,8 +29,8 @@ import {
   Input,
 } from "./navbar";
 import { EasternContacts } from "../../pages/contact-us";
-const smallLogo = require("../../../public/icons/icon-72x72.png");
-const logosm = require("../../../public/icons/icon-48x48.png");
+const smallLogo = require("../../images/icon-72x72.png");
+const logosm = require("../../images/icon-48x48.png");
 
 const useStyles = makeStyles({
   list: {

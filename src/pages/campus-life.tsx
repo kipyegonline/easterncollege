@@ -23,7 +23,7 @@ import SEO from "../components/seo";
 import { EasternContacts } from "./contact-us";
 import { Socials } from "../components/ui/navbar";
 
-const image: string = require("../../public/images/slide1.jpg");
+const image: string = require("../images/slide1.jpg");
 const image_md: string = require("../images/slide1_md.jpg");
 const image_sm: string = require("../images/slide1_sm.jpg");
 const principal: string = require("../images/principal.jpg");
