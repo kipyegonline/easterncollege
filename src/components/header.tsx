@@ -115,14 +115,14 @@ const Header: React.FC<Props> = () => {
         </MLink>
       </Typography>
       <Typography
-        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:hidden md:hidden"
+        className="px-3 border-r hidden hover:text-yellow-500 border-yellow-500 sm:hidden md:block lg:block"
         variant="body2"
       >
         <Chip
           label="Apply online"
           className="p-2 block hover:bg-yellow-500 sm:hidden"
-          component="a"
           size="small"
+          component="a"
           href="/apply-online"
           clickable
         />
@@ -154,7 +154,7 @@ const SearchHeader = ({ handleSearch }: Search) => {
       type="search"
       className="w-50 my-auto py-auto transition-all 1s ease-in-out"
       style={{
-        width: focus ? 150 : 100,
+        width: focus ? 150 : 110,
         padding: "0 .5rem",
         color: "white",
         height: 20,

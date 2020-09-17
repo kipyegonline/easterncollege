@@ -54,7 +54,7 @@ function Vacancies(): React.ReactNode {
     <Layout siteTitle="Vacancies">
       <Paper
         style={{ background: "#ccc" }}
-        className="sm:mx-auto my-2 p-2 md:mx-10 p-3 my-2 lg:mx-20 p-4 my-2"
+        className=" mx-3 sm:mx-5 my-2 p-2 md:mx-10 p-3 my-2 lg:mx-20 p-4 my-2"
       >
         <Typography
           variant="h6"
@@ -136,7 +136,7 @@ const VacancyList = ({
       <TableCell>{index + 1}</TableCell>
       <TableCell>{title}</TableCell>
       <TableCell>{new Date().toDateString()}</TableCell>
-      <TableCell>{new Date().toDateString()}</TableCell>
+      <TableCell>{new Date("2020", "11", "25").toDateString()}</TableCell>
       <TableCell>
         {status ? (
           <Chip color="primary" size="small" label="closed" />

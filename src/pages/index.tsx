@@ -163,7 +163,7 @@ export const RenderList: React.FC<Render> = ({
   if (spinner) {
     return (
       <div className="text-center mx-auto">
-        <CircularProgress color="primary" />
+        <CircularProgress color="primary" size="3rem" />
       </div>
     );
   }
@@ -215,7 +215,11 @@ const TheList = ({
 );
 
 const WelcomeNote = () => (
-  <Paper className="my-3 p-3" elevation={10} style={{ background: "#ccc" }}>
+  <Paper
+    className=" mx-3 my-2 p-4 sm:mx-3 p-2 "
+    elevation={10}
+    style={{ background: "#ccc" }}
+  >
     <Typography variant="body1" className="mb-2 p-1 rounded">
       Eastern College is a premier institution of learning, growth and
       empowerment based in Mogadishu,Somalia.

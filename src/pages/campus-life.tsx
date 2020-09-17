@@ -126,7 +126,6 @@ function CampusTabs() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
-    console.log(newValue, event.target as HTMLElement);
     setValue(newValue);
   };
 
@@ -142,7 +141,7 @@ function CampusTabs() {
           value={value}
           onChange={handleChange}
           aria-label="Eastern college campus life"
-          className="flex flex-col"
+          style={{ display: "flex", flexDirection: "column" }}
         >
           <Tab label="Communication desk" {...a11yProps(0)} />
           <Tab label="Campus Facilities" {...a11yProps(1)} />

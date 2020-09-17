@@ -131,18 +131,44 @@ export default function PrimarySearchAppBar() {
     padding: "0rem",
     transition: "all 1s ease-in-out .5s ",
   };
+  let navH = 0;
+  let later = 0;
   const handleScroll = () => {
     const scrollH = window.scrollY;
-    scrollH >= 100 ? setPos(true) : setPos(false);
+    const device = document.documentElement.clientWidth;
+
+    if (scrollH >= 100 && device > 768) {
+      setPos(true);
+      /*const now = scrollH;
+      if (now < later && later - now > 5) {
+        console.log("now is less than laterrr");
+        setTimeout(() => setPos(!true), 500);
+      }
+      console.log("Diff", now, later);
+      later = now;
+      */
+    } else {
+      setPos(false);
+    }
+    if (pos) {
+      document.body.classList.add("fixed-nav");
+      document.body.style.paddingTop = navH + "px";
+    } else {
+      document.body.style.paddingTop = 0 + "px";
+      document.body.classList.remove("fixed-nav");
+    }
   };
   React.useEffect(() => {
+    const nav = document.getElementById("navbar") as HTMLElement;
+    navH = nav.getBoundingClientRect().height;
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   //2a4365
   const { campus, about, academic, media } = dropdown;
   return (
-    <div className={classes.grow}>
+    <div className={classes.grow} id="navbar">
       <AppBar
         position={pos ? "fixed" : "relative"}
         className=" bg-blue-900  h-12 mb-0 py-auto leading-tight transition duration-500 ease-linear delay-500 "

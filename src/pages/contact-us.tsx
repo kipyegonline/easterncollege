@@ -51,13 +51,19 @@ const useStyles = makeStyles({
     background: "#fff",
     padding: "1.3rem",
     margin: " .5rem 1rem",
-    "@media (max-width:480px)": {
-      maxWidth: 360,
-      margin: ".25rem auto",
-    },
+
     "@media (max-width:768px)": {
-      maxWidth: 500,
-      margin: ".25rem auto",
+      padding: 10,
+      width: 500,
+      border: "1px solid red",
+
+      margin: "1rem auto",
+    },
+    "@media (max-width:480px)": {
+      padding: 10,
+
+      width: 340,
+      margin: ".5rem ",
     },
   },
   formControl: {
@@ -109,8 +115,8 @@ function ContactUs(): React.ReactNode {
 export default ContactUs;
 export const EasternContacts = () => (
   <Box
-    className="mr-3 p-2"
-    style={{ boxShadow: "2px 2px 5px #fff", background: "none" }}
+    className="m-2 p-2 md:mx-auto"
+    style={{ boxShadow: "2px 2px 5px #fff", background: "none", maxWidth: 400 }}
   >
     <Typography
       variant="h6"

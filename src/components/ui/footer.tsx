@@ -28,7 +28,7 @@ const Footer: React.FC = (): JSX.Element => {
     return c;
   };
   return (
-    <Box className=" relative bg-gray-900 font-raleway mt-10 text-white lg:relative z-auto left-0 bottom-0 w-screen md:relative  sm:relative ">
+    <Box className=" relative bg-gray-900 font-raleway mt-10 text-white lg:relative z-auto left-0 bottom-0 w-screen md:relative  sm:relative mx-1">
       <Grid
         container
         justify="space-around"
@@ -213,7 +213,7 @@ const Footer: React.FC = (): JSX.Element => {
       <Box className="w-auto   ">
         <Typography
           variant="body2"
-          className="text-center text-xs text-white bg-blue-900 py-2"
+          className="text-center text-xs text-white bg-blue-900 py-4"
         >
           {" "}
           {new Date().getFullYear()} &copy; Eastern College.| All Rights

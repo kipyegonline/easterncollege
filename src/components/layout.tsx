@@ -41,7 +41,7 @@ const Layout = ({ children }: Props): JSX.Element => {
         style={{
           margin: `0 auto`,
           maxWidth: 1260,
-          padding: `0`, //1.0875 rem 1.45rem
+          paddingTop: `0`, //1.0875 rem 1.45rem
         }}
       >
         <main>{children}</main>

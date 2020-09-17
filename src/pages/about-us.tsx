@@ -54,15 +54,15 @@ function AboutUs(): React.ReactNode {
     <Layout siteTitle="About us">
       <Box>
         <Carousel />
-        <Box component="div">
+        <Box component="div" className="relative">
           <ul
-            className=" m-2 py-2 leading-none bg-blue-900 text-white
-             flex flex-row justify-evenly items-center 
+            className=" m-2 p-2 leading-none bg-blue-900 text-white 
+             flex flex-row justify-evenly items-center  sm:fixed z-30 bottom-0 left-0 my-5 w-full md:relative
             
              "
           >
             <li
-              className="border-r border-yellow-500 pr-2"
+              className="border-r border-yellow-500 px-2"
               onClick={() => handleClick(1)}
               style={{ color: current === 1 ? " yellow" : "" }}
             >
@@ -71,7 +71,7 @@ function AboutUs(): React.ReactNode {
               </Link>
             </li>
             <li
-              className="border-r border-yellow-500 pr-2"
+              className="border-r border-yellow-500 px-2"
               style={{ color: current === 2 ? " yellow" : "" }}
               onClick={() => handleClick(2)}
             >
@@ -80,7 +80,7 @@ function AboutUs(): React.ReactNode {
               </Link>
             </li>
             <li
-              className="border-r border-yellow-500 pr-2"
+              className="border-r border-yellow-500 px-2"
               style={{ color: current === 3 ? " yellow" : "" }}
               onClick={() => handleClick(3)}
             >
@@ -89,7 +89,7 @@ function AboutUs(): React.ReactNode {
               </Link>
             </li>
             <li
-              className="border-r border-yellow-500 pr-2"
+              className="border-r border-yellow-500 px-2"
               style={{ color: current === 4 ? " yellow" : "" }}
               onClick={() => handleClick(4)}
             >
@@ -110,8 +110,8 @@ const Background = () => {
   return (
     <Paper
       id="background"
-      className="p-3  mx-20 my-5 sm:w-full mx-auto p-4 my-2 md:mx-auto p-4 my-2 transition-all duration-500 ease-linear 
-      "
+      style={{ background: "#ccc" }}
+      className="transition-all duration-500 ease-linear mx-3 p-2 my-1   md:mx-10 p-3 my-0 lg:mx-20 p-4 my-0 "
     >
       <Typography variant="h5" align="center">
         Background
@@ -167,7 +167,10 @@ const Background = () => {
 
 const Mission = () => {
   return (
-    <Paper className="p-3  mx-20 my-5 sm:w-full mx-auto p-4  my-2 md:mx-auto p-4 my-2">
+    <Paper
+      style={{ background: "#ccc" }}
+      className="mx-3 p-2 my-2 md:mx-10 p-3 my-2 lg:mx-20 my-5 p-4  "
+    >
       <Typography variant="h5" align="center">
         Mission and vision
       </Typography>
@@ -190,7 +193,10 @@ const Mission = () => {
 
 const Policy = () => {
   return (
-    <Paper className=" p-3 mx-20 my-5 sm:w-full mx-auto p-4 my-2 md:mx-auto p-4 my-2">
+    <Paper
+      style={{ background: "#ccc" }}
+      className="mx-3 p-2  my-2 md:mx-10 p-3 my-2 lg:mx-20 my-5 p-4  "
+    >
       <Typography variant="h5" align="center">
         Policy Statement
       </Typography>
@@ -218,12 +224,15 @@ const Policy = () => {
 
 const CoreValues = () => {
   return (
-    <Paper className="lg:p-3  mx-20 my-5 sm:w-full mx-auto p4 my-2 md:mx-auto p-4 my-2">
+    <Paper
+      style={{ background: "#ccc" }}
+      className="mx-3 p-2  my-2 md:mx-10 p-3 my-2 lg:mx-20 my-5 p-4  "
+    >
       <Typography variant="h5" align="center">
         Core Values
       </Typography>
       <Typography
-        variant="body1"
+        variant="body2"
         className=""
         align="justify"
         style={{ textIndent: 15 }}
@@ -234,7 +243,7 @@ const CoreValues = () => {
         staff.{" "}
       </Typography>
       <Typography
-        variant="body1"
+        variant="body2"
         className=""
         align="justify"
         style={{ textIndent: 15 }}
