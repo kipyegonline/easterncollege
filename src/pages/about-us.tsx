@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "gatsby";
 import Layout from "../components/layout";
+import SEO from "../components/seo";
 import Carousel from "../components/carousel";
 import {
   AppBar,
@@ -11,6 +12,8 @@ import {
   List,
   ListItem,
 } from "@material-ui/core";
+const cover = require("../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg");
+
 function AboutUs(): React.ReactNode {
   let Jsx: JSX.Element = <Background />;
   const [JsxEl, setJsx] = React.useState<JSX.Element>(Jsx);
@@ -52,6 +55,12 @@ function AboutUs(): React.ReactNode {
   const activeStyle = { background: "yellow" };
   return (
     <Layout siteTitle="About us">
+      <SEO
+        title="About Us"
+        lang="en"
+        meta="About"
+        description="About Eastern College"
+      />
       <Box>
         <Carousel />
         <Box component="div" className="relative">

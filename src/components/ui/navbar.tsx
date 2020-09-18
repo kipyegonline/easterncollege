@@ -351,12 +351,13 @@ export const AboutUs: React.FC<{ input: Input[]; display: boolean }> = ({
         position: "absolute",
         top: 30,
         left: 0,
+
         display: display ? "block" : "none",
         transition: "all .25s linear ",
       }}
     >
       {input.map((item, index) => (
-        <ListItem key={index} dense className="my-0 z-30 py-2 text-sm">
+        <ListItem key={index} dense className="my-0 z-30 py-1 text-sm">
           <Link
             to={item.value}
             className="font-normal py-1 hover:text-blue-700"

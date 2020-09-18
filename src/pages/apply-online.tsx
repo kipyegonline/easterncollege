@@ -1,14 +1,32 @@
-import React from "react"
-import Layout from "../components/layout"
+import { CircularProgress, Typography } from "@material-ui/core";
+import React from "react";
+import CancelIcon from "@material-ui/icons/Error";
+import Layout from "../components/layout";
 
 function ApplyOnline(): React.ReactNode {
+  const [isLoaded, setLoaded] = React.useState(false);
+  React.useEffect(() => {
+    setTimeout(() => setLoaded(true), 3000);
+  }, []);
   return (
     <Layout siteTitle="Apply Online">
-      <p>AApply 0nline</p>{" "}
+      {isLoaded ? (
+        <div className="text-center my-4 p-4 h-full">
+          <Typography className="text-center py-4 my-4">
+            <CancelIcon color="secondary" /> The form is currently unavailable.
+            <b> Check back soon</b>
+          </Typography>
+        </div>
+      ) : (
+        <div className="text-center my-4 p-4">
+          <CircularProgress size="3rem" />
+          <p>Preparing application form...</p>
+        </div>
+      )}
     </Layout>
-  )
+  );
 }
-export default ApplyOnline
+export default ApplyOnline;
 
 /*
 

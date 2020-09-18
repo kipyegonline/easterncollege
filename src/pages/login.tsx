@@ -19,13 +19,16 @@ import {
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Layout from "../components/layout";
 import { Visibility, Email } from "@material-ui/icons";
+import SEO from "../components/seo";
 
 const logo = require("../images/logomedium.png");
+const cover = require("../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg");
 
 function Login(): React.ReactNode {
   const [resetPassword, setPassword] = React.useState(false);
   return (
     <Layout siteTitle="Login">
+      <SEO title="User login" description="E-register" lang="en" meta="" />
       {resetPassword ? (
         <ForgotPassword resetPassword={setPassword} />
       ) : (
@@ -85,7 +88,7 @@ const LoginForm = ({ resetPassword = f => f }) => {
   return (
     <Card
       className="p-2 mx-auto my-2 sm:mx-auto sm:p-1 sm:my-2"
-      style={{ maxWidth: 400, background: "#ccc" }}
+      style={{ maxWidth: 400, background: `url(${cover})` }}
     >
       <Typography align="center" variant="h6">
         Eastern College login

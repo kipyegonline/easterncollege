@@ -216,7 +216,7 @@ const Footer: React.FC = (): JSX.Element => {
           className="text-center text-xs text-white bg-blue-900 py-4"
         >
           {" "}
-          {new Date().getFullYear()} &copy; Eastern College.| All Rights
+          &copy; Eastern College. {new Date().getFullYear()} | All Rights
           Reserved.|{" "}
         </Typography>
       </Box>

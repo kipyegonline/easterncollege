@@ -18,6 +18,7 @@ import Layout from "../components/layout";
 import { rootState, fetchData } from "../redux/reducer";
 import * as actions from "../redux/updatesReducer/actions";
 import { Pagination } from "@material-ui/lab";
+import SEO from "../components/seo";
 
 type Careers = {
   title?: string;
@@ -52,6 +53,12 @@ function Vacancies(): React.ReactNode {
 
   return (
     <Layout siteTitle="Vacancies">
+      <SEO
+        title="Careers"
+        meta=""
+        lang="en"
+        description="Career opportunities at eastern college"
+      />
       <Paper
         style={{ background: "#ccc" }}
         className=" mx-3 sm:mx-5 my-2 p-2 md:mx-10 p-3 my-2 lg:mx-20 p-4 my-2"

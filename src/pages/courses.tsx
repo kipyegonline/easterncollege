@@ -10,8 +10,8 @@ function Courses(): React.ReactNode {
   return (
     <Layout siteTitle="Courses">
       <SEO
-        title="Eastern College courses"
-        description="Courses"
+        title="Courses"
+        description="Eastern College has 4 schools"
         lang="en"
         meta=""
       />
@@ -22,7 +22,7 @@ function Courses(): React.ReactNode {
           </div>
         ) : (
           <Typography className="text-center">
-            There are no courses at the moment.. <b>Check back soon</b>
+            The courses are currently unavailable. <b>Check back soon</b>
           </Typography>
         )}
       </Paper>
