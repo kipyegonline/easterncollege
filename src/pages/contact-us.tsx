@@ -139,14 +139,13 @@ export const EasternContacts = () => (
       info@easterncollege.so
     </Typography>
     <div>
-      <Typography variant="body1" className="my-1 py-1 break-words ">
+      <address className="my-1 py-1 break-words ">
         <IconButton>
           <Pin />
         </IconButton>
-        Makkah Al-mukarah street,{" "}
-        <span className="ml-8 md:ml-2 sm:ml-2"> KM5 ( Soobe), Hodan ,</span>
+        Makkah Al-mukarah street, <wbr /> KM5 ( Soobe), Hodan ,
         <span className="ml-8 md:ml-2 sm:ml-2"> Mogadishu, Somalia </span>
-      </Typography>
+      </address>
     </div>
   </Box>
 );

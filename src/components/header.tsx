@@ -2,6 +2,7 @@ import React from "react";
 import {
   Box,
   Typography,
+  AppBar,
   Chip,
   Input,
   InputAdornment,
@@ -18,11 +19,12 @@ import People from "@material-ui/icons/People";
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import { PageProps, Link, graphql } from "gatsby";
 import { Socials } from "./ui/navbar";
-type Props = { siteTitle: string };
+const logo = require("../images/logoA.png");
+type Props = { siteTitle: string; classes: string };
 type Search = {
   handleSearch: (text: string) => void;
 };
-const Header: React.FC<Props> = () => {
+const Header: React.FC<Props> = ({ classes }) => {
   const style = { color: "yellow" };
 
   const handleSearch = (text: string): void => {
@@ -31,17 +33,9 @@ const Header: React.FC<Props> = () => {
     alert("No search results found for: " + text);
   };
   return (
-    <Box
-      className=" relative  py-3 px-2 bg-blue-800 text-white 
-      sm: flex flex-wrap justify-start items-start m-0 pr-10 pl-0 ml-0 pr-2   leading-none
-       md:flex flex-wrap items-center
-      lg:flex flex-row flex-wrap  justify-center items-center
-      
-       
-   "
-    >
+    <Box className={classes}>
       <Typography
-        className=" border-r hover:text-yellow-500 border-yellow-500 sm:px-0 md:px-3"
+        className=" border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none md:px-3"
         variant="body2"
         align="left"
       >
@@ -50,25 +44,25 @@ const Header: React.FC<Props> = () => {
         </Link>
       </Typography>
       <Typography
-        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-0"
+        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
         variant="body2"
       >
-        <Link to={"/tenders"} style={{ margin: "0 1rem" }} activeStyle={style}>
+        <Link to={"/tenders"} className="mx-4 sm:mx-2" activeStyle={style}>
           <BusinessCenter className="mr-0 pb-1" fontSize="small" />
           Tenders
         </Link>
       </Typography>
       <Typography
-        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-0"
+        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
         variant="body2"
       >
-        <Link to={"/courses"} style={{ margin: "0 1rem" }} activeStyle={style}>
+        <Link to={"/courses"} className="mx-4 sm:mx-2" activeStyle={style}>
           <School className="mr-0 pb-1" fontSize="small" />
           Courses
         </Link>
       </Typography>
       <Typography
-        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500"
+        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500 sm:border-none"
         variant="body2"
       >
         <Link activeStyle={style} className="my-auto" to={"/vacancies"}>
@@ -77,7 +71,7 @@ const Header: React.FC<Props> = () => {
         </Link>
       </Typography>
       <Typography
-        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500"
+        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500 sm:border-none"
         variant="body2"
       >
         <Link activeStyle={style} className="my-auto" to={"/post"}>
@@ -87,7 +81,7 @@ const Header: React.FC<Props> = () => {
       </Typography>
 
       <Typography
-        className="px-3 text-white  border-r my-auto hover:text-yellow-500 border-yellow-500"
+        className="px-3 text-white  border-r my-auto hover:text-yellow-500 border-yellow-500 sm:border-none"
         variant="body2"
       >
         <MLink
@@ -101,34 +95,33 @@ const Header: React.FC<Props> = () => {
         </MLink>
       </Typography>
       <Typography
-        className="px-3 border-r text-white my-auto hover:text-yellow-500 border-yellow-500"
+        className="px-3 border-r text-white my-auto hover:text-yellow-500 border-yellow-500 sm:border-none"
         variant="body2"
       >
         <MLink
           href="https://portal.easterncollege.so/"
           target="_blank"
           style={{ color: "white" }}
-          className="my-auto text-white"
+          className="my-auto text-white sm:text-black"
         >
           <SupervisedUserCircleIcon className="mr-0 pb-1" fontSize="small" />
           Staff portal
         </MLink>
       </Typography>
       <Typography
-        className="px-3 border-r hidden hover:text-yellow-500 border-yellow-500 sm:hidden md:block lg:block"
+        className="px-3 border-r hidden hover:text-yellow-500 border-yellow-500 md:block lg:block sm:text-black border-none"
         variant="body2"
       >
         <Chip
           label="Apply online"
-          className="p-2 block hover:bg-yellow-500 sm:hidden"
-          size="small"
+          className="p-2 block hover:bg-yellow-500 "
           component="a"
           href="/apply-online"
           clickable
         />
       </Typography>
       <Typography
-        className="px-3 border-r hover:text-yellow-500 border-yellow-500"
+        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:border-none"
         variant="body2"
       >
         <SearchHeader handleSearch={handleSearch} />
@@ -180,5 +173,38 @@ const SearchHeader = ({ handleSearch }: Search) => {
         </InputAdornment>
       }
     />
+  );
+};
+
+export const MobileHeader = (): JSX.Element => {
+  const w = globalThis.window && document.documentElement.clientWidth;
+  return (
+    <AppBar
+      position="static"
+      color="transparent"
+      className=" py-3 my-0 flex lg:hidden"
+      style={{
+        zIndex: 10,
+        display: w <= 768 ? "flex" : "none",
+        justifyContent: "center",
+        height: 80,
+        paddingRight: 20,
+
+        margin: "0 16",
+      }}
+    >
+      <div>
+        <Link to="/">
+          {" "}
+          <img
+            src={logo}
+            className=" py-4 my-3 mx-auto sm:ml-0 md:mx-auto  "
+            width={300}
+            height={70}
+            alt="Eastern College"
+          />
+        </Link>
+      </div>
+    </AppBar>
   );
 };

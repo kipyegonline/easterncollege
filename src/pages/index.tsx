@@ -250,7 +250,8 @@ export const RenderList: React.FC<Render> = ({
       </div>
     );
   }
-  if (!!!data.length) return <Typography>{errmessage}</Typography>;
+  if (!!!data.length)
+    return <Typography color="secondary">{errmessage}</Typography>;
   return (
     <List>
       {data.slice(0, 5).map((item, index) => (
@@ -418,13 +419,20 @@ const CardFour = () => (
   </Card>
 );
 const Collaborations = () => {
+  const [current, setCurrent] = React.useState(0);
   const Next = () => (
-    <IconButton>
+    <IconButton
+      disabled={!!(current >= 4)}
+      onClick={() => (current >= 4 ? setCurrent(0) : setCurrent(current + 1))}
+    >
       <ArrowRight fontSize="large" />
     </IconButton>
   );
   const Previous = () => (
-    <IconButton>
+    <IconButton
+      disabled={!!(current <= 0)}
+      onClick={() => (current <= 0 ? setCurrent(0) : setCurrent(current - 1))}
+    >
       <ArrowLeft fontSize="large" />
     </IconButton>
   );
@@ -433,10 +441,18 @@ const Collaborations = () => {
       <Carousel
         autoplay
         autoplayInterval={2000}
+        autoGenerateStyleTag={true}
+        enableKeyboardControls={true}
         wrapAround
         initialSlideHeight={300}
+        easing="easeInOutBounce"
+        slideIndex={current}
+        afterSlide={slideIndex => setCurrent(slideIndex)}
         renderCenterLeftControls={Previous}
         renderCenterRightControls={Next}
+        renderTopCenterControls={({ currentSlide }) => (
+          <div>Slide: {currentSlide}</div>
+        )}
       >
         <img
           src={partner1}

@@ -28,6 +28,7 @@ import {
   AboutUs,
   Input,
 } from "./navbar";
+import Header from "../header";
 import { EasternContacts } from "../../pages/contact-us";
 const smallLogo = require("../../images/icon-72x72.png");
 const logosm = require("../../images/icon-48x48.png");
@@ -115,7 +116,7 @@ export default function TemporaryDrawer(): JSX.Element {
       </List>
       <Divider />
       <div className="mt-5">
-        <EasternContacts />
+        <Header classes="flex flex-col justify-start items-start px-2 py-4 font-2xl " />
         <Socials classes="flex flex-row justify-center " />
       </div>
     </div>
@@ -142,7 +143,7 @@ export default function TemporaryDrawer(): JSX.Element {
         >
           <span
             style={{ transform: "rotate(90deg)", color: "#ddd" }}
-            className=" block font-extrabold text-center text-lg w-full "
+            className=" block font-bold text-center text-lg w-full "
           >
             |||
           </span>
@@ -154,17 +155,17 @@ export default function TemporaryDrawer(): JSX.Element {
         open={state["right"]}
         onClose={toggleDrawer("right", false)}
       >
-        <Link to="/">
-          <img
-            src={smallLogo}
-            width={100}
-            className="mx-auto  my-2"
-            height={50}
-            alt="Logo"
-          />
-        </Link>
-        <Typography variant="body1" className="text-center font-bold">
-          Eastern College
+        <Typography
+          style={{
+            marginLeft: "1rem",
+            color: "blue",
+            cursor: "pointer",
+            padding: ".5rem",
+            fontWeight: "bold",
+          }}
+          onClick={toggleDrawer("right", false)}
+        >
+          X
         </Typography>
 
         <Divider />

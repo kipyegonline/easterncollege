@@ -352,8 +352,10 @@ export const AboutUs: React.FC<{ input: Input[]; display: boolean }> = ({
         top: 30,
         left: 0,
 
-        display: display ? "block" : "none",
-        transition: "all .25s linear ",
+        opacity: display ? 1 : 0,
+        transform: display ? "translateY(0px)" : "translateY(-1000px)",
+        transition: "all .5s linear ",
+        //display: display ? "block" : "none",
       }}
     >
       {input.map((item, index) => (

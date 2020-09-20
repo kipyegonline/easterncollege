@@ -9,7 +9,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useStaticQuery, graphql } from "gatsby";
 import Navigation from "@material-ui/icons/NavigationRounded";
-import Header from "./header";
+import Header, { MobileHeader } from "./header";
 import Footer from "./ui/footer";
 import NavBar, { Socials } from "./ui/navbar";
 import Drawer from "./ui/sideMenu";
@@ -20,6 +20,9 @@ type Props = {
   children?: any;
   siteTitle: string;
 };
+const mediaClass =
+  "hidden lg:flex relative  py-3 px-2 bg-blue-800 text-white \
+       flex-row flex-wrap  justify-center items-center md:hidden  ";
 const Layout = ({ children }: Props): JSX.Element => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -33,7 +36,8 @@ const Layout = ({ children }: Props): JSX.Element => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <Header siteTitle={data.site.siteMetadata.title} classes={mediaClass} />
+      <MobileHeader />
       <NavBar />
       <Drawer />
       <MoveTop />
