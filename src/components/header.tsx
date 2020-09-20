@@ -177,15 +177,15 @@ const SearchHeader = ({ handleSearch }: Search) => {
 };
 
 export const MobileHeader = (): JSX.Element => {
-  const w = globalThis.window && document.documentElement.clientWidth;
+  const w = () => globalThis.window && document.documentElement.clientWidth;
   return (
     <AppBar
       position="static"
       color="transparent"
-      className=" py-3 my-0 flex lg:hidden"
+      className=" py-3 my-0 flex sm:block md:block lg:hidden"
       style={{
         zIndex: 10,
-        display: w <= 768 ? "flex" : "none",
+        display: w() <= 768 ? "block" : "none",
         justifyContent: "center",
         height: 80,
         paddingRight: 20,

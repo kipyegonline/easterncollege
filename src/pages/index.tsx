@@ -445,13 +445,12 @@ const Collaborations = () => {
         enableKeyboardControls={true}
         wrapAround
         initialSlideHeight={300}
-        easing="easeInOutBounce"
         slideIndex={current}
         afterSlide={slideIndex => setCurrent(slideIndex)}
         renderCenterLeftControls={Previous}
         renderCenterRightControls={Next}
         renderTopCenterControls={({ currentSlide }) => (
-          <div>Slide: {currentSlide}</div>
+          <div> {currentSlide} of 4</div>
         )}
       >
         <img
