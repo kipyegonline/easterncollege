@@ -40,12 +40,29 @@ import Layout from "../components/layout";
 import * as actions from "../redux/updatesReducer/actions";
 import SEO from "../components/seo";
 import Slider from "../components/carousel";
+import { Pagination } from "@material-ui/lab";
 const cover = require("../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg");
 const partner1 = require("../images/partner1.jpeg");
 const partner2 = require("../images/partner2.jpeg");
 const partner3 = require("../images/partner3.jpeg");
 const partner4 = require("../images/partner4.png");
 const logomedium = require("../images/logomedium.png");
+
+type TheList = {
+  title: string;
+  id: number;
+  date: string;
+  counter: number;
+  Icon?: any;
+  path: string;
+  handleClick?: (title: string) => void;
+};
+
+type Notice = {
+  item: string;
+  component: React.ReactElement;
+  Icon?: any;
+};
 
 const IndexPage: React.FC = (): JSX.Element => {
   const [postSpinner, setPspinner] = React.useState(false);
@@ -153,9 +170,19 @@ const IndexPage: React.FC = (): JSX.Element => {
               component={
                 <RenderList
                   spinner={postSpinner}
-                  data={notices}
+                  data={events}
                   errmessage={errmsg}
-                  pathname="/notice?note="
+                  Lista={(item, indexa) => (
+                    <TheList
+                      key={indexa}
+                      counter={indexa}
+                      {...item}
+                      Icon={ListEmoji}
+                      path={`/notice?post-${item.id}-${item.title
+                        .split(" ")
+                        .join("-")}`}
+                    />
+                  )}
                 />
               }
               Icon={Announce}
@@ -168,9 +195,18 @@ const IndexPage: React.FC = (): JSX.Element => {
                 <RenderList
                   spinner={postSpinner}
                   data={events}
-                  Icon={FormatList}
                   errmessage={errmsg}
-                  pathname="/event?upcoming="
+                  Lista={(item, indexb) => (
+                    <TheList
+                      key={indexb}
+                      counter={indexb}
+                      {...item}
+                      Icon={ListEmoji}
+                      path={`/event?${item.title.split(" ").join("-")}&post=${
+                        item.id
+                      }`}
+                    />
+                  )}
                 />
               }
               Icon={Event}
@@ -182,9 +218,19 @@ const IndexPage: React.FC = (): JSX.Element => {
               component={
                 <RenderList
                   spinner={postSpinner}
-                  data={news}
                   errmessage={errmsg}
-                  pathname="/post?news="
+                  data={events}
+                  Lista={(item, indexc) => (
+                    <TheList
+                      key={indexc}
+                      counter={indexc}
+                      {...item}
+                      Icon={ListEmoji}
+                      path={`/post?${item.title.split(" ").join("-")}&post=${
+                        item.id
+                      }`}
+                    />
+                  )}
                 />
               }
               Icon={Announce}
@@ -204,11 +250,6 @@ const Intro: React.FC = () => {
       <WelcomeNote />
     </Box>
   );
-};
-type Notice = {
-  item: string;
-  component: React.ReactElement;
-  Icon?: any;
 };
 
 const Notice = ({ item, component, Icon }: Notice) => {
@@ -234,15 +275,23 @@ type Render = {
   spinner: boolean;
   errmessage: string;
   Icon?: any;
-  pathname: string;
+  Lista: (item: TheList, index: number) => JSX.Element;
 };
+
 export const RenderList: React.FC<Render> = ({
   data = [],
-  spinner = false,
-  errmessage = "",
-  Icon = ListEmoji,
-  pathname = "",
+  errmessage,
+  spinner,
+  Lista = <p>List component</p>,
 }) => {
+  const [current, setCurrent] = React.useState(0);
+  const perpage = data.length > 10 ? 10 : data.length;
+  const pages = Math.ceil(data.length / perpage);
+  const start = current * perpage;
+  const end = current * perpage + perpage;
+  const handleChange = (e: React.ChangeEvent<unknown>, p: number) =>
+    setCurrent(p - 1);
+  //pending state
   if (spinner) {
     return (
       <div className="text-center mx-auto">
@@ -250,40 +299,35 @@ export const RenderList: React.FC<Render> = ({
       </div>
     );
   }
+  //rejected state
   if (!!!data.length)
     return <Typography color="secondary">{errmessage}</Typography>;
+  //resolved state
   return (
-    <List>
-      {data.slice(0, 5).map((item, index) => (
-        <TheList
-          key={item.id}
-          index={index}
-          title={item.title.slice(0, 20)}
-          date={item.body.slice(0, 50)}
-          Icon={Icon}
-          path={
-            !!pathname
-              ? `${pathname}${item.title.split(" ").join("-")}-${item.id}`
-              : `${item.title.split(" ").join("-")}`
-          }
-        />
-      ))}
-    </List>
+    <div>
+      <List>
+        {data
+          .slice(start, end)
+          .map((item, index) => Lista(item, start + index))}
+      </List>
+      <Pagination
+        count={pages}
+        variant="outlined"
+        shape="rounded"
+        page={current + 1}
+        onChange={handleChange}
+        color="secondary"
+        defaultPage={current}
+      />
+    </div>
   );
 };
-type TheList = {
-  title: string;
-  date: string;
-  index: number;
-  Icon?: any;
-  path: string;
-  handleClick?: (title: string) => void;
-};
+
 const TheList = ({
   title,
   date,
-  Icon,
-  index,
+  Icon = Announce,
+  counter,
   path,
   handleClick = f => f,
 }: TheList) => (
@@ -291,8 +335,11 @@ const TheList = ({
     <ListItemIcon>
       <Icon />
     </ListItemIcon>
-    <ListItemText primary={`${index + 1}. ${title}`} secondary={date} />
-    <Link to={path} className="text-blue-500">
+    <ListItemText
+      primary={`${counter + 1}. ${title.slice(0, 40)}...`}
+      secondary={date}
+    />
+    <Link to={path || "/404"} className="text-blue-500">
       View
     </Link>
   </ListItem>
@@ -322,7 +369,7 @@ const ApplyNow = () => {
   return (
     <AppBar
       position="relative"
-      className="p-2 my-2 rounded z-30 mx-3"
+      className="p-2 my-2 rounded z-30 mx-4 "
       style={{ background: "#fff", color: "black" }}
     >
       <Typography variant="h6" className="text-center capitalize">
@@ -420,6 +467,7 @@ const CardFour = () => (
 );
 const Collaborations = () => {
   const [current, setCurrent] = React.useState(0);
+  const [height, setHeight] = React.useState(0);
   const Next = () => (
     <IconButton
       disabled={!!(current >= 4)}
@@ -436,47 +484,43 @@ const Collaborations = () => {
       <ArrowLeft fontSize="large" />
     </IconButton>
   );
+  type Prop = { currentSlide: number };
+  const counter = ({ currentSlide }: Prop) => (
+    <small> {currentSlide + 1} of 4</small>
+  );
+  React.useEffect(() => {
+    setHeight(300);
+  }, []);
   return (
-    <div style={{ height: 300, padding: 16 }}>
+    <div
+      style={{
+        height: 200,
+        padding: 0,
+        margin: "0 auto",
+        border: "1px solid red",
+      }}
+    >
       <Carousel
+        style={{ height: 300 }}
         autoplay
-        autoplayInterval={2000}
+        autoplayInterval={3000}
         autoGenerateStyleTag={true}
         enableKeyboardControls={true}
         wrapAround
-        initialSlideHeight={300}
         slideIndex={current}
         afterSlide={slideIndex => setCurrent(slideIndex)}
         renderCenterLeftControls={Previous}
         renderCenterRightControls={Next}
-        renderTopCenterControls={({ currentSlide }) => (
-          <div> {currentSlide} of 4</div>
+        renderTopCenterControls={counter}
+        renderBottomCenterControls={() => (
+          <p className=" w-full bg-gray-700">In my zone,dfdf</p>
         )}
+        renderCenterCenterControls={() => <p>Caption</p>}
       >
-        <img
-          src={partner1}
-          className="object-contain"
-          alt="partner 1"
-          height={300}
-        />
-        <img
-          src={partner2}
-          className="object-fill"
-          alt="partner 2"
-          height={300}
-        />
-        <img
-          src={partner3}
-          className="object-fill"
-          alt="partner 3"
-          height={300}
-        />
-        <img
-          src={partner4}
-          className="object-fill"
-          alt="partner 4"
-          height={300}
-        />
+        <img src={partner2} alt="partner 2" height={200} />
+        <img src={partner3} alt="partner 3" height={300} />
+
+        <img src={partner4} alt="partner 4" height={300} />
       </Carousel>
     </div>
   );

@@ -177,34 +177,42 @@ const SearchHeader = ({ handleSearch }: Search) => {
 };
 
 export const MobileHeader = (): JSX.Element => {
-  const w = () => globalThis.window && document.documentElement.clientWidth;
-  return (
-    <AppBar
-      position="static"
-      color="transparent"
-      className=" py-3 my-0 flex sm:block md:block lg:hidden"
-      style={{
-        zIndex: 10,
-        display: w() <= 768 ? "block" : "none",
-        justifyContent: "center",
-        height: 80,
-        paddingRight: 20,
+  const [show, setShow] = React.useState("none");
+  React.useEffect(() => {
+    const w = () => globalThis.window && document.documentElement.clientWidth;
 
-        margin: "0 16",
-      }}
-    >
-      <div>
-        <Link to="/">
-          {" "}
-          <img
-            src={logo}
-            className=" py-4 my-3 mx-auto sm:ml-0 md:mx-auto  "
-            width={300}
-            height={70}
-            alt="Eastern College"
-          />
-        </Link>
-      </div>
-    </AppBar>
+    const dispaly = w() <= 768 ? "block" : "none";
+    setShow(dispaly);
+  }, []);
+  return (
+    <div className="block lg:hidden">
+      <AppBar
+        position="static"
+        color="transparent"
+        className=" py-2 my-0 "
+        style={{
+          zIndex: 10,
+          //display:show,
+
+          height: 80,
+          paddingRight: 20,
+
+          margin: "0 16",
+        }}
+      >
+        <div>
+          <Link to="/">
+            {" "}
+            <img
+              src={logo}
+              className=" py-0 my-0 mx-auto sm:ml-0 md:mx-auto  "
+              width={300}
+              height={70}
+              alt="Eastern College"
+            />
+          </Link>
+        </div>
+      </AppBar>
+    </div>
   );
 };

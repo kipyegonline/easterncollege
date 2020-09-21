@@ -69,6 +69,7 @@ const MoveTop = () => {
   };
   React.useEffect(() => {
     addEventListener("scroll", handleNav);
+    return () => removeEventListener("scroll", handleNav);
   }, []);
   return (
     <div

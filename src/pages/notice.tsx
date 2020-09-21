@@ -12,27 +12,39 @@ import {
   CardContent,
 } from "@material-ui/core";
 import { addNotice } from "../redux/updatesReducer/actions";
+
 function Notice(): React.ReactNode {
   const path = useLocation();
   const dispatch = useDispatch();
+
+  // pull data from redux store
   const { notices, notice } = useSelector((state: rootState) => ({
     notices: state.updates.notices,
     notice: state.updates.notice,
   }));
 
   React.useEffect(() => {
+    // check the clicked post id
     if (path.search) {
       const keyword = path.search.split("-");
-      const id = Number(keyword[keyword.length - 1]);
+
+      const id = Number(keyword[1]);
+      console.log(id);
+      // double negation for checky if a value is falsy or truthy
       if (!!id) {
         console.log("Drew", id);
+        // get the clicked post from redux store
         dispatch(addNotice(id));
       } else {
-        console.log("Drew", id);
+        // else just render available posts
+        console.log("Drew else", id);
       }
     } else {
+      //supposereloads the browser,redux loses everything, so fetch from API
       console.log("Load data");
     }
+    // check if notices array  doesn't exist when the component mounts,fetch from API
+    //if (!!!notices.length)
   }, []);
   console.log(notice);
   return (
