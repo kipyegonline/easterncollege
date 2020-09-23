@@ -5,6 +5,7 @@ export interface Constants {
   ADD_NOTICE: string;
   ADD_TENDERS: string;
   ADD_CAREERS: string;
+  ADD_COURSES: string;
 }
 
 export type Notice = {
@@ -12,6 +13,8 @@ export type Notice = {
   body?: string;
   id?: string;
 };
+type Course = { course: string; id: number; level: string; des: string };
+export type Courses = { school: string; des: string; courses: Course[] };
 
 export const C: Constants = {
   ADD_NEWS: "ADD_NEWS",
@@ -20,4 +23,5 @@ export const C: Constants = {
   ADD_NOTICE: "ADD_NOTICE",
   ADD_TENDERS: "ADD_TENDERS",
   ADD_CAREERS: "ADD_CAREERS",
+  ADD_COURSES: "ADD_COURSES",
 };

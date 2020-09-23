@@ -1,4 +1,4 @@
-import { C } from "./types";
+import { C, Courses } from "./types";
 
 export const addNews = (payload: any[]): { type: string; payload: any[] } => ({
   type: C.ADD_NEWS,
@@ -37,5 +37,11 @@ export const addCareers = (
   payload: any[]
 ): { type: string; payload: any[] } => ({
   type: C.ADD_CAREERS,
+  payload,
+});
+export const addCourses = (
+  payload: Courses[]
+): { type: string; payload: Courses[] } => ({
+  type: C.ADD_COURSES,
   payload,
 });

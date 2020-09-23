@@ -40,6 +40,7 @@ import Layout from "../components/layout";
 import * as actions from "../redux/updatesReducer/actions";
 import SEO from "../components/seo";
 import Slider from "../components/carousel";
+import { courses } from "./schools";
 import { Pagination } from "@material-ui/lab";
 const cover = require("../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg");
 const partner1 = require("../images/partner1.jpeg");
@@ -83,6 +84,7 @@ const IndexPage: React.FC = (): JSX.Element => {
       fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addNews);
       // fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addTenders);
       //fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addCareers);
+      dispatch(actions.addCourses(courses));
     }
   }, []);
 
@@ -136,7 +138,7 @@ const IndexPage: React.FC = (): JSX.Element => {
               Our Programmes
             </Typography>
             <img src={logomedium} className="p-2 mx-auto my-2" alt="Logo" />
-            <Programmes />
+            <Programmes courses={courses} />
           </Grid>
           <Grid
             item
@@ -310,15 +312,17 @@ export const RenderList: React.FC<Render> = ({
           .slice(start, end)
           .map((item, index) => Lista(item, start + index))}
       </List>
-      <Pagination
-        count={pages}
-        variant="outlined"
-        shape="rounded"
-        page={current + 1}
-        onChange={handleChange}
-        color="secondary"
-        defaultPage={current}
-      />
+      {data.length > 10 ? (
+        <Pagination
+          count={pages}
+          variant="outlined"
+          shape="rounded"
+          page={current + 1}
+          onChange={handleChange}
+          color="secondary"
+          defaultPage={current}
+        />
+      ) : null}
     </div>
   );
 };
@@ -497,7 +501,6 @@ const Collaborations = () => {
         height: 200,
         padding: 0,
         margin: "0 auto",
-        border: "1px solid red",
       }}
     >
       <Carousel
@@ -525,35 +528,21 @@ const Collaborations = () => {
     </div>
   );
 };
+type Course = { course: string; id: number; level: string; des: string };
+type Courses = { school: string; des: string; courses: Course[] };
 
-const Programmes = () => {
+const Programmes: React.FC<{ courses: Courses[] }> = ({ courses = [] }) => {
   return (
     <Card>
       <List>
-        <ListItem dense button className="py-2 my-2">
-          <ListItemIcon>
-            <List />
-          </ListItemIcon>
-          <Link to="/schools">School of Languages</Link>
-        </ListItem>
-        <ListItem dense button className="py-2 my-2">
-          <ListItemIcon>
-            <List />
-          </ListItemIcon>
-          <Link to="/schools">School of Business and Economics</Link>
-        </ListItem>
-        <ListItem dense button className="py-2 my-2">
-          <ListItemIcon>
-            <List />
-          </ListItemIcon>
-          <Link to="/schools"> School of Hospitality and Tourism</Link>
-        </ListItem>
-        <ListItem dense button className="py-2 my-2">
-          <ListItemIcon>
-            <List />
-          </ListItemIcon>
-          <Link to="/schools"> School of Humanities and Social Sciences.</Link>
-        </ListItem>
+        {courses.map((course, index) => (
+          <ListItem key={index} dense button className="py-2 my-2">
+            <ListItemIcon>
+              <List />
+            </ListItemIcon>
+            <Link to="/schools">{course.school}</Link>
+          </ListItem>
+        ))}
       </List>
     </Card>
   );

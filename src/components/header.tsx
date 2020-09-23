@@ -112,13 +112,10 @@ const Header: React.FC<Props> = ({ classes }) => {
         className="px-3 border-r hidden hover:text-yellow-500 border-yellow-500 md:block lg:block sm:text-black border-none"
         variant="body2"
       >
-        <Chip
-          label="Apply online"
-          className="p-2 block hover:bg-yellow-500 "
-          component="a"
-          href="/apply-online"
-          clickable
-        />
+        <Link to="/apply-online">
+          {" "}
+          <Chip label="Apply online" clickable />
+        </Link>
       </Typography>
       <Typography
         className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:border-none"
@@ -177,13 +174,6 @@ const SearchHeader = ({ handleSearch }: Search) => {
 };
 
 export const MobileHeader = (): JSX.Element => {
-  const [show, setShow] = React.useState("none");
-  React.useEffect(() => {
-    const w = () => globalThis.window && document.documentElement.clientWidth;
-
-    const dispaly = w() <= 768 ? "block" : "none";
-    setShow(dispaly);
-  }, []);
   return (
     <div className="block lg:hidden">
       <AppBar
@@ -192,8 +182,6 @@ export const MobileHeader = (): JSX.Element => {
         className=" py-2 my-0 "
         style={{
           zIndex: 10,
-          //display:show,
-
           height: 80,
           paddingRight: 20,
 

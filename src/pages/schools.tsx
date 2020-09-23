@@ -1,25 +1,39 @@
 import React from "react";
-import { CircularProgress, Paper, Typography } from "@material-ui/core";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  CircularProgress,
+  Paper,
+  Typography,
+} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Layout from "../components/layout";
+import Courses from "./courses";
+const cover = require("../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg");
 
 function Schools(): React.ReactNode {
   const [loaded, setLoaded] = React.useState(false);
   React.useEffect(() => {
-    setTimeout(() => setLoaded(true), 3000);
+    setTimeout(() => setLoaded(true), 2000);
   });
   return (
     <Layout siteTitle="Schools">
-      <Paper className="mx-3 p-2 my-3 md:mx-10 p-3 lg:mx-20 p-4">
+      <Paper
+        style={{
+          backgroundImage: `url(${cover})`,
+          backgroundAttachment: "fixed",
+        }}
+        className="mx-3 p-2 my-3 md:mx-10 p-3 lg:mx-20 p-4"
+      >
         {loaded ? (
-          <div className="text-center p-4 my-3">
-            <Typography>
-              Schools are currently unavailable. Kindly check back soon.
-            </Typography>
+          <div className="p-4 my-3">
+            <SchoolsAccordion courses={courses} />
           </div>
         ) : (
           <div className="text-center p-4 my-3">
             <CircularProgress size="3rem" />
-            <Typography>Setting up schools..</Typography>
+            <Typography>Opening schools..</Typography>
           </div>
         )}
       </Paper>
@@ -27,10 +41,97 @@ function Schools(): React.ReactNode {
   );
 }
 export default Schools;
+// schools component
+const SchoolsAccordion = ({ courses = [] }: Courses) => {
+  const [expanded, setExpanded] = React.useState("School of Languages");
+  const handleChange = (school: string) =>
+    school === expanded ? setExpanded("") : setExpanded(school);
+  return (
+    <>
+      {courses.map((course: Course, index: number) => (
+        <Accordion
+          expanded={course.school === expanded}
+          key={index}
+          className="my-2"
+          onChange={() => handleChange(course.school)}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id={course.school}
+          >
+            <div className="text-center ">
+              {" "}
+              <Typography
+                style={{ textAlign: "center" }}
+                className="text-center mb-2"
+              >
+                {index + 1}. {course.school}
+              </Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div>
+              <Typography variant="body1">{course.des}</Typography>
 
-const courses = [
+              {!!course.courses.length ? (
+                <Typography
+                  align="center"
+                  className="p-2 border-b border-green-500"
+                  style={{ fontWeight: 500 }}
+                >
+                  Courses
+                </Typography>
+              ) : (
+                <Typography
+                  variant="h6"
+                  align="center"
+                  className="text-red-500  my-1 p-2 text-center "
+                >
+                  Coming soon
+                </Typography>
+              )}
+              <CoursesAccordion courses={course.courses} />
+            </div>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </>
+  );
+};
+//courses
+const CoursesAccordion = ({ courses = [] }) => {
+  return (
+    <>
+      {courses.map((course, index) => (
+        <Accordion key={index}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id={course.course}
+          >
+            <Typography>
+              {index + 1}. {course.course}
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div>
+              <Typography>{course.level}</Typography>
+              <Typography>{course.des}</Typography>
+            </div>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </>
+  );
+};
+// details
+type Course = { course: string; id: number; level: string; des: string };
+export type Courses = { school: string; des: string; courses: Course[] };
+
+export const courses: Courses[] = [
   {
-    school: "The School of Languages",
+    school: "School of Languages",
     des:
       "The School of Languages is the founding faculty of the college, starting its operations in 2018 when the college opened. Over the last two years, the faculty has grown to increase the number of courses offered by the college as of today. Additionally, the faculties offered in the college have also increased to include School of Hospitality and Tourism & School of Business and Economics.\
 All the course offered currently are of Diploma and Certificate levels only. The diploma and certificate levels take 18 months and 4 months respectively to complete.\
@@ -102,4 +203,3 @@ School of Business and Economics ",
     courses: [],
   },
 ];
-console.log(courses);

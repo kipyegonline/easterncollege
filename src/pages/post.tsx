@@ -17,6 +17,7 @@ function Post(): React.ReactNode {
         ) : (
           <div className="text-center my-4 py-3">
             <CircularProgress size="4rem" />
+            <span>Loading news</span>
           </div>
         )}
       </Paper>

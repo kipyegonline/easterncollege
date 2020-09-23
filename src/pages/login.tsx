@@ -15,24 +15,44 @@ import {
   FormHelperText,
   LinearProgress,
   Snackbar,
+  CircularProgress,
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Layout from "../components/layout";
 import { Visibility, Email } from "@material-ui/icons";
 import SEO from "../components/seo";
+import { Skeleton } from "@material-ui/lab";
 
 const logo = require("../images/logomedium.png");
 const cover = require("../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg");
 
 function Login(): React.ReactNode {
   const [resetPassword, setPassword] = React.useState(false);
+  const [loaded, setLoad] = React.useState(false);
+  React.useEffect(() => {
+    setTimeout(() => setLoad(true), 2000);
+  }, []);
   return (
     <Layout siteTitle="Login">
       <SEO title="User login" description="E-register" lang="en" meta="" />
-      {resetPassword ? (
-        <ForgotPassword resetPassword={setPassword} />
+      {!loaded ? (
+        <div className="text-center my-4 p-4">
+          <p>Redirecting</p>
+          <Skeleton
+            variant="rect"
+            animation="wave"
+            height={300}
+            className="m-4 w-full h-full"
+          />
+        </div>
       ) : (
-        <LoginForm resetPassword={setPassword} />
+        <>
+          {resetPassword ? (
+            <ForgotPassword resetPassword={setPassword} />
+          ) : (
+            <LoginForm resetPassword={setPassword} />
+          )}
+        </>
       )}
     </Layout>
   );
@@ -67,6 +87,7 @@ const LoginForm = ({ resetPassword = f => f }) => {
         .post("https://www.easterncollege.so/login/processLogin", {
           userId,
           password,
+          checked,
         })
         .then(res => {
           setSuccess(res.data);

@@ -1,12 +1,31 @@
-import { CircularProgress, Paper, Typography } from "@material-ui/core";
 import React from "react";
+import { Link } from "gatsby";
+import {
+  CircularProgress,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Box,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
+  AccordionActions,
+} from "@material-ui/core";
+
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
+import { courses } from "./schools";
 function Courses(): React.ReactNode {
   const [loaded, setLoaded] = React.useState(false);
+
   React.useEffect(() => {
-    setTimeout(() => setLoaded(!loaded), 3000);
+    setTimeout(() => setLoaded(!loaded), 2000);
   }, []);
+
   return (
     <Layout siteTitle="Courses">
       <SEO
@@ -15,21 +34,111 @@ function Courses(): React.ReactNode {
         lang="en"
         meta=""
       />
-      <Paper className="sm:mx-auto p-2 my-2 md:mx-10 p-3 my-3 lg:mx-20 my-4 p-4">
+      <Paper className="rounded shadow sm:mx-auto p-2 my-2 md:mx-10 p-3 my-3 lg:mx-20 my-4 p-4">
         {!loaded ? (
           <div className="text-center my-5 p-4">
             <CircularProgress size="5rem" value={50} />
+            <span className="ml-5">Loading courses</span>
           </div>
         ) : (
-          <Typography className="text-center">
-            The courses are currently unavailable. <b>Check back soon</b>
-          </Typography>
+          <CoursesWrapper courses={courses} />
         )}
       </Paper>
     </Layout>
   );
 }
 export default Courses;
+
+const CoursesWrapper = ({ courses = [] }) => {
+  return (
+    <Box>
+      {courses.map((course, index) => (
+        <>
+          <Typography
+            style={{ fontWeight: 500 }}
+            className="text-center capitalize  border-b border-green-500"
+          >
+            {index + 1}. {course.school}
+          </Typography>
+
+          <ShowCourses course={course.courses} key={index} />
+        </>
+      ))}
+    </Box>
+  );
+};
+const ShowCourses = ({ course = [] }) => {
+  const [selected, setSelected] = React.useState(
+    "English as Second Language (ESL)"
+  );
+  const handleChange = (course: string) => {
+    // if someone wants to close the current accordion
+    course === selected ? setSelected("") : setSelected(course);
+  };
+  return (
+    <>
+      {!!course.length ? (
+        course.map((item, index) => (
+          <div className="p-3 m-2" key={index}>
+            <Accordion
+              expanded={item.course === selected}
+              onChange={() => handleChange(item.course)}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id={item.course}
+                className="bg-gray-600"
+              >
+                <Typography style={{ fontWeight: 400 }} className="font-bold">
+                  {index + 1}. {item.course}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails style={{ background: "#ccc" }}>
+                <div>
+                  <Typography variant="subtitle1">
+                    Period:{" "}
+                    <b>
+                      {item.level.toLowerCase() === "certificate"
+                        ? "4 Months"
+                        : "18 months"}
+                    </b>
+                  </Typography>
+                  <Typography>
+                    Intakes: <b> January,June and October </b>
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    align="justify"
+                    style={{ textIndent: 16 }}
+                  >
+                    {item.des}
+                  </Typography>
+                </div>
+                <div>
+                  <AccordionActions>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      size="small"
+                      className="rounded block"
+                    >
+                      <Link to="/apply-online">Apply</Link>
+                    </Button>
+                  </AccordionActions>
+                </div>
+              </AccordionDetails>
+            </Accordion>
+          </div>
+        ))
+      ) : (
+        <Typography className=" p-2 text-red-500 text-center">
+          Coming soon
+        </Typography>
+      )}
+    </>
+  );
+};
 
 /*
 < !DOCTYPE html >

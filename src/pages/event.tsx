@@ -1,10 +1,30 @@
+import { Box, CircularProgress, Paper, Typography } from "@material-ui/core";
+import { Error } from "@material-ui/icons";
 import React from "react";
 import Layout from "../components/layout";
 
 function Event(): React.ReactNode {
+  const [loaded, setLoaded] = React.useState(false);
+  React.useEffect(() => {
+    setTimeout(() => setLoaded(true), 2000);
+  }, []);
   return (
     <Layout siteTitle="post">
-      <p>The event</p>
+      <Paper className="sm:mx-2 p-2 my-2 md: mx-10 p-4 my-3 lg:mx-20 p-4 my-4">
+        {!loaded ? (
+          <div className="p-4 text-center my-4">
+            <CircularProgress size="3rem" />
+            <p>Loading events....</p>
+          </div>
+        ) : (
+          <Box>
+            <Typography align="center">
+              <Error color="secondary" /> There no events at the moment..Check
+              back soon.
+            </Typography>
+          </Box>
+        )}
+      </Paper>
     </Layout>
   );
 }
