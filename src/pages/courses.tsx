@@ -14,7 +14,8 @@ import {
   Button,
   AccordionActions,
 } from "@material-ui/core";
-
+import Alert from "@material-ui/lab/Alert";
+import ErrorIcon from "@material-ui/icons/Error";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -53,7 +54,7 @@ const CoursesWrapper = ({ courses = [] }) => {
   return (
     <Box>
       {courses.map((course, index) => (
-        <>
+        <div key={index}>
           <Typography
             style={{ fontWeight: 500 }}
             className="text-center capitalize  border-b border-green-500"
@@ -62,7 +63,7 @@ const CoursesWrapper = ({ courses = [] }) => {
           </Typography>
 
           <ShowCourses course={course.courses} key={index} />
-        </>
+        </div>
       ))}
     </Box>
   );
@@ -75,6 +76,7 @@ const ShowCourses = ({ course = [] }) => {
     // if someone wants to close the current accordion
     course === selected ? setSelected("") : setSelected(course);
   };
+
   return (
     <>
       {!!course.length ? (
@@ -140,6 +142,65 @@ const ShowCourses = ({ course = [] }) => {
   );
 };
 
+const useFetch = (url: string) => {
+  const [data, setData] = React.useState([]);
+  const [spinner, setSpinner] = React.useState(false);
+  const [errmsg, setError] = React.useState("");
+  const fetchData = url => {
+    fetch(url)
+      .then(response => response.json())
+      .then(json => setData(json))
+      .then(() => setSpinner(false))
+      .catch(error => {
+        setSpinner(false);
+        setError(error.message);
+      });
+  };
+  React.useEffect(() => {
+    if (!url) return;
+    setSpinner(true);
+    setTimeout(() => fetchData(url), 3000);
+  }, []);
+  return { data, spinner, errmsg };
+};
+type Oct = {
+  url: string;
+  Spinner?: React.ReactElement;
+  Success: (data: any) => JSX.Element;
+  error?: (errmsg: string) => void;
+};
+const October = ({
+  url,
+  Success,
+  Spinner = (
+    <div className="text-center my-3 p-2">
+      <CircularProgress size="3rem" />
+    </div>
+  ),
+  error = errmsg => (
+    <div className="my-3">
+      <Alert icon={<ErrorIcon />} variant="filled" severity="error">
+        Something went wrong...{errmsg}{" "}
+      </Alert>
+    </div>
+  ),
+}: Oct) => {
+  const { data, spinner, errmsg } = useFetch(url);
+  if (spinner) return Spinner;
+  if (!!errmsg) return error(errmsg);
+  console.log("Status message:", data, spinner, errmsg);
+  if (data) return Success({ data });
+};
+
+const Success = ({ data }) => (
+  <ul>
+    {data.slice(0, 10).map((item, index) => (
+      <li key={index}>
+        {index + 1}. {item.title}
+      </li>
+    ))}
+  </ul>
+);
 /*
 < !DOCTYPE html >
 <html lang="en">

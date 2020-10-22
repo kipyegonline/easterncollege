@@ -28,7 +28,7 @@ const Footer: React.FC = (): JSX.Element => {
     return c;
   };
   return (
-    <Box className=" relative bg-gray-900 font-raleway mt-10 text-white lg:relative z-auto left-0 bottom-0 w-screen md:relative  sm:relative mx-1">
+    <Box className=" relative bg-gray-900 font-raleway mt-10 text-white lg:relative z-auto left-0 bottom-0 w-full md:relative  sm:relative mx-1">
       <Grid
         container
         justify="space-around"

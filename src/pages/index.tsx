@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Announce from "@material-ui/icons/Announcement";
 import Event from "@material-ui/icons/Event";
 import ListEmoji from "@material-ui/icons/List";
+import ArrowNext from "@material-ui/icons/NavigateNext";
 import FormatList from "@material-ui/icons/FormatListBulleted";
 import {
   Typography,
@@ -33,6 +34,7 @@ import {
   Public,
   FindInPage,
   ArrowRight,
+  School,
   ArrowLeft,
 } from "@material-ui/icons";
 import { rootState, fetchData } from "../redux/reducer";
@@ -42,6 +44,7 @@ import SEO from "../components/seo";
 import Slider from "../components/carousel";
 import { courses } from "./schools";
 import { Pagination } from "@material-ui/lab";
+
 const cover = require("../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg");
 const partner1 = require("../images/partner1.jpeg");
 const partner2 = require("../images/partner2.jpeg");
@@ -105,7 +108,7 @@ const IndexPage: React.FC = (): JSX.Element => {
       </Typography>
       <div style={{ backgroundImage: `url(${cover})` }} className="bg-fixed">
         <Divider />
-        <Intro />
+        <WelcomeNote />
 
         <Grid container justify="center" alignItems="flex-start">
           <Grid item lg={3} md={3} xs={12}>
@@ -121,14 +124,21 @@ const IndexPage: React.FC = (): JSX.Element => {
             <CardFour />
           </Grid>
         </Grid>
-        <Grid container justify="center" spacing={4} alignItems="center">
+        {/*collaborations */}
+        <Grid
+          container
+          justify="center"
+          className="mx-20"
+          spacing={4}
+          alignItems="center"
+        >
           <Grid
             item
             lg={6}
             xs={12}
             md={6}
-            style={{ background: "#fff", margin: "25px 0" }}
-            className="m-3 p-2 "
+            style={{ background: "#fff", margin: "5px 0px" }}
+            className=" m-3 p-2 "
           >
             <Typography
               align="center"
@@ -145,11 +155,10 @@ const IndexPage: React.FC = (): JSX.Element => {
             lg={6}
             xs={12}
             md={6}
-            className="m-3 p-2  md:mx-10 lg:mx-20 "
+            className="my-3 mx-20 p-2  md:mx-5 md:w-full lg:mx-10 "
             style={{
               background: "#fff",
-              maxHeight: 300,
-
+              maxHeight: 310,
               maxWidth: 600,
             }}
           >
@@ -163,82 +172,85 @@ const IndexPage: React.FC = (): JSX.Element => {
             <Collaborations />
           </Grid>
         </Grid>
-
-        <ApplyNow />
-        <Grid container justify="center" alignItems="flex-start">
-          <Grid item xs={12} md={4} lg={4}>
-            <Notice
-              item="Notices"
-              component={
-                <RenderList
-                  spinner={postSpinner}
-                  data={events}
-                  errmessage={errmsg}
-                  Lista={(item, indexa) => (
-                    <TheList
-                      key={indexa}
-                      counter={indexa}
-                      {...item}
-                      Icon={ListEmoji}
-                      path={`/notice?post-${item.id}-${item.title
-                        .split(" ")
-                        .join("-")}`}
-                    />
-                  )}
-                />
-              }
-              Icon={Announce}
-            />
+        <Paper>
+          <ApplyNow />
+        </Paper>
+        <Paper>
+          <Grid container justify="center" alignItems="flex-start">
+            <Grid item xs={12} md={4} lg={4}>
+              <Notice
+                item="Notices"
+                component={
+                  <RenderList
+                    spinner={postSpinner}
+                    data={events}
+                    errmessage={errmsg}
+                    Lista={(item, indexa) => (
+                      <TheList
+                        key={indexa}
+                        counter={indexa}
+                        {...item}
+                        Icon={ListEmoji}
+                        path={`/notice?post-${item.id}-${item.title
+                          .split(" ")
+                          .join("-")}`}
+                      />
+                    )}
+                  />
+                }
+                Icon={Announce}
+              />
+            </Grid>
+            <Grid item xs={12} md={4} lg={4}>
+              <Notice
+                item="Upcoming events"
+                component={
+                  <RenderList
+                    spinner={postSpinner}
+                    data={events}
+                    errmessage={errmsg}
+                    Lista={(item, indexb) => (
+                      <TheList
+                        key={indexb}
+                        counter={indexb}
+                        {...item}
+                        Icon={ListEmoji}
+                        path={`/event?${item.title.split(" ").join("-")}&post=${
+                          item.id
+                        }`}
+                      />
+                    )}
+                  />
+                }
+                Icon={Event}
+              />
+            </Grid>
+            <Grid item xs={12} md={4} lg={4}>
+              <Notice
+                item="News"
+                component={
+                  <RenderList
+                    spinner={postSpinner}
+                    errmessage={errmsg}
+                    data={events}
+                    Lista={(item, indexc) => (
+                      <TheList
+                        key={indexc}
+                        counter={indexc}
+                        {...item}
+                        Icon={ListEmoji}
+                        path={`/post?${item.title.split(" ").join("-")}&post=${
+                          item.id
+                        }`}
+                      />
+                    )}
+                  />
+                }
+                Icon={Announce}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={4} lg={4}>
-            <Notice
-              item="Upcoming events"
-              component={
-                <RenderList
-                  spinner={postSpinner}
-                  data={events}
-                  errmessage={errmsg}
-                  Lista={(item, indexb) => (
-                    <TheList
-                      key={indexb}
-                      counter={indexb}
-                      {...item}
-                      Icon={ListEmoji}
-                      path={`/event?${item.title.split(" ").join("-")}&post=${
-                        item.id
-                      }`}
-                    />
-                  )}
-                />
-              }
-              Icon={Event}
-            />
-          </Grid>
-          <Grid item xs={12} md={4} lg={4}>
-            <Notice
-              item="News"
-              component={
-                <RenderList
-                  spinner={postSpinner}
-                  errmessage={errmsg}
-                  data={events}
-                  Lista={(item, indexc) => (
-                    <TheList
-                      key={indexc}
-                      counter={indexc}
-                      {...item}
-                      Icon={ListEmoji}
-                      path={`/post?${item.title.split(" ").join("-")}&post=${
-                        item.id
-                      }`}
-                    />
-                  )}
-                />
-              }
-              Icon={Announce}
-            />
-          </Grid>
-        </Grid>
+        </Paper>
       </div>
     </Layout>
   );
@@ -350,7 +362,7 @@ const TheList = ({
 );
 
 const WelcomeNote = () => (
-  <Paper className=" mx-3 my-2 p-4 sm:mx-3 p-2 " style={{ background: "#fff" }}>
+  <Paper className=" mx-0 my-2 p-4 sm:mx-3 p-2 " style={{ background: "#fff" }}>
     <Typography variant="body1" className="mb-2 p-1 rounded">
       Eastern College is a premier institution of learning, growth and
       empowerment based in Mogadishu,Somalia.
@@ -373,7 +385,7 @@ const ApplyNow = () => {
   return (
     <AppBar
       position="relative"
-      className="p-2 my-2 rounded z-30 mx-4 "
+      className="py-2 px-0 my-4 w-6/7 z-30 mx-0 sm:mx-auto sm:my-2 "
       style={{ background: "#fff", color: "black" }}
     >
       <Typography variant="h6" className="text-center capitalize">
@@ -385,6 +397,7 @@ const ApplyNow = () => {
         quality & we deliver on quality.
       </Typography>
       <Button
+        startIcon={<School />}
         style={{ maxWidth: 200, margin: ".5rem auto" }}
         variant="contained"
         color="primary"
@@ -498,13 +511,13 @@ const Collaborations = () => {
   return (
     <div
       style={{
-        height: 200,
-        padding: 0,
+        height: 420,
+        padding: 10,
         margin: "0 auto",
       }}
     >
       <Carousel
-        style={{ height: 300 }}
+        style={{ height: 400 }}
         autoplay
         autoplayInterval={3000}
         autoGenerateStyleTag={true}
@@ -516,14 +529,14 @@ const Collaborations = () => {
         renderCenterRightControls={Next}
         renderTopCenterControls={counter}
         renderBottomCenterControls={() => (
-          <p className=" w-full bg-gray-700">In my zone,dfdf</p>
+          <p className=" w-full bg-gray-700">collaborations</p>
         )}
-        renderCenterCenterControls={() => <p>Caption</p>}
+        renderCenterCenterControls={() => <p> </p>}
       >
-        <img src={partner2} alt="partner 2" height={200} />
-        <img src={partner3} alt="partner 3" height={300} />
+        <img src={partner2} alt="partner 2" height={400} />
+        <img src={partner3} alt="partner 3" height={400} />
 
-        <img src={partner4} alt="partner 4" height={300} />
+        <img src={partner4} alt="partner 4" height={400} />
       </Carousel>
     </div>
   );
@@ -538,7 +551,7 @@ const Programmes: React.FC<{ courses: Courses[] }> = ({ courses = [] }) => {
         {courses.map((course, index) => (
           <ListItem key={index} dense button className="py-2 my-2">
             <ListItemIcon>
-              <List />
+              <ArrowNext />
             </ListItemIcon>
             <Link to="/schools">{course.school}</Link>
           </ListItem>

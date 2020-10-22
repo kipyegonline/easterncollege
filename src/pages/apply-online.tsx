@@ -1,4 +1,12 @@
-import { CircularProgress, Typography } from "@material-ui/core";
+import {
+  Card,
+  CircularProgress,
+  FormControl,
+  Input,
+  Button,
+  InputLabel,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
 import CancelIcon from "@material-ui/icons/Error";
 import Layout from "../components/layout";
@@ -27,6 +35,63 @@ function ApplyOnline(): React.ReactNode {
   );
 }
 export default ApplyOnline;
+
+const useInput = (initialValue: any) => {
+  const [value, setValue] = React.useState(initialValue);
+  return [
+    { value, onChange: e => setValue(e.target.value) },
+    () => setValue(initialValue),
+  ];
+};
+
+const ApplicationForm = () => {
+  const [name, setName] = useInput("");
+  const [email, setEmail] = useInput("");
+  const [course, setCourse] = useInput("");
+  const [spinner, setSpinner] = React.useState(false);
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(name.value, email.value, course.value);
+    setSpinner(true);
+    setTimeout(() => {
+      setName();
+      setEmail();
+      setCourse();
+      setSpinner(false);
+    }, 5000);
+  };
+  return (
+    <Card>
+      <form onSubmit={handleSubmit} style={{ width: 500, padding: 20 }}>
+        <FormControl className="block w-full">
+          <InputLabel>Name</InputLabel>
+          <Input type="text" fullWidth {...name} />
+        </FormControl>
+
+        <FormControl className="block w-full">
+          <InputLabel>Email</InputLabel>
+          <Input type="email" fullWidth {...email} />
+        </FormControl>
+        <FormControl className="block w-full my-2">
+          <InputLabel>Course</InputLabel>
+          <Input type="text" {...course} />
+        </FormControl>
+        <div className="my-2 text-center">
+          {spinner && <CircularProgress size="2rem" />}
+        </div>
+        <Button
+          className="block mt-3 rounded w-full"
+          color="primary"
+          variant="contained"
+          startIcon={<CancelIcon size="small" />}
+          type="submit"
+        >
+          Apply
+        </Button>
+      </form>
+    </Card>
+  );
+};
 
 /*
 

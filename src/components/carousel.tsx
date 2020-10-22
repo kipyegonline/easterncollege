@@ -13,11 +13,11 @@ const slide4 = require("../images/slide5.jpg");
 const slide5 = require("../images/slide2.jpg");
 //const slide6 = require("../images/slide6.JPG");
 const slides = [
-  { pic: slide1, caption: "Eastern College 1", id: 1 },
-  { pic: slide2, caption: "Eastern College 2", id: 2 },
-  { pic: slide3, caption: "Eastern College 3", id: 3 },
-  { pic: slide4, caption: "Eastern College 4", id: 4 },
-  { pic: slide5, caption: "Eastern  5", id: 5 },
+  { pic: slide1, caption: "Eastern College students", id: 1 },
+  { pic: slide2, caption: "Eastern College ", id: 2 },
+  { pic: slide3, caption: "Eastern College ", id: 3 },
+  { pic: slide4, caption: "Eastern College ", id: 4 },
+  { pic: slide5, caption: "Eastern  College", id: 5 },
 ];
 const useStyles = makeStyles({
   wrapper: {
@@ -38,10 +38,10 @@ export default function CarouselSlider(): JSX.Element {
   const Caption = () => (
     <Typography
       variant="body1"
-      className="text-base p-2 w-screen text-center  mx-auto text-white bg-opacity-50 bg-gray-900 
-      hover:bg-opacity-75 md:block py-1 sm:hidden  py-1 text-sm"
+      className="text-base p-2 mx-0 px-0 w-screen relative overflow-hidden text-center text-white bg-opacity-50 bg-gray-900 
+      hover:bg-opacity-75 md:block py-1 sm:hidden  sm:py-1 sm:text-sm"
     >
-      {!!slides[current] ? slides[current].caption : "Eastern College repp"}
+      {!!slides[current] ? slides[current].caption : "Eastern College"}
     </Typography>
   );
   const Previous = () => (
@@ -88,7 +88,7 @@ export default function CarouselSlider(): JSX.Element {
         scrollMode="page"
         transitionMode="fade"
         initialSlideHeight={300}
-        renderBottomLeftControls={Caption}
+        renderBottomCenterControls={Caption}
         renderCenterLeftControls={Previous}
         renderCenterRightControls={next}
         slideIndex={current}

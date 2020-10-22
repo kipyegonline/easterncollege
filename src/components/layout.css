@@ -4,6 +4,8 @@ html {
   font: 112.5%/1.45em georgia, serif, sans-serif;
   box-sizing: border-box;
   overflow-y: scroll;
+  background: url(../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg);
+  background-attachment: fixed;
 }
 body {
   margin: 0 auto;
