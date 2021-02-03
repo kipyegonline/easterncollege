@@ -16,7 +16,8 @@ export const fetchData = async (
   try {
     setSpinner(true);
     const { data } = await axios.get(url);
-    if (!!!data.length) {
+    console.log("ree", data);
+    if (!Array.isArray(data) || !!!data.length) {
       throw new Error("No data!");
     } else {
       setTimeout(() => {

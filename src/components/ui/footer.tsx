@@ -169,6 +169,13 @@ const Footer: React.FC = (): JSX.Element => {
                 Portal
               </Link>
             </ListItem>
+            <ListItem button dense>
+              <ArrowRight htmlColor="white" />
+
+              <Link className="text-sm  hover:underline" to="/admin">
+                staff
+              </Link>
+            </ListItem>
           </List>
         </Grid>
         <Grid item lg={3} xs={12} md={3} className="p-4 m-3">

@@ -20,7 +20,7 @@ import * as actions from "../redux/updatesReducer/actions";
 function Tenders(): React.ReactNode {
   const [spinner, setSpinner] = React.useState(false);
   const [err, setErr] = React.useState("");
-  const postsurl = "https://jsonplaceholder.typicode.com/posts";
+  const tendersurl = "./server/index.php?fetchtenders=true";
 
   const dispatch = useDispatch();
   const { tenders } = useSelector((state: rootState) => ({
@@ -28,7 +28,7 @@ function Tenders(): React.ReactNode {
   }));
   React.useEffect(() => {
     if (!!!tenders.length)
-      fetchData(postsurl, dispatch, setSpinner, setErr, actions.addTenders);
+      fetchData(tendersurl, dispatch, setSpinner, setErr, actions.addTenders);
   }, []);
 
   return (

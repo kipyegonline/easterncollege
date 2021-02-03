@@ -3,6 +3,7 @@ import React from "react";
 //import { useQuery } from "react-query";
 import { Link } from "gatsby";
 import Carousel from "nuka-carousel";
+import SlickSlider from "react-slick";
 import { useSelector, useDispatch } from "react-redux";
 import Announce from "@material-ui/icons/Announcement";
 import Event from "@material-ui/icons/Event";
@@ -41,8 +42,8 @@ import { rootState, fetchData } from "../redux/reducer";
 import Layout from "../components/layout";
 import * as actions from "../redux/updatesReducer/actions";
 import SEO from "../components/seo";
-import Slider from "../components/carousel";
 import { courses } from "./schools";
+import Slider, { settings } from "../components/carousel";
 import { Pagination } from "@material-ui/lab";
 
 const cover = require("../images/bernard-hermant-AKHh5Vie5AU-unsplash.jpg");
@@ -73,7 +74,9 @@ const IndexPage: React.FC = (): JSX.Element => {
   const [errmsg, setErrmsg] = React.useState("");
 
   const dispatch = useDispatch();
-  const postsurl = "https://jsonplaceholder.typicode.com/posts";
+  const noticesurl = "./server/index.php?fetchnotices=true";
+  const newsurl = "./server/index.php?fetchnews=true";
+  const eventsurl = "./server/index.php?fetchevents=true";
   const { news, events, notices } = useSelector((state: rootState) => ({
     news: state.updates.news,
     events: state.updates.events,
@@ -82,9 +85,15 @@ const IndexPage: React.FC = (): JSX.Element => {
 
   React.useEffect(() => {
     if (!!!news.length || !!!events.length || !!!notices.length) {
-      fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addNotices);
-      fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addEvents);
-      fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addNews);
+      fetchData(
+        noticesurl,
+        dispatch,
+        setPspinner,
+        setErrmsg,
+        actions.addNotices
+      );
+      fetchData(eventsurl, dispatch, setPspinner, setErrmsg, actions.addEvents);
+      fetchData(newsurl, dispatch, setPspinner, setErrmsg, actions.addNews);
       // fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addTenders);
       //fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addCareers);
       dispatch(actions.addCourses(courses));
@@ -138,7 +147,7 @@ const IndexPage: React.FC = (): JSX.Element => {
             xs={12}
             md={6}
             style={{ background: "#fff", margin: "5px 0px" }}
-            className=" m-3 p-2 "
+            className=" m-3  p-2 "
           >
             <Typography
               align="center"
@@ -178,76 +187,83 @@ const IndexPage: React.FC = (): JSX.Element => {
         <Paper>
           <Grid container justify="center" alignItems="flex-start">
             <Grid item xs={12} md={4} lg={4}>
-              <Notice
-                item="Notices"
-                component={
-                  <RenderList
-                    spinner={postSpinner}
-                    data={events}
-                    errmessage={errmsg}
-                    Lista={(item, indexa) => (
-                      <TheList
-                        key={indexa}
-                        counter={indexa}
-                        {...item}
-                        Icon={ListEmoji}
-                        path={`/notice?post-${item.id}-${item.title
-                          .split(" ")
-                          .join("-")}`}
-                      />
-                    )}
-                  />
-                }
-                Icon={Announce}
-              />
+              {/* This is a render prop component */}
+              {!!notices.length && (
+                <Notice
+                  item="Notices"
+                  component={
+                    <RenderList
+                      spinner={postSpinner}
+                      data={events}
+                      errmessage={errmsg}
+                      Lista={(item, indexa) => (
+                        <TheList
+                          key={indexa}
+                          counter={indexa}
+                          {...item}
+                          Icon={ListEmoji}
+                          path={`/notice?post-${item.id}-${item.title
+                            .split(" ")
+                            .join("-")}`}
+                        />
+                      )}
+                    />
+                  }
+                  Icon={Announce}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
-              <Notice
-                item="Upcoming events"
-                component={
-                  <RenderList
-                    spinner={postSpinner}
-                    data={events}
-                    errmessage={errmsg}
-                    Lista={(item, indexb) => (
-                      <TheList
-                        key={indexb}
-                        counter={indexb}
-                        {...item}
-                        Icon={ListEmoji}
-                        path={`/event?${item.title.split(" ").join("-")}&post=${
-                          item.id
-                        }`}
-                      />
-                    )}
-                  />
-                }
-                Icon={Event}
-              />
+              {!!events.length && (
+                <Notice
+                  item="Upcoming events"
+                  component={
+                    <RenderList
+                      spinner={postSpinner}
+                      data={events}
+                      errmessage={errmsg}
+                      Lista={(item, indexb) => (
+                        <TheList
+                          key={indexb}
+                          counter={indexb}
+                          {...item}
+                          Icon={ListEmoji}
+                          path={`/event?${item.title
+                            .split(" ")
+                            .join("-")}&post=${item.id}`}
+                        />
+                      )}
+                    />
+                  }
+                  Icon={Event}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
-              <Notice
-                item="News"
-                component={
-                  <RenderList
-                    spinner={postSpinner}
-                    errmessage={errmsg}
-                    data={events}
-                    Lista={(item, indexc) => (
-                      <TheList
-                        key={indexc}
-                        counter={indexc}
-                        {...item}
-                        Icon={ListEmoji}
-                        path={`/post?${item.title.split(" ").join("-")}&post=${
-                          item.id
-                        }`}
-                      />
-                    )}
-                  />
-                }
-                Icon={Announce}
-              />
+              {!!news.length && (
+                <Notice
+                  item="News"
+                  component={
+                    <RenderList
+                      spinner={postSpinner}
+                      errmessage={errmsg}
+                      data={events}
+                      Lista={(item, indexc) => (
+                        <TheList
+                          key={indexc}
+                          counter={indexc}
+                          {...item}
+                          Icon={ListEmoji}
+                          path={`/post?${item.title
+                            .split(" ")
+                            .join("-")}&post=${item.id}`}
+                        />
+                      )}
+                    />
+                  }
+                  Icon={Announce}
+                />
+              )}
             </Grid>
           </Grid>
         </Paper>
@@ -485,59 +501,25 @@ const CardFour = () => (
 const Collaborations = () => {
   const [current, setCurrent] = React.useState(0);
   const [height, setHeight] = React.useState(0);
-  const Next = () => (
-    <IconButton
-      disabled={!!(current >= 4)}
-      onClick={() => (current >= 4 ? setCurrent(0) : setCurrent(current + 1))}
-    >
-      <ArrowRight fontSize="large" />
-    </IconButton>
-  );
-  const Previous = () => (
-    <IconButton
-      disabled={!!(current <= 0)}
-      onClick={() => (current <= 0 ? setCurrent(0) : setCurrent(current - 1))}
-    >
-      <ArrowLeft fontSize="large" />
-    </IconButton>
-  );
-  type Prop = { currentSlide: number };
-  const counter = ({ currentSlide }: Prop) => (
-    <small> {currentSlide + 1} of 4</small>
-  );
+
   React.useEffect(() => {
     setHeight(300);
   }, []);
   return (
     <div
       style={{
-        height: 420,
+        height: 600,
         padding: 10,
         margin: "0 auto",
       }}
     >
-      <Carousel
-        style={{ height: 400 }}
-        autoplay
-        autoplayInterval={3000}
-        autoGenerateStyleTag={true}
-        enableKeyboardControls={true}
-        wrapAround
-        slideIndex={current}
-        afterSlide={slideIndex => setCurrent(slideIndex)}
-        renderCenterLeftControls={Previous}
-        renderCenterRightControls={Next}
-        renderTopCenterControls={counter}
-        renderBottomCenterControls={() => (
-          <p className=" w-full bg-gray-700">collaborations</p>
-        )}
-        renderCenterCenterControls={() => <p> </p>}
-      >
-        <img src={partner2} alt="partner 2" height={400} />
-        <img src={partner3} alt="partner 3" height={400} />
-
-        <img src={partner4} alt="partner 4" height={400} />
-      </Carousel>
+      <SlickSlider {...settings}>
+        <img src={partner1} alt="partner 2" />
+        <img src={partner2} alt="partner 2" />
+        <img src={partner3} alt="partner 3" />
+        <img src={partner4} alt="partner 4" />
+        <Typography>Partners</Typography>
+      </SlickSlider>
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import React from "react";
 import Carousel from "nuka-carousel";
 import { makeStyles } from "@material-ui/styles";
-import { Typography, IconButton } from "@material-ui/core";
+import { Typography, IconButton, Box } from "@material-ui/core";
 import ArrowRight from "@material-ui/icons/NavigateNext";
 import ArrowLeft from "@material-ui/icons/NavigateBefore";
 import Arrow from "@material-ui/icons/Navigation";
+import Slider from "react-slick";
 
 const slide1 = require("../images/slide1.jpg");
 const slide2 = require("../images/slide3.jpg");
@@ -107,3 +108,46 @@ export default function CarouselSlider(): JSX.Element {
     </div>
   );
 }
+
+export  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    fade: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnDotsHover: true,
+    pauseOnHover: true,
+    cssEase: "linear",
+    accessibility: true,
+    arrows: true,
+    swipe: true,
+    adaptiveHeight: true,
+    className: "relative",
+  };
+export const ReactCarousel = () => {
+ 
+  return (
+    <Slider {...settings}>
+      {slides.map(slide => (
+        <Box key={slide.id}>
+          <img
+            className="w-full"
+            style={{ width: 1260 }}
+            src={slide.pic}
+            alt={slide.caption}
+          />
+          <Typography
+            variant="h6"
+            align="center"
+            className="absolute bottom-0 left-0 mx-auto z-10"
+          >
+            {slide.caption}
+          </Typography>
+        </Box>
+      ))}
+    </Slider>
+  );
+};

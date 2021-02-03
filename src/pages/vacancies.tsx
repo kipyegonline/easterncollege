@@ -34,7 +34,7 @@ function Vacancies(): React.ReactNode {
   const [err, setErr] = React.useState("");
   const [current, setCurrent] = React.useState(0);
 
-  const postsurl = "https://jsonplaceholder.typicode.com/posts";
+  const careersurl = "./server/index.php?fetchcareers=true";
 
   const dispatch = useDispatch();
   const { careers } = useSelector((state: rootState) => ({
@@ -48,7 +48,7 @@ function Vacancies(): React.ReactNode {
     setCurrent(p - 1);
   React.useEffect(() => {
     if (!!!careers.length)
-      fetchData(postsurl, dispatch, setSpinner, setErr, actions.addCareers);
+      fetchData(careersurl, dispatch, setSpinner, setErr, actions.addCareers);
   }, []);
 
   return (

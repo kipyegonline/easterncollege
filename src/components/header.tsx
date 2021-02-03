@@ -99,13 +99,13 @@ const Header: React.FC<Props> = ({ classes }) => {
         variant="body2"
       >
         <MLink
-          href="https://portal.easterncollege.so/"
+          href="https://lms.easterncollege.so/"
           target="_blank"
           style={{ color: "white" }}
           className="my-auto text-white sm:text-black"
         >
           <SupervisedUserCircleIcon className="mr-0 pb-1" fontSize="small" />
-          Staff portal
+          LMS
         </MLink>
       </Typography>
       <Typography
