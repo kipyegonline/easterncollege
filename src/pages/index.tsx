@@ -1,5 +1,5 @@
 import React from "react";
-
+import { v4 } from "uuid";
 //import { useQuery } from "react-query";
 import { Link } from "gatsby";
 import Carousel from "nuka-carousel";
@@ -542,3 +542,31 @@ const Programmes: React.FC<{ courses: Courses[] }> = ({ courses = [] }) => {
     </Card>
   );
 };
+
+function metricsCheck() {
+  const aDay = 6e4 * 60 * 24;
+  let lastVisit: string | any =
+    globalThis.window && (localStorage.getItem("lastVisit") as any); //track time
+  let uuid: string | any =
+    globalThis.window && (localStorage.getItem("uservisit") as any); // track user
+
+  if (lastVisit && uuid) {
+    if (Date.now() - Number(lastVisit) > aDay) recordMetrics(0, uuid);
+  } else {
+    lastVisit = Date.now();
+    uuid = v4();
+    //set time and user ID for browser
+    globalThis.window && localStorage.setItem("lastVisit", lastVisit);
+    globalThis.window && localStorage.setItem("uservisit", uuid);
+    recordMetrics(1, uuid);
+  }
+}
+
+function recordMetrics(id = 0, uuid: string) {
+  fetch(`./server/index.php?recordmetrics=true&lastvisit=${id}&uuid=${uuid}`);
+}
+if (globalThis.window) {
+  window.addEventListener("DOMContentLoaded", function () {
+    setTimeout(metricsCheck, 5000);
+  });
+}

@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { makeStyles } from "@material-ui/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import {
@@ -28,6 +29,7 @@ import Subject from "@material-ui/icons/Subject";
 import Message from "@material-ui/icons/Message";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
+import { Edit } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   iframe: {
@@ -198,27 +200,24 @@ const ContactForm = () => {
       subject.trim().length > 5
     ) {
       setSpinner(true);
-      fetch("https://www.easterncollege.so/contactus/contactform", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({
-          "form-name": "contact",
+      axios
+        .post("./server/index.php?websiteform=true", {
           message,
           phone,
           email,
           subject,
-        }),
-      })
+        })
         .then(res => {
-          console.log("res", res);
+          console.log("Res: ", res);
           setSpinner(false);
           if (res.ok) {
             setSuccess("Message submittted. We will revert shortly");
+            setPhone("");
+            setMessage("");
+            setSubject("");
+            setEmail("");
+
             setTimeout(() => {
-              setPhone("");
-              setMessage("");
-              setSubject("");
-              setEmail("");
               setSuccess("");
               if (form.current) form.current.reset();
             }, 4000);
@@ -316,15 +315,15 @@ type FormInput = {
   type: string;
   multiline?: boolean;
   getValue: (name: string, value: string) => void;
-  Icon: any;
-  name: string;
+  Icon?: any;
+  name?: string;
 };
-const FormInput: React.FC<FormInput> = ({
+export const FormInput: React.FC<FormInput> = ({
   label,
   type = "text",
   getValue = f => f,
   multiline = false,
-  Icon = Message,
+  Icon = Edit,
   name = "",
 }) => {
   const classes = useStyles();
@@ -351,3 +350,9 @@ const FormInput: React.FC<FormInput> = ({
     </FormControl>
   );
 };
+
+export const Spinner = () => (
+  <Box className="text-center p-1 m-1">
+    <CircularProgress size="2rem" color="primary" />
+  </Box>
+);
