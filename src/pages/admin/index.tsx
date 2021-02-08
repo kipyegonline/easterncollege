@@ -9,9 +9,6 @@ export default function AdminHome() {
       <Typography variant="h6">
         Welcome to Eastern College website admin panel....
       </Typography>
-      <Box>
-        <Skeleton width={500} height={500} animation="wave"></Skeleton>
-      </Box>
     </AdminLayout>
   );
 }

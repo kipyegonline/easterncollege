@@ -22,7 +22,7 @@ type Props = {
 };
 const mediaClass =
   "hidden lg:flex relative  py-3 px-2 bg-blue-800 text-white \
-       flex-row flex-wrap  justify-center items-center md:hidden  ";
+       flex-row flex-wrap  justify-evenly  items-center md:hidden   ";
 const Layout = ({ children }: Props): JSX.Element => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {

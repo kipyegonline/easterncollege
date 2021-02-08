@@ -57,7 +57,6 @@ const useStyles = makeStyles({
     "@media (max-width:768px)": {
       padding: 10,
       width: 500,
-      border: "1px solid red",
 
       margin: "1rem auto",
     },
@@ -208,9 +207,10 @@ const ContactForm = () => {
           subject,
         })
         .then(res => {
-          console.log("Res: ", res);
-          setSpinner(false);
-          if (res.ok) {
+          const { data } = res;
+
+          if (data.status === 200) {
+            setSpinner(false);
             setSuccess("Message submittted. We will revert shortly");
             setPhone("");
             setMessage("");
@@ -222,12 +222,12 @@ const ContactForm = () => {
               if (form.current) form.current.reset();
             }, 4000);
           } else {
-            throw new Error(res.statusText);
+            throw new Error(data.msg);
           }
         })
         .catch(error => {
           setSpinner(false);
-          console.log("err", error);
+
           setError(error.message);
           setTimeout(() => setError(""), 4000);
         });

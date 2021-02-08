@@ -274,7 +274,7 @@ export default function Login() {
           onChange={e => setUsercPassword(e.target.value)}
         />
       </FormControl>
-      <Box>
+      <Box className="my-2">
         {errormsg && (
           <FormHelperText error className="text-center p-1 ">
             <ErrorIcon color="secondary" className="mr-2" fontSize="small" />{" "}
@@ -303,8 +303,8 @@ export default function Login() {
   );
 
   return (
-    <Layout>
-      <Paper className="mx-auto my-auto p-4" style={{ maxWidth: 500 }}>
+    <Layout siteTitle="Login">
+      <Paper className="mx-auto my-4 p-4" style={{ maxWidth: 500 }}>
         {isLogin ? login : signup}
       </Paper>
     </Layout>

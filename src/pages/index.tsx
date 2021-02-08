@@ -137,7 +137,7 @@ const IndexPage: React.FC = (): JSX.Element => {
         <Grid
           container
           justify="center"
-          className="mx-20"
+          className="mx-20 mb-5"
           spacing={4}
           alignItems="center"
         >
@@ -146,8 +146,11 @@ const IndexPage: React.FC = (): JSX.Element => {
             lg={6}
             xs={12}
             md={6}
-            style={{ background: "#fff", margin: "5px 0px" }}
-            className=" m-3  p-2 "
+            style={{
+              background: "#fff",
+              margin: "16px 0px",
+            }}
+            className=" m-4  p-2 "
           >
             <Typography
               align="center"
@@ -164,11 +167,14 @@ const IndexPage: React.FC = (): JSX.Element => {
             lg={6}
             xs={12}
             md={6}
-            className="my-3 mx-20 p-2  md:mx-5 md:w-full lg:mx-10 "
+            className="my-3 mx-20 p-2 mb-4 "
             style={{
               background: "#fff",
               maxHeight: 310,
-              maxWidth: 600,
+
+              maxWidth: (function () {
+                return document.documentElement.clientWidth <= 480 ? 360 : 600;
+              })(),
             }}
           >
             <Typography
@@ -194,7 +200,7 @@ const IndexPage: React.FC = (): JSX.Element => {
                   component={
                     <RenderList
                       spinner={postSpinner}
-                      data={events}
+                      data={notices}
                       errmessage={errmsg}
                       Lista={(item, indexa) => (
                         <TheList
@@ -247,7 +253,7 @@ const IndexPage: React.FC = (): JSX.Element => {
                     <RenderList
                       spinner={postSpinner}
                       errmessage={errmsg}
-                      data={events}
+                      data={news}
                       Lista={(item, indexc) => (
                         <TheList
                           key={indexc}
@@ -545,6 +551,7 @@ const Programmes: React.FC<{ courses: Courses[] }> = ({ courses = [] }) => {
 
 function metricsCheck() {
   const aDay = 6e4 * 60 * 24;
+
   let lastVisit: string | any =
     globalThis.window && (localStorage.getItem("lastVisit") as any); //track time
   let uuid: string | any =
@@ -566,7 +573,7 @@ function recordMetrics(id = 0, uuid: string) {
   fetch(`./server/index.php?recordmetrics=true&lastvisit=${id}&uuid=${uuid}`);
 }
 if (globalThis.window) {
-  window.addEventListener("DOMContentLoaded", function () {
+  window.addEventListener("load", function () {
     setTimeout(metricsCheck, 5000);
   });
 }

@@ -10,9 +10,15 @@ import {
   Select,
   InputLabel,
   FormControl,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@material-ui/core";
 import Layout from "../../components/layout";
-import { ArrowRightAlt, ExitToApp, Home } from "@material-ui/icons";
+import Login from "./login";
+import { ArrowRightAlt, Close, ExitToApp, Home } from "@material-ui/icons";
 import { Skeleton } from "@material-ui/lab";
 
 export default function AdminLayout({ children }: { children: any }) {
@@ -27,6 +33,7 @@ export default function AdminLayout({ children }: { children: any }) {
     "Careers",
     "Courses",
     "Events",
+    "Website-Forms",
     "Notices",
     "Tenders",
     "Downloads",
@@ -56,8 +63,9 @@ export default function AdminLayout({ children }: { children: any }) {
       height={coords?.height}
     ></Skeleton>
   );
-
-  return (
+  const user =
+    globalThis.window && (localStorage.getItem("eastern-user") as any);
+  const admin = (
     <Layout siteTitle="Eastern Admin">
       <Grid container className=" p-2 my-2">
         <Grid item xs={12} md={3} lg={3} className="p-2">
@@ -110,6 +118,7 @@ export default function AdminLayout({ children }: { children: any }) {
       </Grid>
     </Layout>
   );
+  return user ? admin : <Login />;
 }
 
 type SchoolsProps = { id: number; school: string };
@@ -148,3 +157,21 @@ export const SchoolList = ({
     </FormControl>
   );
 };
+
+export const UseModal = ({ title, children, handleClick, open }) => (
+  <Dialog open={open} onClose={handleClick}>
+    <DialogTitle>{title}</DialogTitle>
+    <DialogContent>{children}</DialogContent>
+    <DialogActions>
+      <Button
+        color="primary"
+        variant="contained"
+        size="small"
+        onClick={handleClick}
+        startIcon={<Close />}
+      >
+        Close
+      </Button>
+    </DialogActions>
+  </Dialog>
+);

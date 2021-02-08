@@ -28,6 +28,5 @@ export const fetchData = async (
   } catch (error) {
     setSpinner(false);
     setError(error.message);
-    console.log(error.message);
   }
 };

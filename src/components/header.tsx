@@ -13,7 +13,7 @@ import {
 import Search from "@material-ui/icons/Search";
 import BusinessCenter from "@material-ui/icons/BusinessCenter";
 import Work from "@material-ui/icons/Work";
-import { HowToReg, Announcement } from "@material-ui/icons";
+import { HowToReg, Announcement, Event, NewReleases } from "@material-ui/icons";
 import School from "@material-ui/icons/School";
 import People from "@material-ui/icons/People";
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
@@ -26,6 +26,7 @@ type Search = {
 };
 const Header: React.FC<Props> = ({ classes }) => {
   const style = { color: "yellow" };
+  const w = document.documentElement.clientWidth as number;
 
   const handleSearch = (text: string): void => {
     if (!text) return;
@@ -35,34 +36,31 @@ const Header: React.FC<Props> = ({ classes }) => {
   return (
     <Box className={classes}>
       <Typography
-        className=" border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none md:px-3"
+        className="px-3 text-white  border-r my-auto hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
         variant="body2"
-        align="left"
       >
-        <Link to={"/login"} style={{ marginRight: "1rem" }} activeStyle={style}>
-          <HowToReg className="mr-0 pb-1" /> E-Registar
-        </Link>
+        <MLink
+          className="my-auto text-white hover:text-yellow-500 "
+          target="_blank"
+          style={{ color: w <= 768 ? "black" : "white" }}
+          href="https://easterncollege.school-network.net/"
+        >
+          <People className="mr-0 pb-1" fontSize="small" />
+          E-register
+        </MLink>
       </Typography>
+
       <Typography
-        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
+        className="px-3 border-r hover:text-yellow-500 border-yellow-500  sm:px-2 border-none"
         variant="body2"
       >
-        <Link to={"/tenders"} className="mx-4 sm:mx-2" activeStyle={style}>
-          <BusinessCenter className="mr-0 pb-1" fontSize="small" />
-          Tenders
-        </Link>
-      </Typography>
-      <Typography
-        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
-        variant="body2"
-      >
-        <Link to={"/courses"} className="mx-4 sm:mx-2" activeStyle={style}>
+        <Link to={"/courses"} className="my-auto" activeStyle={style}>
           <School className="mr-0 pb-1" fontSize="small" />
           Courses
         </Link>
       </Typography>
       <Typography
-        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500 sm:border-none"
+        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
         variant="body2"
       >
         <Link activeStyle={style} className="my-auto" to={"/vacancies"}>
@@ -71,30 +69,52 @@ const Header: React.FC<Props> = ({ classes }) => {
         </Link>
       </Typography>
       <Typography
-        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500 sm:border-none"
+        className="px-3 border-r my-auto hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
         variant="body2"
       >
         <Link activeStyle={style} className="my-auto" to={"/post"}>
-          <Announcement className="mr-0 pb-1" fontSize="small" />
+          <NewReleases className="mr-0 pb-1" fontSize="small" />
           News
+        </Link>
+      </Typography>
+      <Typography
+        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
+        variant="body2"
+      >
+        <Link to={"/events"} className="my-auto" activeStyle={style}>
+          <Event className="mr-0 pb-1" fontSize="small" />
+          Events
+        </Link>
+      </Typography>
+      <Typography
+        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
+        variant="body2"
+      >
+        <Link to={"/tenders"} className="my-auto" activeStyle={style}>
+          <BusinessCenter className="mr-0 pb-1" fontSize="small" />
+          Tenders
         </Link>
       </Typography>
 
       <Typography
-        className="px-3 text-white  border-r my-auto hover:text-yellow-500 border-yellow-500 sm:border-none"
+        className="px-3 text-white  border-r my-auto hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
         variant="body2"
       >
         <MLink
           className="my-auto text-white hover:text-yellow-500 "
           target="_blank"
-          style={{ color: "white" }}
-          href="https://portal.easterncollege.so/"
+          style={{ color: w <= 768 ? "black" : "white" }}
+          href="https://easterncollege.school-network.net/"
         >
-          <People className="mr-0 pb-1" fontSize="small" />
+          <People
+            className="mr-0 pb-1 items-end hover:text-yellow-500 "
+            fontSize="small"
+          />
           Student Portal
         </MLink>
       </Typography>
-      <Typography
+      {w > 768 && <Socials classes=" mt-3 flex items-center" />}
+      {/*<Typography
         className="px-3 border-r text-white my-auto hover:text-yellow-500 border-yellow-500 sm:border-none"
         variant="body2"
       >
@@ -107,7 +127,7 @@ const Header: React.FC<Props> = ({ classes }) => {
           <SupervisedUserCircleIcon className="mr-0 pb-1" fontSize="small" />
           LMS
         </MLink>
-      </Typography>
+      </Typography> 
       <Typography
         className="px-3 border-r hidden hover:text-yellow-500 border-yellow-500 md:block lg:block sm:text-black border-none"
         variant="body2"
@@ -122,7 +142,7 @@ const Header: React.FC<Props> = ({ classes }) => {
         variant="body2"
       >
         <SearchHeader handleSearch={handleSearch} />
-      </Typography>
+      </Typography>*/}
     </Box>
   );
 };

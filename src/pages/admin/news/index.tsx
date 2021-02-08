@@ -64,6 +64,7 @@ export default function News() {
             setTitle("");
             setBody("");
             setNews([]);
+            if (form.current) form.current.reset();
             setTimeout(() => setSuccess(""), 4000);
           } else {
             throw new TypeError(data.msg);

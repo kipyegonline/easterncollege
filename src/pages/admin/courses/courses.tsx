@@ -1,4 +1,5 @@
 import React from "react";
+import Pagination from "@material-ui/lab/Pagination";
 import {
   Box,
   Button,
@@ -10,16 +11,25 @@ import {
   TableRow,
   Typography,
   TableBody,
+  ButtonGroup,
 } from "@material-ui/core";
-import AdminLayout from "../adminLayout";
+import AdminLayout, { UseModal } from "../adminLayout";
 
-import { Delete, Error, More } from "@material-ui/icons";
+import { Delete, Error, More, SchoolOutlined } from "@material-ui/icons";
 
 export default function Courses(): JSX.Element {
   const [spinner, setSpinner] = React.useState(false);
   const [courses, setCourses] = React.useState([]);
   const [course, setCourse] = React.useState({});
+  const [current, setCurrent] = React.useState(0);
+  const [active, setActive] = React.useState(-1);
 
+  const perpage = courses.length > 9 ? 10 : courses.length;
+  const pages = Math.ceil(courses.length / perpage);
+  const start = current * perpage,
+    end = current * perpage + perpage;
+  const handlePage = (e: React.ChangeEvent<unknown>, p: number) =>
+    setCurrent(p - 1);
   const fetchCourses = async (id = 0) => {
     try {
       setSpinner(true);
@@ -27,7 +37,7 @@ export default function Courses(): JSX.Element {
         `../../server/index.php?fetchcourses&courseId=${id}`
       );
       const data = await res.json();
-      if (Array.isArray(data) || !!data.length) {
+      if (Array.isArray(data) && !!data.length) {
         setCourses(data);
       } else {
         throw new ReferenceError("No courses found");
@@ -39,7 +49,6 @@ export default function Courses(): JSX.Element {
   };
   const sendCourse = id => {
     setCourse(courses.find(course => course.id === id));
-    console.log(course);
   };
 
   const handleDelete = (id: number) => {
@@ -49,10 +58,13 @@ export default function Courses(): JSX.Element {
         .catch(error => console.log("delete course", error));
     }
   };
-
+  const handleActive = (id: number) => {
+    setActive(id);
+    fetchCourses(id + 1);
+  };
   React.useEffect(() => {
     fetchCourses();
-    //setTimeout(() => setCourses(Rcourses), 3000);
+    // setTimeout(() => setCourses(Rcourses), 3000);
   }, []);
 
   const Spinner = () => (
@@ -70,17 +82,46 @@ export default function Courses(): JSX.Element {
       </Typography>
     </Box>
   );
+  const Btns = ({ schools }) => (
+    <ButtonGroup>
+      {schools.map((item, index) => (
+        <Button
+          startIcon={<SchoolOutlined />}
+          variant="contained"
+          key={index}
+          size="small"
+          style={{ margin: 5 }}
+          onClick={() => handleActive(index)}
+          color={active === index ? "secondary" : "primary"}
+        >
+          {item}
+        </Button>
+      ))}
+    </ButtonGroup>
+  );
+
   return (
     <AdminLayout>
+      {course.id !== undefined && <Course course={course} />}
+
       {!!courses.length ? (
         <Box>
+          <Btns schools={schools} />
           <Typography variant="h6" align="center">
             {courses.length} courses
           </Typography>
           <CoursesTable
-            courses={courses}
+            courses={courses.slice(start, end)}
             getCourse={sendCourse}
+            index={start}
             sendDelete={handleDelete}
+          />
+          <Pagination
+            count={pages}
+            page={current + 1}
+            defaultPage={current + 1}
+            color="primary"
+            onChange={handlePage}
           />
         </Box>
       ) : spinner ? (
@@ -93,6 +134,7 @@ export default function Courses(): JSX.Element {
 }
 
 const CoursesTable = ({
+  index = 0,
   courses = [],
   getCourse = f => f,
   sendDelete = f => f,
@@ -116,7 +158,7 @@ const CoursesTable = ({
             <CourseTable
               key={i}
               {...item}
-              index={i}
+              index={i + index}
               handleDelete={() => sendDelete(item.id)}
               handleMore={() => getCourse(item.id)}
             />
@@ -169,6 +211,18 @@ const CourseTable = ({
     </TableCell>
   </TableRow>
 );
+const Course = ({ course }) => {
+  const [open, setOpen] = React.useState(false);
+  const handleClick = () => setOpen(false);
+  React.useEffect(() => {
+    setOpen(!!course.id);
+  }, [course]);
+  return (
+    <UseModal title={course.coursename} open={open} handleClick={handleClick}>
+      <Typography variant="body1">{course.des}</Typography>
+    </UseModal>
+  );
+};
 const Rcourses = [...Array(32)].map((item, i) => ({
   id: i + 1,
   coursename: "Media and Comms",
@@ -177,3 +231,9 @@ const Rcourses = [...Array(32)].map((item, i) => ({
   period: "4 years",
   des: "Journalism and connunication practioners",
 }));
+const schools = [
+  "School Of Languages",
+  "School Of Business And Economics",
+  " School Of Hospitality Management",
+  "School Of Humanities And Social Sciences",
+];
