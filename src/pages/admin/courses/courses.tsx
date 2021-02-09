@@ -32,7 +32,9 @@ export default function Courses(): JSX.Element {
     setCurrent(p - 1);
   const fetchCourses = async (id = 0) => {
     try {
+      setCourses([]);
       setSpinner(true);
+
       const res = await fetch(
         `../../server/index.php?fetchcourses&courseId=${id}`
       );
@@ -116,13 +118,15 @@ export default function Courses(): JSX.Element {
             index={start}
             sendDelete={handleDelete}
           />
-          <Pagination
-            count={pages}
-            page={current + 1}
-            defaultPage={current + 1}
-            color="primary"
-            onChange={handlePage}
-          />
+          {courses.length > 9 && (
+            <Pagination
+              count={pages}
+              page={current + 1}
+              defaultPage={current + 1}
+              color="primary"
+              onChange={handlePage}
+            />
+          )}
         </Box>
       ) : spinner ? (
         <Spinner />

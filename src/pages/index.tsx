@@ -173,7 +173,10 @@ const IndexPage: React.FC = (): JSX.Element => {
               maxHeight: 310,
 
               maxWidth: (function () {
-                return document.documentElement.clientWidth <= 480 ? 360 : 600;
+                return globalThis.window &&
+                  document.documentElement.clientWidth <= 480
+                  ? 360
+                  : 600;
               })(),
             }}
           >

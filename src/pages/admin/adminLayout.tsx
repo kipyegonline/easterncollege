@@ -123,20 +123,26 @@ export default function AdminLayout({ children }: { children: any }) {
 
 type SchoolsProps = { id: number; school: string };
 interface SchoolList {
-  sendValue: (f: string) => void;
+  sendValue: (f: number) => void;
   schools: SchoolsProps[];
+  school: number;
 }
 export const SchoolList = ({
   schools = [],
-  sendValue = (f: string) => f,
+  school,
+  sendValue = (f: number) => f,
 }: SchoolList) => {
-  const [selected, setSelected] = React.useState("");
+  const [selected, setSelected] = React.useState(school);
+  React.useEffect(() => {
+    setSelected(school);
+  }, [school]);
 
   const handleChange = (
     e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
   ) => {
-    setSelected((e.target as HTMLSelectElement).value);
-    sendValue((e.target as HTMLSelectElement).value);
+    setSelected(+(e.target as HTMLSelectElement).value);
+    sendValue(+(e.target as HTMLSelectElement).value);
+    console.log((e.target as HTMLSelectElement).value, "hope");
   };
 
   return (

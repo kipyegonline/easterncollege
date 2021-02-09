@@ -10,7 +10,7 @@ export default function Index() {
       const res = await fetch("../../server/index.php?fetchforms=true");
       const data: FormProps[] = await res.json();
       if (Array.isArray(data)) {
-        setForms(forms);
+        setForms(data);
       } else {
         throw new TypeError("No payload");
       }

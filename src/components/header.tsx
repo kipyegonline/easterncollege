@@ -26,7 +26,10 @@ type Search = {
 };
 const Header: React.FC<Props> = ({ classes }) => {
   const style = { color: "yellow" };
-  const w = document.documentElement.clientWidth as number;
+  let w;
+  if (globalThis.window) {
+    w = document.documentElement.clientWidth as number;
+  }
 
   const handleSearch = (text: string): void => {
     if (!text) return;

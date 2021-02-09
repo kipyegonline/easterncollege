@@ -58,7 +58,7 @@ export default function Login() {
     } else if (email.length > 6 && password.length > 5) {
       setSpinner(true);
       axios
-        .post("../../server/sermon.php?loginuser=true", {
+        .post("../../server/index.php?loginuser=true", {
           password,
           email,
         })
@@ -67,9 +67,9 @@ export default function Login() {
           if (data.status === 200) {
             setPassword("");
             setEmail("");
-            localStorage.setItem("local-user-token", JSON.stringify(data));
+            localStorage.setItem("easter-user", JSON.stringify(data));
             setTimeout(
-              () => localStorage.removeItem("local-user-token"),
+              () => localStorage.removeItem("easter-user") as any,
               6e4 * 30
             );
             location.pathname = "/admin/add-sermon";
@@ -121,7 +121,7 @@ export default function Login() {
       //send to server
       setSpinner(true);
       axios
-        .post("../../server/sermon.php?signupuser=true", {
+        .post("../../server/index.php?signupuser=true", {
           userpassword,
           useremail,
           username,

@@ -53,11 +53,12 @@ export default function Courses() {
   };
   React.useEffect(() => {
     fetchSchools(setSchools);
-    //setTimeout(() => setSchools(schoolys), 3000);
+    setTimeout(() => setSchools(schoolys), 3000);
   }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(school, typeof school);
     if (!courseName.trim().length) {
       setError("Enter course name");
       setTimeout(() => setError(""), 3000);
@@ -112,7 +113,7 @@ export default function Courses() {
             setSuccess(data.msg);
             setCourseCode("");
             setCourseName("");
-            setSchool("");
+
             setLevel("");
             setPeriod("");
             setIntakes("");
@@ -130,6 +131,15 @@ export default function Courses() {
         });
     } else {
       setError("Something went wrong...Ensure all fields have values.");
+      console.log(
+        courseName.length > 5,
+        courseCode.length > 0,
+        school > 0,
+        level.length > 5,
+        period.length > 5,
+        intakes.length > 5,
+        des.length > 5
+      );
       setTimeout(() => setError(""), 3000);
     }
   };
@@ -167,15 +177,20 @@ export default function Courses() {
                 getValue={sendValue}
                 name="CourseCode"
               />
-              {!!schools.length && (
-                <SchoolList schools={schools} sendValue={setSchool} />
-              )}
+
               <FormInput
                 label="4. Level (certificate,diploma,degree)"
                 type="text"
                 getValue={sendValue}
                 name="Level"
               />
+              {!!schools.length && (
+                <SchoolList
+                  schools={schools}
+                  school={school}
+                  sendValue={setSchool}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={6} lg={6}>
               <FormInput
