@@ -15,19 +15,30 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Chip,
 } from "@material-ui/core";
 import Layout from "../../components/layout";
 import Login from "./login";
-import { ArrowRightAlt, Close, ExitToApp, Home } from "@material-ui/icons";
+import {
+  ArrowRightAlt,
+  Close,
+  ExitToApp,
+  Face,
+  Home,
+} from "@material-ui/icons";
 import { Skeleton } from "@material-ui/lab";
 
 export default function AdminLayout({ children }: { children: any }) {
   const [active, setActive] = React.useState(-1);
+  const luser =
+    globalThis.window &&
+    JSON.parse(localStorage.getItem("eastern-user") as any);
+  const [user, setUser] = React.useState(luser);
   const [coords, setCoords] = React.useState<{
     width: number;
     height: number;
   } | null>(null);
-  const [isLogged, setLogged] = React.useState<boolean | undefined>(undefined);
+
   const items = [
     "News",
     "Careers",
@@ -39,7 +50,9 @@ export default function AdminLayout({ children }: { children: any }) {
     "Downloads",
   ];
   const handleLogout = () => {
+    window.localStorage.removeItem("eastern-user");
     window.location.pathname = "/admin/login";
+    console.log("redirected");
   };
   const handleActive = (active: number) => {
     setActive(active);
@@ -49,25 +62,14 @@ export default function AdminLayout({ children }: { children: any }) {
     navigate("/admin/");
   };
 
-  React.useLayoutEffect(() => {
-    setCoords({
-      width: document.documentElement.clientWidth,
-      height: document.documentElement.clientHeight,
-    });
-  }, []);
-
-  const SkeletonWrapper = (
-    <Skeleton
-      animation="wave"
-      width={coords?.width - 300}
-      height={coords?.height}
-    ></Skeleton>
-  );
-  const user =
-    globalThis.window && (localStorage.getItem("eastern-user") as any);
   const admin = (
     <Layout siteTitle="Eastern Admin">
-      <Grid container className=" p-2 my-2">
+      <Grid
+        container
+        className=" p-2 my-2"
+        justify="space-evenly"
+        alignItems="flex-start"
+      >
         <Grid item xs={12} md={3} lg={3} className="p-2">
           <Paper>
             <List>
@@ -80,6 +82,14 @@ export default function AdminLayout({ children }: { children: any }) {
                 <ListItemIcon onClick={handleNav}>
                   <Home />
                 </ListItemIcon>
+                <Chip
+                  label={user?.username}
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleNav}
+                  size="small"
+                  icon={<Face />}
+                />
               </ListItem>
               {items.map((item, i) => (
                 <ListItem
@@ -118,7 +128,7 @@ export default function AdminLayout({ children }: { children: any }) {
       </Grid>
     </Layout>
   );
-  return user ? admin : <Login />;
+  return user?.altId ? admin : <Login />;
 }
 
 type SchoolsProps = { id: number; school: string };
@@ -142,7 +152,6 @@ export const SchoolList = ({
   ) => {
     setSelected(+(e.target as HTMLSelectElement).value);
     sendValue(+(e.target as HTMLSelectElement).value);
-    console.log((e.target as HTMLSelectElement).value, "hope");
   };
 
   return (

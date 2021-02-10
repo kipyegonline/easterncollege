@@ -3,6 +3,7 @@ import { Link } from "gatsby";
 import {
   Box,
   Grid,
+  Link as MLink,
   List,
   ListItem,
   IconButton,
@@ -125,9 +126,14 @@ const Footer: React.FC = (): JSX.Element => {
             <ListItem button dense>
               <ArrowRight htmlColor="white" />
 
-              <Link className=" text-sm hover:underline" to="/apply-online">
-                Apply Online
-              </Link>
+              <MLink
+                className="text-sm  hover:underline"
+                href="https://easterncollege.school-network.net/"
+                target="_blank"
+                style={{ color: "white" }}
+              >
+                Student Portal (LMS)
+              </MLink>
             </ListItem>
           </List>
         </Grid>
@@ -162,13 +168,7 @@ const Footer: React.FC = (): JSX.Element => {
                 Tender
               </Link>
             </ListItem>
-            <ListItem button dense>
-              <ArrowRight htmlColor="white" />
 
-              <Link className="text-sm  hover:underline" to="/login">
-                Portal
-              </Link>
-            </ListItem>
             <ListItem button dense>
               <ArrowRight htmlColor="white" />
 
@@ -192,7 +192,7 @@ const Footer: React.FC = (): JSX.Element => {
               <IconButton>
                 <Telephone htmlColor="gray" fontSize="small" />
               </IconButton>
-              +252613778899
+              +252-613-778-899
             </Typography>
             <Typography variant="body2">
               <IconButton>

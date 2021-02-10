@@ -1,263 +1,243 @@
+import React from "react";
+import Pagination from "@material-ui/lab/Pagination";
 import {
-  Typography,
   Box,
   Button,
-  TextField,
-  Grid,
-  Select,
-  MenuItem,
+  CircularProgress,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  TableBody,
+  ButtonGroup,
 } from "@material-ui/core";
-import React from "react";
-import axios from "axios";
-import { Link } from "gatsby";
-import AdminLayout, { SchoolList } from "../adminLayout";
-import { FormInput, Spinner } from "../../contact-us";
-import { Add, ArrowRight } from "@material-ui/icons";
-import { Alert } from "@material-ui/lab";
+import AdminLayout, { UseModal } from "../adminLayout";
 
-export default function Courses() {
-  const [schools, setSchools] = React.useState<
-    { id: number; school: string }[]
-  >([]);
-  const form = React.useRef<HTMLFormElement | null>(null!);
+import { Delete, Error, More, SchoolOutlined } from "@material-ui/icons";
+
+export default function Courses(): JSX.Element {
   const [spinner, setSpinner] = React.useState(false);
-  const [success, setSuccess] = React.useState("");
-  const [errmsg, setError] = React.useState("");
-  const [courseName, setCourseName] = React.useState("");
-  const [courseCode, setCourseCode] = React.useState("");
-  const [school, setSchool] = React.useState(0);
-  const [level, setLevel] = React.useState("");
-  const [period, setPeriod] = React.useState("");
-  const [intakes, setIntakes] = React.useState("");
-  const [des, setDes] = React.useState("");
+  const [courses, setCourses] = React.useState([]);
+  const [course, setCourse] = React.useState({});
+  const [current, setCurrent] = React.useState(0);
+  const [active, setActive] = React.useState(-1);
 
-  const sendValue = (name: string, value: string) => {
-    const setState = eval("set" + name);
-    setState(value);
-  };
-  const fetchSchools = async (
-    callback: (data: { id: number; school: string }[]) => void
-  ) => {
+  const perpage = courses.length > 9 ? 10 : courses.length;
+  const pages = Math.ceil(courses.length / perpage);
+  const start = current * perpage,
+    end = current * perpage + perpage;
+  const handlePage = (e: React.ChangeEvent<unknown>, p: number) =>
+    setCurrent(p - 1);
+  const fetchCourses = async (id = 0) => {
     try {
-      const res = await fetch(`../../server/index.php?fetchschools`);
-      const data = await res.json();
+      setCourses([]);
+      setSpinner(true);
 
-      if (Array.isArray(data) || !!data.length) {
-        callback(data);
+      const res = await fetch(
+        `../../server/index.php?fetchcourses&courseId=${id}`
+      );
+      const data = await res.json();
+      if (Array.isArray(data) && !!data.length) {
+        setCourses(data);
       } else {
-        throw new Error("No courses found");
+        throw new ReferenceError("No courses found");
       }
     } catch (error) {
+      setSpinner(false);
       console.log("fetchcourses", error);
     }
   };
-  React.useEffect(() => {
-    fetchSchools(setSchools);
-    setTimeout(() => setSchools(schoolys), 3000);
-  }, []);
+  const sendCourse = id => {
+    setCourse(courses.find(course => course.id === id));
+  };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(school, typeof school);
-    if (!courseName.trim().length) {
-      setError("Enter course name");
-      setTimeout(() => setError(""), 3000);
-    } else if (!courseCode.trim().length) {
-      setError("Enter course code");
-      setTimeout(() => setError(""), 3000);
-    } else if (school < 1) {
-      setError("Kindly select school");
-      setTimeout(() => setError(""), 3000);
-    } else if (!level.trim().length) {
-      setError("Enter course level");
-      setTimeout(() => setError(""), 3000);
-    } else if (!period.trim().length) {
-      setError("Enter course period");
-      setTimeout(() => setError(""), 3000);
-    } else if (!intakes.trim().length) {
-      setError("Enter course intakes");
-      setTimeout(() => setError(""), 3000);
-    } else if (!des.trim().length) {
-      setError("Kindly provide a brief description of the course.");
-      setTimeout(() => setError(""), 3000);
-    } else if (
-      courseName.length > 5 &&
-      courseCode.length > 0 &&
-      school > 0 &&
-      level.length > 5 &&
-      period.length > 5 &&
-      intakes.length > 5 &&
-      des.length > 5
-    ) {
-      //send to server
-      setError("");
-      setSpinner(true);
-      const payload = {
-        courseName,
-        courseCode,
-        school,
-        level,
-        period,
-        intakes,
-        des,
-        addedBy: 1,
-      };
-
-      axios
-        .post("../../server/index.php?addcourses=true", payload)
-        .then(res => {
-          const { data } = res;
-          if (data.status === 200) {
-            setSpinner(false);
-
-            setSuccess(data.msg);
-            setCourseCode("");
-            setCourseName("");
-
-            setLevel("");
-            setPeriod("");
-            setIntakes("");
-            setDes("");
-            if (form.current) form.current.reset();
-            setTimeout(() => setSuccess(""), 4000);
-          } else {
-            throw new Error(data.msg);
-          }
-        })
-        .catch(error => setError(error.message))
-        .finally(() => {
-          setSpinner(false);
-          setError("");
-        });
-    } else {
-      setError("Something went wrong...Ensure all fields have values.");
-      console.log(
-        courseName.length > 5,
-        courseCode.length > 0,
-        school > 0,
-        level.length > 5,
-        period.length > 5,
-        intakes.length > 5,
-        des.length > 5
-      );
-      setTimeout(() => setError(""), 3000);
+  const handleDelete = (id: number) => {
+    if (confirm("Delete course")) {
+      fetch(`../../server/index.php?deletecourse=true&courseId=${id}`)
+        .then(res => setCourses(courses.filter(item => item.id !== id)))
+        .catch(error => console.log("delete course", error));
     }
   };
+  const handleActive = (id: number) => {
+    setActive(id);
+    fetchCourses(id + 1);
+  };
+  React.useEffect(() => {
+    fetchCourses();
+    // setTimeout(() => setCourses(Rcourses), 3000);
+  }, []);
+
+  const Spinner = () => (
+    <Box className="p-4 my-4 mx-auto text-center">
+      <CircularProgress color="secondary" size="3rem" />
+      <Typography>Loading courses</Typography>
+    </Box>
+  );
+  const ErrEl = (
+    <Box>
+      <Typography className="text-red-500 text-center">
+        {" "}
+        <Error />
+        No courses found
+      </Typography>
+    </Box>
+  );
+  const Btns = ({ schools }) => (
+    <ButtonGroup>
+      {schools.map((item, index) => (
+        <Button
+          startIcon={<SchoolOutlined />}
+          variant="contained"
+          key={index}
+          size="small"
+          style={{ margin: 5 }}
+          onClick={() => handleActive(index)}
+          color={active === index ? "secondary" : "primary"}
+        >
+          {item}
+        </Button>
+      ))}
+    </ButtonGroup>
+  );
 
   return (
     <AdminLayout>
-      <Box>
-        <form
-          style={{
-            maxWidth: 800,
-            padding: 20,
-            border: "1px solid #ddd",
-            background: "#dddd",
-          }}
-          onSubmit={handleSubmit}
-          ref={form}
-        >
-          <Box>
-            <Typography align="center" variant="h6">
-              Add Course Information
-            </Typography>
-          </Box>
+      {course.id !== undefined && <Course course={course} />}
 
-          <Grid container spacing={3} justify="space-between">
-            <Grid item xs={12} md={6} lg={6}>
-              <FormInput
-                label="1. Course name"
-                type="text"
-                getValue={sendValue}
-                name="CourseName"
-              />
-              <FormInput
-                label="2. Course code"
-                type="text"
-                getValue={sendValue}
-                name="CourseCode"
-              />
-
-              <FormInput
-                label="4. Level (certificate,diploma,degree)"
-                type="text"
-                getValue={sendValue}
-                name="Level"
-              />
-              {!!schools.length && (
-                <SchoolList
-                  schools={schools}
-                  school={school}
-                  sendValue={setSchool}
-                />
-              )}
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <FormInput
-                label="5. Period"
-                type="text"
-                getValue={sendValue}
-                name="Period"
-              />
-              <FormInput
-                label="6. Intakes"
-                type="text"
-                getValue={sendValue}
-                name="Intakes"
-              />
-
-              <TextField
-                label="7. Description"
-                multiline
-                variant="filled"
-                fullWidth
-                style={{ display: "block", width: "100%" }}
-                rows={4}
-                type="text"
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setDes((e.target as HTMLTextAreaElement).value)
-                }
-                name="Des"
-              />
-              <Box>
-                {spinner && <Spinner />}
-                {!!success && (
-                  <Alert severity="success" className="my-2" variant="filled">
-                    <Typography variant="body2">{success}</Typography>
-                  </Alert>
-                )}
-                {!!errmsg && (
-                  <Alert severity="error" className="my-2" variant="filled">
-                    <Typography variant="body2">{errmsg}</Typography>
-                  </Alert>
-                )}
-              </Box>
-              <Button
-                className="my-4"
-                style={{ width: "100%", marginTop: 15 }}
-                color="primary"
-                variant="contained"
-                type="submit"
-                disabled={spinner}
-                endIcon={<Add />}
-              >
-                {spinner ? "Adding course" : "Add Course"}
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-        <div>
-          <Link to="/admin/courses/courses" className="text-blue-600">
-            {" "}
-            <ArrowRight /> View all courses..
-          </Link>
-        </div>
-      </Box>
+      {!!courses.length ? (
+        <Box>
+          <Btns schools={schools} />
+          <Typography variant="h6" align="center">
+            {courses.length} courses
+          </Typography>
+          <CoursesTable
+            courses={courses.slice(start, end)}
+            getCourse={sendCourse}
+            index={start}
+            sendDelete={handleDelete}
+          />
+          {courses.length > 9 && (
+            <Pagination
+              count={pages}
+              page={current + 1}
+              defaultPage={current + 1}
+              color="primary"
+              onChange={handlePage}
+            />
+          )}
+        </Box>
+      ) : spinner ? (
+        <Spinner />
+      ) : (
+        ErrEl
+      )}
     </AdminLayout>
   );
 }
-const schoolys = [
-  { id: 1, school: "law" },
-  { id: 2, school: "Medicine" },
-  { id: 3, school: "Education" },
+
+const CoursesTable = ({
+  index = 0,
+  courses = [],
+  getCourse = f => f,
+  sendDelete = f => f,
+}) => {
+  return (
+    <TableContainer>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Code</TableCell>
+            <TableCell>Level</TableCell>
+            <TableCell>Period</TableCell>
+            <TableCell>Description</TableCell>
+            <TableCell>Delete</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {courses.map((item, i) => (
+            <CourseTable
+              key={i}
+              {...item}
+              index={i + index}
+              handleDelete={() => sendDelete(item.id)}
+              handleMore={() => getCourse(item.id)}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const CourseTable = ({
+  index,
+  id,
+  coursename,
+  coursecode,
+  level,
+  period,
+  des,
+  handleDelete,
+  handleMore,
+}) => (
+  <TableRow>
+    <TableCell>{index + 1}.</TableCell>
+    <TableCell>{coursename}</TableCell>
+    <TableCell>{coursecode}</TableCell>
+    <TableCell>{level}</TableCell>
+    <TableCell>{period}</TableCell>
+    <TableCell>
+      {" "}
+      <Button
+        endIcon={<More />}
+        color="primary"
+        variant="contained"
+        size="small"
+        onClick={handleMore}
+      >
+        More
+      </Button>
+    </TableCell>
+    <TableCell>
+      <Button
+        startIcon={<Delete />}
+        color="secondary"
+        variant="contained"
+        size="small"
+        onClick={handleDelete}
+      >
+        Delete
+      </Button>
+    </TableCell>
+  </TableRow>
+);
+const Course = ({ course }) => {
+  const [open, setOpen] = React.useState(false);
+  const handleClick = () => setOpen(false);
+  React.useEffect(() => {
+    setOpen(!!course.id);
+  }, [course]);
+  return (
+    <UseModal title={course.coursename} open={open} handleClick={handleClick}>
+      <Typography variant="body1">{course.des}</Typography>
+    </UseModal>
+  );
+};
+const Rcourses = [...Array(32)].map((item, i) => ({
+  id: i + 1,
+  coursename: "Media and Comms",
+  coursecode: 302,
+  level: "Degree",
+  period: "4 years",
+  des: "Journalism and connunication practioners",
+}));
+const schools = [
+  "School Of Languages",
+  "School Of Business And Economics",
+  " School Of Hospitality Management",
+  "School Of Humanities And Social Sciences",
 ];

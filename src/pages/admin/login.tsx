@@ -67,9 +67,9 @@ export default function Login() {
           if (data.status === 200) {
             setPassword("");
             setEmail("");
-            localStorage.setItem("easter-user", JSON.stringify(data));
+            localStorage.setItem("eastern-user", JSON.stringify(data));
             setTimeout(
-              () => localStorage.removeItem("easter-user") as any,
+              () => localStorage.removeItem("eastern-user") as any,
               6e4 * 30
             );
             location.pathname = "/admin/add-sermon";
@@ -145,6 +145,7 @@ export default function Login() {
           }, 2000);
         })
         .catch(error => {
+          setSpinner(false);
           console.log(error);
           !!error.message
             ? setError(error.message)
@@ -212,7 +213,7 @@ export default function Login() {
           </FormHelperText>
         )}
         {success && (
-          <FormHelperText className="text-center alert alert-success">
+          <FormHelperText className="text-center text-green-700">
             {success}
           </FormHelperText>
         )}
@@ -235,7 +236,7 @@ export default function Login() {
   const signup = (
     <form
       onSubmit={handleSignUP}
-      style={{ maxWidth: 400, border: "1px solid yellow" }}
+      style={{ maxWidth: 400 }}
       className="p-4"
       ref={form}
     >

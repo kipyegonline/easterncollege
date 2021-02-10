@@ -30,6 +30,7 @@ import WhatsApp from "@material-ui/icons/WhatsApp";
 import Home from "@material-ui/icons/Home";
 
 import { List, ListItem, ListItemIcon, Fab } from "@material-ui/core";
+import { ArrowRight } from "@material-ui/icons";
 
 const logo = require("../../images/icon-72x72.png");
 const smallLogo = require("../../images/icon-48x48.png");
@@ -112,12 +113,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function PrimarySearchAppBar() {
   const [pos, setPos] = React.useState(false);
-  const [dropdown, setDropDown] = React.useState({
-    about: false,
-    campus: false,
-    media: false,
-    academic: false,
-  });
 
   const classes = useStyles();
   const w: number = globalThis.window && document.documentElement.clientWidth;
@@ -166,7 +161,12 @@ export default function PrimarySearchAppBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   //2a4365
-  const { campus, about, academic, media } = dropdown;
+  const styleIcon = {
+    top: 2,
+    left: 0,
+    position: "absolute",
+    color: pos ? "white" : null,
+  };
   return (
     <div className={classes.grow} id="navbar">
       <AppBar
@@ -180,7 +180,7 @@ export default function PrimarySearchAppBar() {
         }}
       >
         <List
-          className={`lg:flex  flex-row justify-space-evenly  items-start py-4`}
+          className={`main-menu lg:flex  flex-row justify-space-evenly  items-start py-4`}
         >
           <ListItem dense className="px-1 ">
             <div
@@ -202,59 +202,72 @@ export default function PrimarySearchAppBar() {
             <Link
               activeStyle={activeStyle}
               to="/"
-              className="font-bold block transition duration-500 ease-linear hover:text-yellow-900 "
+              className="font-bold block transition duration-500 ease-linear hover:text-yellow-500 "
             >
-              <Home />
+              <IconButton>
+                {" "}
+                <Home style={styleIcon} />
+              </IconButton>
             </Link>
           </ListItem>
-          <ListItem dense className="px-1  mx-1 relative">
+          <ListItem
+            dense
+            className=" top-menu px-1  mx-1 relative transition duration-500 ease-linear hover:text-yellow-500"
+          >
             <Link
-              onMouseOver={() => setDropDown({ ...dropdown, about: true })}
-              onMouseLeave={() => setDropDown({ ...dropdown, about: false })}
               activeStyle={activeStyle}
               to="/about-us"
-              className="font-bold  block transition duration-500 ease-linear "
+              className=" font-bold text-sm block transition duration-500 ease-linear "
             >
-              About Us <ArrowDropDownIcon />
-              <AboutUs display={about} input={aboutUs} />
+              About Us{" "}
+              <IconButton>
+                <ArrowDropDownIcon className="icon" style={styleIcon} />
+              </IconButton>
             </Link>
+            <AboutUs input={aboutUs} />
           </ListItem>
 
-          <ListItem dense className="px-1  mx-1 ">
+          <ListItem
+            dense
+            className="top-menu px-1  mx-1 relative transition duration-500 ease-linear hover:text-yellow-500 "
+          >
             <Link
-              onMouseEnter={() => setDropDown({ ...dropdown, academic: true })}
-              onMouseLeave={() => setDropDown({ ...dropdown, academic: false })}
               activeStyle={activeStyle}
               to="/admissions"
-              className="font-bold block transition duration-500 ease-linear  "
+              className="font-bold text-sm block transition duration-500 ease-linear  "
             >
-              Academics <ArrowDropDownIcon fontSize="small" />
-              <AboutUs display={academic} input={schools} />
+              Academics
+              <IconButton>
+                <ArrowDropDownIcon className="icon" style={styleIcon} />
+              </IconButton>
             </Link>
+            <AboutUs input={schools} />
           </ListItem>
-          <ListItem dense className="px-1  mx-1  ">
+          <ListItem dense className="top-menu px-1  mx-1  ">
             <Link
               activeStyle={activeStyle}
-              onMouseEnter={() => setDropDown({ ...dropdown, campus: true })}
-              onMouseLeave={() => setDropDown({ ...dropdown, campus: false })}
               to="/campus-life"
               className="font-bold text-sm  block transition duration-500 ease-linear  "
             >
-              Campus Life <ArrowDropDownIcon fontSize="small" />
-              <AboutUs display={campus} input={campusLife} />
+              Campus Life{" "}
+              <IconButton>
+                <ArrowDropDownIcon className="icon" style={styleIcon} />
+              </IconButton>
             </Link>{" "}
+            <AboutUs input={campusLife} />
           </ListItem>
-          <ListItem dense className="px-1  mx-1   ">
+          <ListItem dense className="top-menu px-1  mx-1   ">
             <Link
               activeStyle={activeStyle}
-              onMouseEnter={() => setDropDown({ ...dropdown, media: true })}
-              onMouseLeave={() => setDropDown({ ...dropdown, media: false })}
               to="/notice"
               className="font-bold block text-sm transition t duration-500 ease-linear   "
             >
-              Media Desk <ArrowDropDownIcon />
-              <AboutUs display={media} input={mediaInfo} />
+              Media Desk{" "}
+              <IconButton edge="end">
+                <ArrowDropDownIcon className="icon " style={styleIcon} />
+              </IconButton>
             </Link>{" "}
+            <AboutUs input={mediaInfo} />
           </ListItem>
 
           <ListItem dense className="px-1  mx-1 ">
@@ -280,6 +293,25 @@ export default function PrimarySearchAppBar() {
           </ListItem>
         </List>
       </AppBar>
+      <style jsx>{`
+        .top-menu:hover .dropdown, .top-menu:active .dropdown, .top-menu:focus-within .dropdown  {
+        visibility:visible;
+        display:block;
+        opacity:1;
+     
+        }
+        .dropdown {
+         visibility:hidden,
+       
+         opacity:0;
+         transition:all 1s ease;
+         display:none;
+        }
+        .top-menu:hover .icon{
+          transform:rotate(180deg);
+          transition:transform .25s ease;
+        }
+      `}</style>
     </div>
   );
 }
@@ -344,22 +376,24 @@ export const AboutUs: React.FC<{ input: Input[]; display: boolean }> = ({
 }) => {
   return (
     <List
-      className="mt-10 mx-3 px-2 border-t-2 text-gray-700 border-blue-700 bg-white z-100 transition-all duration-100 ease-linear"
+      className=" dropdown mt-10 mx-3 px-2 border-t-2 text-gray-700 border-blue-700 bg-white z-100 transition-all duration-100 ease-linear"
       style={{
         width: 150,
         marginTop: 0,
         position: "absolute",
         top: 30,
         left: 0,
-
-        opacity: display ? 1 : 0,
-        transform: display ? "translateY(0px)" : "translateY(-1000px)",
+        minWidth: "100%",
         transition: "all .5s linear ",
-        //display: display ? "block" : "none",
       }}
     >
       {input.map((item, index) => (
-        <ListItem key={index} dense className="my-0 z-30 py-1 text-sm">
+        <ListItem
+          key={index}
+          dense
+          className=" dropdown-menu my-0 z-30 py-1 text-sm"
+        >
+          <ArrowRight fontSize="small" />
           <Link
             to={item.value}
             className="font-normal py-1 hover:text-blue-700"
@@ -368,6 +402,13 @@ export const AboutUs: React.FC<{ input: Input[]; display: boolean }> = ({
           </Link>{" "}
         </ListItem>
       ))}
+      <style>{`
+      .dropdown-menu:hover{
+        color:white;
+        transition:all .25s ease;
+        border-bottom:2px solid  blue;
+      }
+     `}</style>
     </List>
   );
 };
@@ -396,7 +437,7 @@ export const campusLife: Input[] = [
 ];
 export const mediaInfo: Input[] = [
   { name: "Latest news", value: "/post" },
-  { name: "Events", value: "/event" },
+  { name: "Events", value: "/events" },
 
   { name: "Notices", value: "/notice" },
 ];
