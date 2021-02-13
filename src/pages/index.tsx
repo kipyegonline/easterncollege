@@ -555,7 +555,7 @@ const Programmes: React.FC<{ courses: Courses[] }> = ({ courses = [] }) => {
 function metricsCheck() {
   const aDay = 6e4 * 60 * 24;
 
-  let lastVisit: string | any =
+  let lastVisit: string | any | number =
     globalThis.window && (localStorage.getItem("lastVisit") as any); //track time
   let uuid: string | any =
     globalThis.window && (localStorage.getItem("uservisit") as any); // track user
@@ -573,6 +573,8 @@ function metricsCheck() {
 }
 
 function recordMetrics(id = 0, uuid: string) {
+  const lastVisit: number = Date.now();
+  globalThis.window && localStorage.setItem("lastVisit", lastVisit);
   fetch(`./server/index.php?recordmetrics=true&lastvisit=${id}&uuid=${uuid}`);
 }
 if (globalThis.window) {

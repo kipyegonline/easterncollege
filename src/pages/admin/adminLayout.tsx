@@ -71,7 +71,7 @@ export default function AdminLayout({ children }: { children: any }) {
         alignItems="flex-start"
       >
         <Grid item xs={12} md={3} lg={3} className="p-2">
-          <Paper>
+          <Paper style={{ minWidth: 200 }}>
             <List>
               <ListItem
                 divider

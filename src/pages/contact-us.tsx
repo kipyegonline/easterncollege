@@ -317,6 +317,7 @@ type FormInput = {
   getValue: (name: string, value: string) => void;
   Icon?: any;
   name?: string;
+  value?: string;
 };
 export const FormInput: React.FC<FormInput> = ({
   label,

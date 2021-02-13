@@ -72,7 +72,7 @@ export default function Login() {
               () => localStorage.removeItem("eastern-user") as any,
               6e4 * 30
             );
-            location.pathname = "/admin/add-sermon";
+            location.pathname = "/admin/";
             //setTimeout(() => setSuccess(""), 3000)
           } else {
             throw new Error(data.msg);

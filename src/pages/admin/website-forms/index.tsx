@@ -46,7 +46,7 @@ export default function Index() {
     fetchData();
     //setTimeout(() => setForms(mm), 5000);
   }, []);
-  console.log(forms);
+
   return (
     <AdminLayout>
       <div>
@@ -81,7 +81,7 @@ const FormsTable: React.FC<{ messages: FormProps[] }> = ({ messages = [] }) => {
     <>
       {message?.id && <MessageModal message={message} />}
       {messages.length && (
-        <Typography align="center" className="fon-bold" variant="body2">
+        <Typography align="center" className="font-bold" variant="body2">
           {messages.length} messages.
         </Typography>
       )}
@@ -110,12 +110,14 @@ const FormsTable: React.FC<{ messages: FormProps[] }> = ({ messages = [] }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Pagination
-        onChange={handlePage}
-        count={pages}
-        color="primary"
-        page={current + 1}
-      />
+      {messages.length && (
+        <Pagination
+          onChange={handlePage}
+          count={pages}
+          color="primary"
+          page={current + 1}
+        />
+      )}
     </>
   );
 };
@@ -136,7 +138,7 @@ const FormTable = ({
     <TableCell>
       {index + 1}.{" "}
       <span>
-        <Check htmlColor={!!seen ? "blue" : ""} />
+        <Check htmlColor={+seen === 1 ? "blue" : ""} />
       </span>
     </TableCell>
     <TableCell>{email}</TableCell>
@@ -165,6 +167,7 @@ const MessageModal: React.FC<{ message: FormProps }> = ({ message }) => {
         .catch(error => console.log(error.message));
     }
   };
+
   React.useEffect(() => {
     setOpen(!!message.id);
     setBlueTicks(message.id);

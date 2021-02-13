@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "gatsby";
 import Pagination from "@material-ui/lab/Pagination";
 import {
   Box,
@@ -76,7 +77,7 @@ export default function Courses(): JSX.Element {
     </Box>
   );
   const ErrEl = (
-    <Box>
+    <Box className="p-2">
       <Typography className="text-red-500 text-center">
         {" "}
         <Error />
@@ -84,8 +85,9 @@ export default function Courses(): JSX.Element {
       </Typography>
     </Box>
   );
+
   const Btns = ({ schools }) => (
-    <ButtonGroup>
+    <ButtonGroup className=" flex flex-row ">
       {schools.map((item, index) => (
         <Button
           startIcon={<SchoolOutlined />}
@@ -127,11 +129,15 @@ export default function Courses(): JSX.Element {
               onChange={handlePage}
             />
           )}
+          <Link to="/admin/add-course">Add Course</Link>
         </Box>
       ) : spinner ? (
         <Spinner />
       ) : (
-        ErrEl
+        <>
+          <Btns schools={schools} />
+          {ErrEl}
+        </>
       )}
     </AdminLayout>
   );
