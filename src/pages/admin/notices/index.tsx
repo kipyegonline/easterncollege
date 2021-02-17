@@ -1,189 +1,156 @@
 import React from "react";
-import axios from "axios";
-import { Typography, Box, TextField, Button, Grid } from "@material-ui/core";
+import { Link } from "gatsby";
+import {
+  Box,
+  CircularProgress,
+  Typography,
+  Table,
+  TableContainer,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableBody,
+  Button,
+} from "@material-ui/core";
+import { ArrowRight, Error } from "@material-ui/icons";
+
 import AdminLayout from "../adminLayout";
-import { FormInput, Spinner } from "../../contact-us";
-import { Add, DeleteForever } from "@material-ui/icons";
-import { Alert } from "@material-ui/lab";
+
+type Data = {
+  id: number;
+  title: string;
+  body: string;
+  date: string;
+  addedon: string;
+};
 
 export default function News() {
+  const [notices, setNotices] = React.useState<Data[]>([]);
   const [spinner, setSpinner] = React.useState(false);
-  const [success, setSuccess] = React.useState("");
   const [errmsg, setError] = React.useState("");
-  const [title, setTitle] = React.useState("");
-  const [body, setBody] = React.useState("");
-  const [news, setNews] = React.useState<string[]>([]);
 
-  const [date, setDate] = React.useState("");
-
-  const form = React.useRef<null | HTMLFormElement>(null!);
-  const sendValue = (name: string, value: string) => {
-    const setState = eval("set" + name);
-    setState(value);
-  };
-  const handlePara = () => {
-    if (body) {
-      setNews([...news, body]);
-      setBody("");
-    }
-  };
-  const handleClear = () => {
-    if (window.confirm("CLear notice?")) {
-      setNews([]);
-    }
-  };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!title.trim().length) {
-      setError("Enter title.");
-      setTimeout(() => setError(""), 3000);
-    } else if (!news.length) {
-      setError("Enter news body");
-      setTimeout(() => setError(""), 3000);
-    } else if (!date.trim().length) {
-      setError("Kindly select date");
-      setTimeout(() => setError(""), 3000);
-    } else if (news.length > 0 && date.length > 5 && title.length > 5) {
-      setError("");
+  const fetchDownloads = async () => {
+    try {
       setSpinner(true);
+      const res = await fetch("../../server/index.php?fetchnotices=true");
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setNotices(data);
+        setSpinner(false);
+      }
+    } catch (error) {
+      setSpinner(false);
 
-      const payload = {
-        date,
-        body: news.join("*"),
-        title,
-        addedBy: 1,
-      };
-
-      axios
-        .post("../../server/index.php?addnotice=true", payload)
-        .then(res => {
-          const { data } = res;
-          if (data.status === 200) {
-            setSuccess(data.msg);
-            setDate("");
-            setTitle("");
-            setBody("");
-            setNews([]);
-            if (form.current) form.current.reset();
-            setTimeout(() => setSuccess(""), 4000);
-          } else {
-            throw new TypeError(data.msg);
-          }
-        })
-        .catch(error => {
-          setError(error.message);
-        })
-        .finally(() => {
-          setSpinner(false);
-          setError("");
-        });
-    } else {
-      setError("Ensure all fields have values");
-      setTimeout(() => setError(""), 3000);
+      error.message
+        ? setError(error.message)
+        : setError("There are no news items.");
     }
   };
+  const handleDelete = (id: number) => {
+    if (confirm("Delete notice?")) {
+      fetch(`../../server/index.php?deletenotice=true&id=${id}`)
+        .then(res => res.json())
+        .then(res => {
+          setNotices(notices.filter(item => item.id !== id));
+        })
+        .catch(error => console.log(error.message));
+    }
+  };
+  React.useEffect(() => {
+    fetchDownloads();
+  }, []);
+
   return (
     <AdminLayout>
-      <Grid container justify="space-evenly">
-        <Grid item xs={12} md={6} lg={6}>
-          <Box>
-            <form
-              style={{
-                maxWidth: 500,
-                padding: 16,
-                border: "1px solid #ccc",
-                background: "#ddd",
-                margin: "1rem ",
-              }}
-              onSubmit={handleSubmit}
-              ref={form}
-            >
-              <Typography align="center" variant="h6">
-                Add Notice
-              </Typography>
-              <FormInput
-                label="Enter news title"
-                type="text"
-                getValue={sendValue}
-                name="Title"
-              />
-              <FormInput
-                label="Enter date"
-                type="date"
-                getValue={sendValue}
-                name="Date"
-              />
-              <TextField
-                type="text"
-                error={!!!news.length}
-                helperText="Paste each  paragraph ofthe notice"
-                multiline
-                rows={4}
-                value={body}
-                fullWidth
-                variant="filled"
-                onChange={e => setBody((e.target as HTMLInputElement).value)}
-              />
-              <div className="clearfix mb-2">
-                {!spinner && (
-                  <Button
-                    size="small"
-                    className="mb-2 float-right"
-                    color="secondary"
-                    style={{ display: "block" }}
-                    onClick={handlePara}
-                    variant="outlined"
-                  >
-                    {" "}
-                    Add notice paragraph.
-                  </Button>
-                )}
-              </div>
-              <Box>
-                {spinner && Spinner}
-                {!!success && (
-                  <Alert severity="success" className="my-2" variant="filled">
-                    <Typography variant="body2">{success}</Typography>
-                  </Alert>
-                )}
-                {!!errmsg && (
-                  <Alert severity="error" className="my-2" variant="filled">
-                    <Typography variant="body2">{errmsg}</Typography>
-                  </Alert>
-                )}
-              </Box>
-
-              <Button
-                startIcon={<Add />}
-                variant="contained"
-                color="primary"
-                style={{ width: "100%" }}
-                type="submit"
-                disabled={!!!news.length || spinner}
-              >
-                {spinner ? "Publishing notice" : "Publish notice"}
-              </Button>
-            </form>
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <Box className="p-4">
-            {news.map((item, i) => (
-              <Typography key={i}>{item}</Typography>
-            ))}
-            {!!news.length && (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleClear}
-                endIcon={<DeleteForever />}
-              >
-                Clear Notice
-              </Button>
-            )}
-          </Box>
-        </Grid>
-      </Grid>
+      {!!notices.length ? (
+        <ShowNews news={notices} handleDelete={handleDelete} />
+      ) : spinner ? (
+        <Box className="text-center p-4 my-4 mx-auto">
+          <CircularProgress size="3rem" color="primary" />
+        </Box>
+      ) : (
+        <Typography variant="h6" align="center">
+          {" "}
+          <Error color="secondary" />
+          {errmsg}
+        </Typography>
+      )}
+      <Link to="/admin/notices/add-notice" className="text-blue-500">
+        <ArrowRight /> Add notice..
+      </Link>
     </AdminLayout>
   );
 }
+
+const ShowNews: React.FC<{
+  news: Data[];
+  handleDelete: (id: number) => void;
+}> = ({ news = [], handleDelete = f => f }) => {
+  return (
+    <Box>
+      <Typography align="center" variant="h6">
+        {news.length} notices.
+      </Typography>
+      <TableContainer>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell> title</TableCell>
+              <TableCell>notice</TableCell>
+              <TableCell>Date</TableCell>
+
+              <TableCell>Remove</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {news.map((item, i) => (
+              <NewsTable
+                key={item.id}
+                {...item}
+                index={i}
+                handleDelete={handleDelete}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+};
+
+type Index = { index: number; handleDelete: (id: number) => void };
+const NewsTable: React.FC<Data & Index> = ({
+  index,
+  title,
+  body,
+  id,
+  date,
+  handleDelete,
+}) => {
+  return (
+    <TableRow>
+      <TableCell>{index + 1}</TableCell>
+      <TableCell>{title}</TableCell>
+      <TableCell>{body}</TableCell>
+      <TableCell>{new Date(date).toDateString()}</TableCell>
+      <TableCell>
+        <Button
+          onClick={() => handleDelete(id)}
+          variant="contained"
+          color="secondary"
+        >
+          Delete
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
+};
+const faker = [...Array(11)].map((item, i) => ({
+  id: i + 1,
+  title: "Daisies",
+  body: "They cover me in Daisies",
+  date: "2021/02/15",
+  addedon: "2021/02/15",
+}));

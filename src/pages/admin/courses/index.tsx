@@ -16,7 +16,13 @@ import {
 } from "@material-ui/core";
 import AdminLayout, { UseModal } from "../adminLayout";
 
-import { Delete, Error, More, SchoolOutlined } from "@material-ui/icons";
+import {
+  ArrowRight,
+  Delete,
+  Error,
+  More,
+  SchoolOutlined,
+} from "@material-ui/icons";
 
 export default function Courses(): JSX.Element {
   const [spinner, setSpinner] = React.useState(false);
@@ -86,31 +92,13 @@ export default function Courses(): JSX.Element {
     </Box>
   );
 
-  const Btns = ({ schools }) => (
-    <ButtonGroup className=" flex flex-row ">
-      {schools.map((item, index) => (
-        <Button
-          startIcon={<SchoolOutlined />}
-          variant="contained"
-          key={index}
-          size="small"
-          style={{ margin: 5 }}
-          onClick={() => handleActive(index)}
-          color={active === index ? "secondary" : "primary"}
-        >
-          {item}
-        </Button>
-      ))}
-    </ButtonGroup>
-  );
-
   return (
     <AdminLayout>
       {course.id !== undefined && <Course course={course} />}
 
       {!!courses.length ? (
         <Box>
-          <Btns schools={schools} />
+          <Btns state={active} handleActive={handleActive} />
           <Typography variant="h6" align="center">
             {courses.length} courses
           </Typography>
@@ -129,16 +117,18 @@ export default function Courses(): JSX.Element {
               onChange={handlePage}
             />
           )}
-          <Link to="/admin/add-course">Add Course</Link>
         </Box>
       ) : spinner ? (
         <Spinner />
       ) : (
         <>
-          <Btns schools={schools} />
+          <Btns state={active} handleActive={handleActive} />
           {ErrEl}
         </>
       )}
+      <Link to="/admin/courses/add-course" className="text-blue-500">
+        <ArrowRight /> Add Course
+      </Link>
     </AdminLayout>
   );
 }
@@ -221,7 +211,7 @@ const CourseTable = ({
     </TableCell>
   </TableRow>
 );
-const Course = ({ course }) => {
+export const Course = ({ course }) => {
   const [open, setOpen] = React.useState(false);
   const handleClick = () => setOpen(false);
   React.useEffect(() => {
@@ -233,17 +223,29 @@ const Course = ({ course }) => {
     </UseModal>
   );
 };
-const Rcourses = [...Array(32)].map((item, i) => ({
-  id: i + 1,
-  coursename: "Media and Comms",
-  coursecode: 302,
-  level: "Degree",
-  period: "4 years",
-  des: "Journalism and connunication practioners",
-}));
-const schools = [
-  "School Of Languages",
-  "School Of Business And Economics",
-  " School Of Hospitality Management",
-  "School Of Humanities And Social Sciences",
-];
+
+export const Btns = ({ state, handleActive = f => f }) => {
+  const schools = [
+    "School Of Languages",
+    "School Of Business And Economics",
+    " School Of Hospitality Management",
+    "School Of Humanities And Social Sciences",
+  ];
+  return (
+    <ButtonGroup className=" flex flex-row mb-3">
+      {schools.map((item, index) => (
+        <Button
+          startIcon={<SchoolOutlined />}
+          variant="contained"
+          key={index}
+          size="small"
+          style={{ margin: 5 }}
+          onClick={() => handleActive(index)}
+          color={state === index ? "secondary" : "primary"}
+        >
+          {item}
+        </Button>
+      ))}
+    </ButtonGroup>
+  );
+};

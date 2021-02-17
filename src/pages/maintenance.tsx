@@ -18,7 +18,7 @@ function Maintenance(): React.ReactNode {
             className="my-2 mx-auto border border-gray-300 p-2"
             alt="Eastern college"
           />
-          <Error fontSize="large" />
+          <Error fontSize="large" color="secondary" />
           <Typography align="center" variant="h5" className="py-auto my-auto">
             The website is currently under routine maintenance...
           </Typography>

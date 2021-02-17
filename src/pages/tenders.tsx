@@ -17,6 +17,8 @@ import {
 } from "@material-ui/core";
 import { rootState, fetchData } from "../redux/reducer";
 import * as actions from "../redux/updatesReducer/actions";
+import { ArrowDropDownCircle } from "@material-ui/icons";
+
 function Tenders(): React.ReactNode {
   const [spinner, setSpinner] = React.useState(false);
   const [err, setErr] = React.useState("");
@@ -52,7 +54,9 @@ function Tenders(): React.ReactNode {
             <CircularProgress />
           </div>
         ) : (
-          <p className="font-bold">There are no tenders at the moment</p>
+          <Typography variant="body1" className="font-bold text-center">
+            There are no tenders at the moment.{" "}
+          </Typography>
         )}
       </Box>
     </Layout>
@@ -60,11 +64,12 @@ function Tenders(): React.ReactNode {
 }
 export default Tenders;
 type Tender = {
-  id?: number;
-  title?: string;
-  status?: boolean;
-  deadline?: Date;
-  file?: string;
+  id: number;
+  tendername: string;
+  tendertype: string;
+  details: string;
+  deadline: string;
+  addedon: string;
 };
 
 const TendersTable: React.FC<{ tenders: Tender[] }> = ({ tenders = [] }) => {
@@ -74,9 +79,11 @@ const TendersTable: React.FC<{ tenders: Tender[] }> = ({ tenders = [] }) => {
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
-            <TableCell>Title</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell>Details</TableCell>
+            <TableCell>Added on</TableCell>
             <TableCell>Deadline</TableCell>
-            <TableCell>Status</TableCell>
             <TableCell>Download</TableCell>
           </TableRow>
         </TableHead>
@@ -92,35 +99,46 @@ const TendersTable: React.FC<{ tenders: Tender[] }> = ({ tenders = [] }) => {
 type Index = { index: number };
 const TenderList = ({
   index,
-  title,
+  id,
+  tendername,
+  tendertype,
+  details,
   deadline,
-  status,
-  file,
-}: Tender & Index): JSX.Element => (
-  <TableRow>
-    <TableCell>{index + 1}</TableCell>
-    <TableCell>{title}</TableCell>
-    <TableCell>{deadline}</TableCell>
-    <TableCell>
-      {status ? (
-        <Chip label="Active" className="bg-green-500 text-white" />
-      ) : (
-        <Chip label="closed" color="secondary" />
-      )}
-    </TableCell>
-    <TableCell>
-      <Button
-        component="a"
-        variant="contained"
-        href={file}
-        target="_blank"
-        color="primary"
-      >
-        Download
-      </Button>
-    </TableCell>
-  </TableRow>
-);
+  addedon,
+}: Tender & Index): JSX.Element => {
+  const fileurl = `../server/index.php?fetchtender=true&id=${id}`;
+  return (
+    <TableRow>
+      <TableCell>{index + 1}</TableCell>
+      <TableCell>{tendername}</TableCell>
+      <TableCell>{tendertype}</TableCell>
+      <TableCell>{details}</TableCell>
+      <TableCell>{new Date(addedon).toDateString()}</TableCell>
+      <TableCell>
+        {new Date(deadline) >= new Date() ? (
+          <Chip
+            label={new Date(deadline).toDateString()}
+            className="bg-green-500 text-white"
+          />
+        ) : (
+          <Chip label={new Date(deadline).toDateString()} color="secondary" />
+        )}
+      </TableCell>
+
+      <TableCell>
+        <Button
+          component="a"
+          variant="contained"
+          onClick={() => window.open(fileurl)}
+          color="primary"
+          endIcon={<ArrowDropDownCircle />}
+        >
+          Download
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
+};
 /*  
     
     !DOCTYPE html >

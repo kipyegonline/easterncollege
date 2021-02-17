@@ -14,33 +14,18 @@ import {
 } from "@material-ui/core";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
+import { ArrowDropDownCircle, Error } from "@material-ui/icons";
 
 type Data = {
   id?: string | number;
-  file?: string;
-  target?: string;
-  date?: string;
-  title?: string;
+
+  des?: string;
+  addedon?: string;
+  filename?: string;
 };
 
 type Datum = Data[];
 
-const fake: Datum = [
-  {
-    id: 1,
-    file: "download.pdf",
-    target: "Faculty",
-    date: "10/09/20202",
-    title: "News",
-  },
-  {
-    id: 2,
-    file: "newsletter.pdf",
-    target: "School",
-    date: "10/09/20202",
-    title: "News",
-  },
-];
 function Downloads(): React.ReactNode {
   const [data, setData] = React.useState<Datum>([]);
   const [spinner, setSpinner] = React.useState(false);
@@ -50,10 +35,10 @@ function Downloads(): React.ReactNode {
     setSpinner(true);
     try {
       const res = await axios.get(url);
-      console.log(res);
+
       const { data } = res;
-      if (typeof data !== "object" || data.length < 1) {
-        throw new Error("No data found");
+      if (!Array.isArray(data) || !!!data.length) {
+        throw new ReferenceError("No data found");
       } else {
         setData(data);
         setSpinner(false);
@@ -61,49 +46,51 @@ function Downloads(): React.ReactNode {
     } catch (error) {
       //setSpinner(false);
       setTimeout(() => setSpinner(false), 3000);
-      setError(error.message);
-      setTimeout(() => setError(""), 3000);
+
+      setError("There are no downloads at the moment");
     }
   };
   React.useEffect(() => {
-    if (!!!data.length) fetchDownloads("");
+    if (!!!data.length)
+      fetchDownloads("../../server/index.php?fetchdownloads=true");
   }, []);
 
-  if (spinner)
-    return (
-      <Layout siteTitle="Downloads">
-        <Paper className="lg:mx-20 md:mx-2 sm:mx-2 p-2 my-2">
-          <div className="text-center my-4">
-            <CircularProgress size="4rem" />
-          </div>
-        </Paper>
-      </Layout>
-    );
-  if (!!err)
-    return (
-      <Layout siteTitle="Downloads">
-        <SEO
-          title="Eastern College courses"
-          description="Downloads"
-          lang="en"
-          meta=""
-        />
-        <Paper className="lg:mx-20 md:mx-2 sm:mx-2 p-2 my-2">
-          <Typography className="text-red-600 text-center">{err}</Typography>
-        </Paper>
-      </Layout>
-    );
+  const spinEl = (
+    <Layout siteTitle="Downloads">
+      <Paper className="lg:mx-20 md:mx-2 sm:mx-2 p-2 my-2">
+        <div className="text-center my-4">
+          <CircularProgress size="4rem" />
+        </div>
+      </Paper>
+    </Layout>
+  );
+  const errEl = (
+    <Layout siteTitle="Downloads">
+      <SEO
+        title="Eastern College courses"
+        description="Downloads"
+        lang="en"
+        meta=""
+      />
+      <Paper className="lg:mx-20 md:mx-2 sm:mx-2 p-2 my-2">
+        <Typography className="text-red-600 text-center">
+          <Error /> {err}
+        </Typography>
+      </Paper>
+    </Layout>
+  );
 
-  return (
+  const downloadsEl = (
     <Layout siteTitle="Downloads">
       <Paper className="lg:mx-20 md:mx-2 sm:mx-2 p-2 my-2">
         <Typography variant="h6" align="center" className="my-2 p-1">
           Downloads
         </Typography>
-        <DownloadsTable data={fake} />
+        <DownloadsTable data={data} />
       </Paper>
     </Layout>
   );
+  return !!data.length ? downloadsEl : spinner ? spinEl : errEl;
 }
 export default Downloads;
 
@@ -112,12 +99,12 @@ const DownloadsTable: React.FC<{ data: Datum }> = ({
 }): JSX.Element => {
   return (
     <TableContainer>
-      <Table>
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell>Target</TableCell>
+            <TableCell>Description</TableCell>
             <TableCell>Added</TableCell>
             <TableCell>Action</TableCell>
           </TableRow>
@@ -135,25 +122,25 @@ type index = { index: number };
 const DownloadsFile: React.FC<Data & index> = ({
   index,
   id,
-  title,
-  target,
-  file,
-  date,
+  filename,
+  des,
+  addedon,
 }) => {
+  const fileurl = `../server/index.php?fetchdownload=true&id=${id}`;
   return (
     <TableRow>
       <TableCell>{index + 1}</TableCell>
-      <TableCell>{title}</TableCell>
-      <TableCell>{target}</TableCell>
-      <TableCell>{date}</TableCell>
+      <TableCell>{filename}</TableCell>
+      <TableCell>{des}</TableCell>
+      <TableCell>{new Date(addedon).toDateString()}</TableCell>
       <TableCell>
         <Button
-          href={file}
+          onClick={() => window.open(fileurl)}
           variant="contained"
           component="a"
-          target="_blank"
           color="primary"
           size="medium"
+          startIcon={<ArrowDropDownCircle />}
         >
           Download
         </Button>

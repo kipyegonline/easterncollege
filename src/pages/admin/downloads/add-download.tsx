@@ -11,6 +11,7 @@ import axios from "axios";
 import UploadIcon from "@material-ui/icons/CloudUpload";
 import React from "react";
 import { Link } from "gatsby";
+import Alert from "@material-ui/lab/Alert";
 import { Upload } from "antd";
 import ArrowRight from "@material-ui/icons/ArrowRight";
 import AdminLayout from "../adminLayout";
@@ -26,7 +27,7 @@ export default function AddDownload() {
   const form = React.useRef<HTMLFormElement | null>(null!);
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files[0];
-    console.log("file", file?.name.endsWith(".pdf") !== true);
+
     if (file) {
       if (file.size > 1000000 * 20) {
         setError("file is too large");
@@ -50,15 +51,26 @@ export default function AddDownload() {
     } else if (filename.length > 1 && file) {
       const formData = new FormData();
 
-      formData.append("filename", file);
+      formData.set("filedata", file);
+      formData.set("filename", filename);
+      formData.set("des", des);
+      //formData.forEach(item => console.log(item, formData));
       setError("");
       setSpinner(true);
       axios
-        .post("../../server/adddownload=true", { filename, des, formData })
+        .post(
+          "../../server/index.php?adddownload=true",
+
+          formData,
+
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        )
         .then(res => {
           const { data } = res;
           if (data.status == 200) {
-            setSuccess(data.status);
+            setSuccess(data.msg);
             setFile(undefined);
             setDes("");
             setFilename("");
@@ -84,7 +96,7 @@ export default function AddDownload() {
         <form
           onSubmit={handleSubmit}
           ref={form}
-          style={{ maxWidth: 400, padding: 16 }}
+          style={{ maxWidth: 400, padding: 16, background: "#ccc" }}
         >
           <Typography align="center" className="p-3" variant="h6">
             Add downloads
@@ -95,6 +107,7 @@ export default function AddDownload() {
             label="Enter filename"
             className="mb-3"
             variant="outlined"
+            style={{ marginBottom: 10 }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFilename(e.target.value)
             }
@@ -111,7 +124,7 @@ export default function AddDownload() {
               ),
               accept: ".pdf, .docx",
             }}
-            style={{ padding: 8 }}
+            style={{ padding: 8, marginBottom: 10 }}
             helperText="add file"
             onChange={handleFile}
           />
@@ -122,14 +135,28 @@ export default function AddDownload() {
             helperText="Enter file description"
             multiline
             rows={5}
+            style={{ marginBottom: 10 }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setDes(e.target.value)
             }
           />
           <Box className="my-2 ">
-            {!!success && <FormHelperText>{success}</FormHelperText>}
-            {!!errmsg && <FormHelperText error>{errmsg}</FormHelperText>}
-            {spinner && <CircularProgress color="primary" size="3rem" />}
+            {!!success && (
+              <Alert severity="success" className="my-2" variant="filled">
+                <Typography variant="body2">{success}</Typography>
+              </Alert>
+            )}
+            {!!errmsg && (
+              <Alert severity="error" className="my-2" variant="filled">
+                <Typography variant="body2">{errmsg}</Typography>
+              </Alert>
+            )}
+            {spinner && (
+              <div className="text-center">
+                <CircularProgress color="primary" size="3rem" />
+                <Typography>Submitting...</Typography>
+              </div>
+            )}
           </Box>
           <Button
             variant="contained"
@@ -141,7 +168,7 @@ export default function AddDownload() {
             Add Download
           </Button>
         </form>
-        <Link to="/admin/downloads">
+        <Link to="/admin/downloads" className="text-blue-600">
           {" "}
           <ArrowRight /> See downloads
         </Link>

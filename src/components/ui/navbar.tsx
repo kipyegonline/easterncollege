@@ -293,7 +293,7 @@ export default function PrimarySearchAppBar() {
           </ListItem>
         </List>
       </AppBar>
-      <style jsx>{`
+      <style jsx={true}>{`
         .top-menu:hover .dropdown, .top-menu:active .dropdown, .top-menu:focus-within .dropdown  {
         visibility:visible;
         display:block;
@@ -329,6 +329,9 @@ export const Socials = ({
             className="cursor-pointer "
             fontSize="small"
             htmlColor={!!color ? color : "#3b5998"}
+            onClick={() =>
+              window.open("https://www.facebook.com/easterncollegesomalia")
+            }
           />
         </Fab>
       </ListItemIcon>
@@ -341,6 +344,7 @@ export const Socials = ({
             className="cursor-pointer"
             fontSize="small"
             htmlColor={!!color ? color : "#1DA1F2"}
+            onClick={() => window.open("https://twitter.com/Easternsomalia")}
           />
         </Fab>
       </ListItemIcon>
@@ -355,7 +359,8 @@ export const Socials = ({
           />
         </Fab>
       </ListItemIcon>
-    </li>
+    </li>{" "}
+    {/*
     <li className="py-0 my-0">
       <ListItemIcon>
         <Fab size="small">
@@ -366,7 +371,7 @@ export const Socials = ({
           />
         </Fab>
       </ListItemIcon>
-    </li>
+    </li> */}
   </ul>
 );
 

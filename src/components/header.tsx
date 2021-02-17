@@ -93,6 +93,15 @@ const Header: React.FC<Props> = ({ classes }) => {
         className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
         variant="body2"
       >
+        <Link to={"/notice"} className="my-auto" activeStyle={style}>
+          <BusinessCenter className="mr-0 pb-1" fontSize="small" />
+          Notices
+        </Link>
+      </Typography>
+      <Typography
+        className="px-3 border-r hover:text-yellow-500 border-yellow-500 sm:px-2 border-none"
+        variant="body2"
+      >
         <Link to={"/tenders"} className="my-auto" activeStyle={style}>
           <BusinessCenter className="mr-0 pb-1" fontSize="small" />
           Tenders

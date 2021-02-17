@@ -19,14 +19,16 @@ import { rootState, fetchData } from "../redux/reducer";
 import * as actions from "../redux/updatesReducer/actions";
 import { Pagination } from "@material-ui/lab";
 import SEO from "../components/seo";
+import { ArrowDownward } from "@material-ui/icons";
 
 type Careers = {
-  title?: string;
-  file?: string;
+  careername?: string;
+  fileattached?: string;
   id?: string;
-  uploaded?: Date;
-  deadline?: Date;
-  status?: boolean;
+  reference?: string;
+  deadline?: string;
+  addedon: string;
+  details: string;
 };
 type Index = { index: number };
 function Vacancies(): React.ReactNode {
@@ -34,7 +36,7 @@ function Vacancies(): React.ReactNode {
   const [err, setErr] = React.useState("");
   const [current, setCurrent] = React.useState(0);
 
-  const careersurl = "./server/index.php?fetchcareers=true";
+  const careersurl = "../server/index.php?fetchcareers=true";
 
   const dispatch = useDispatch();
   const { careers } = useSelector((state: rootState) => ({
@@ -68,25 +70,30 @@ function Vacancies(): React.ReactNode {
           className="border-b border-green-500"
           align="center"
         >
-          Vacancies
+          Eastern College Careers
         </Typography>
         {!!careers.length ? (
           <>
             <VacanciesTable careers={careers.slice(start, end)} start={start} />
-            <span>
-              {" "}
-              page <b>{current + 1}</b> of {pages}
-            </span>
-            <Pagination
-              count={pages}
-              onChange={handleChange}
-              className="mx-auto text-center"
-              color="secondary"
-              showFirstButton={true}
-              showLastButton={true}
-              defaultPage={current}
-              page={current + 1}
-            />
+
+            {careers.length > 9 && (
+              <>
+                <span>
+                  {" "}
+                  page <b>{current + 1}</b> of {pages}
+                </span>
+                <Pagination
+                  count={pages}
+                  onChange={handleChange}
+                  className="mx-auto text-center"
+                  color="secondary"
+                  showFirstButton={true}
+                  showLastButton={true}
+                  defaultPage={current}
+                  page={current + 1}
+                />
+              </>
+            )}
           </>
         ) : spinner ? (
           <div className="text-center my-2 p-2">
@@ -113,11 +120,10 @@ const VacanciesTable: React.FC<{ careers: Careers[]; start: number }> = ({
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell>Job title</TableCell>
-            <TableCell>Uploaded</TableCell>
-            <TableCell>Deadline</TableCell>
-            <TableCell>Status</TableCell>
+            <TableCell>details</TableCell>
+            <TableCell>Added on</TableCell>
+            <TableCell>deadline</TableCell>
             <TableCell>Download</TableCell>
-            <TableCell>Apply</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -132,42 +138,41 @@ const VacanciesTable: React.FC<{ careers: Careers[]; start: number }> = ({
 
 const VacancyList = ({
   index,
-  title,
-  uploaded,
+  careername,
+  id,
+  reference,
   deadline,
-  status,
-  file,
+  addedon,
+  fileattached,
+  details,
 }: Careers & Index) => {
+  const fileurl = `../server/index.php?fetchcareer=true&id=${id}`;
+  const fileExists = !!Number(fileattached);
   return (
     <TableRow>
       <TableCell>{index + 1}</TableCell>
-      <TableCell>{title}</TableCell>
-      <TableCell>{new Date().toDateString()}</TableCell>
-      <TableCell>{new Date("2020", "11", "25").toDateString()}</TableCell>
+      <TableCell>{careername}</TableCell>
+      <TableCell>{details}</TableCell>
+      <TableCell>{new Date(addedon).toDateString()}</TableCell>
       <TableCell>
-        {status ? (
-          <Chip color="primary" size="small" label="closed" />
+        {new Date(deadline) >= new Date() ? (
+          <Chip color="primary" size="small" label={deadline} />
         ) : (
-          <Chip color="secondary" size="small" label="closed" />
+          <Chip color="secondary" size="small" label={deadline} />
         )}
       </TableCell>
       <TableCell>
-        <Button
-          href={file}
-          size="small"
-          target="_blank"
-          variant="contained"
-          color="primary"
-          component="a"
-        >
-          Download
-        </Button>
-      </TableCell>
-      <TableCell>
-        <Button size="small" variant="outlined" color="primary">
-          {" "}
-          <Link to={"/apply-online"}>Apply</Link>
-        </Button>
+        {fileExists ? (
+          <Button
+            onClick={() => window.open(fileurl)}
+            size="small"
+            variant="contained"
+            color="primary"
+            endIcon={<ArrowDownward />}
+          >
+            Download
+          </Button>
+        ) : null}
       </TableCell>
     </TableRow>
   );

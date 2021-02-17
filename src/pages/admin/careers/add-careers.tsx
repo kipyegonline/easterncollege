@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "gatsby";
 import axios from "axios";
 import {
   Box,
@@ -7,6 +8,8 @@ import {
   TextField,
   FormHelperText,
 } from "@material-ui/core";
+import ArrowRight from "@material-ui/icons/ArrowRight";
+import Alert from "@material-ui/lab/Alert";
 import AdminLayout from "../adminLayout";
 import { FormInput, Spinner } from "../../contact-us";
 
@@ -57,15 +60,15 @@ export default function AddCareers() {
       setSpinner(true);
       const formData = new FormData();
       if (jobfile) {
-        formData.append("file", jobfile);
+        formData.append("filedata", jobfile);
       }
+      formData.append("careeer", career);
+      formData.append("reference", reference);
+      formData.append("deadline", deadline);
+      formData.append("details", details);
       axios
-        .post("../../server/index.php?addcareer=true", {
-          formData,
-          career,
-          reference,
-          deadline,
-          details,
+        .post("../../server/index.php?addcareer=true", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
         })
         .then(res => {
           const { data } = res;
@@ -126,6 +129,7 @@ export default function AddCareers() {
             type="file"
             helperText="Attach file"
             onChange={handleFile}
+            inputProps={{ accept: ".pdf, .docx" }}
           />
           <TextField
             type="text"
@@ -141,11 +145,15 @@ export default function AddCareers() {
           />
           <Box>
             {!!success.length && (
-              <FormHelperText className="text-green-600">
-                {success}
-              </FormHelperText>
+              <Alert severity="success" className="my-2" variant="filled">
+                <Typography variant="body2">{success}</Typography>
+              </Alert>
             )}
-            {!!errmsg.length && <FormHelperText error>{errmsg}</FormHelperText>}
+            {!!errmsg.length && (
+              <Alert severity="error" className="my-2" variant="filled">
+                <Typography variant="body2">{errmsg}</Typography>
+              </Alert>
+            )}
             {spinner && <Spinner />}
           </Box>
           <Button
@@ -158,6 +166,9 @@ export default function AddCareers() {
           </Button>
         </form>
       </Box>
+      <Link to="/admin/careers" className="text-blue-500">
+        <ArrowRight /> View careers
+      </Link>
     </AdminLayout>
   );
 }

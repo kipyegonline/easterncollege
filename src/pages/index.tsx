@@ -68,7 +68,12 @@ type Notice = {
   component: React.ReactElement;
   Icon?: any;
 };
-
+const schools: string[] = [
+  "School Of Languages",
+  "School Of Business And Economics",
+  " School Of Hospitality Management",
+  "School Of Humanities And Social Sciences",
+];
 const IndexPage: React.FC = (): JSX.Element => {
   const [postSpinner, setPspinner] = React.useState(false);
   const [errmsg, setErrmsg] = React.useState("");
@@ -77,6 +82,10 @@ const IndexPage: React.FC = (): JSX.Element => {
   const noticesurl = "./server/index.php?fetchnotices=true";
   const newsurl = "./server/index.php?fetchnews=true";
   const eventsurl = "./server/index.php?fetchevents=true";
+  const coursesurl = `../server/index.php?fetchcourses&courseId=${0}`;
+  const tendersurl = `../server/index.php?fetchtenders=true`;
+  const careersurl = `../server/index.php?fetchcareers=true`;
+
   const { news, events, notices } = useSelector((state: rootState) => ({
     news: state.updates.news,
     events: state.updates.events,
@@ -94,10 +103,30 @@ const IndexPage: React.FC = (): JSX.Element => {
       );
       fetchData(eventsurl, dispatch, setPspinner, setErrmsg, actions.addEvents);
       fetchData(newsurl, dispatch, setPspinner, setErrmsg, actions.addNews);
-      // fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addTenders);
-      //fetchData(postsurl, dispatch, setPspinner, setErrmsg, actions.addCareers);
-      dispatch(actions.addCourses(courses));
     }
+    setTimeout(() => {
+      fetchData(
+        tendersurl,
+        dispatch,
+        setPspinner,
+        setErrmsg,
+        actions.addTenders
+      );
+      fetchData(
+        careersurl,
+        dispatch,
+        setPspinner,
+        setErrmsg,
+        actions.addCareers
+      );
+      fetchData(
+        coursesurl,
+        dispatch,
+        setPspinner,
+        setErrmsg,
+        actions.addCourses
+      );
+    }, 3000);
   }, []);
 
   return (
@@ -160,7 +189,7 @@ const IndexPage: React.FC = (): JSX.Element => {
               Our Programmes
             </Typography>
             <img src={logomedium} className="p-2 mx-auto my-2" alt="Logo" />
-            <Programmes courses={courses} />
+            <Programmes courses={schools} />
           </Grid>
           <Grid
             item
@@ -535,7 +564,7 @@ const Collaborations = () => {
 type Course = { course: string; id: number; level: string; des: string };
 type Courses = { school: string; des: string; courses: Course[] };
 
-const Programmes: React.FC<{ courses: Courses[] }> = ({ courses = [] }) => {
+const Programmes: React.FC<{ courses: string[] }> = ({ courses = [] }) => {
   return (
     <Card>
       <List>
@@ -544,7 +573,7 @@ const Programmes: React.FC<{ courses: Courses[] }> = ({ courses = [] }) => {
             <ListItemIcon>
               <ArrowNext />
             </ListItemIcon>
-            <Link to="/schools">{course.school}</Link>
+            <Link to="/schools">{course}</Link>
           </ListItem>
         ))}
       </List>

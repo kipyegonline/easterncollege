@@ -75,11 +75,12 @@ export default function Login() {
             location.pathname = "/admin/";
             //setTimeout(() => setSuccess(""), 3000)
           } else {
-            throw new Error(data.msg);
+            //setError(data.msg);
+            //setSpinner(false);
+            throw new ReferenceError(data.msg);
           }
         })
         .catch(error => {
-          console.log(error);
           error.message
             ? setError(error.message)
             : setError("Error logging in. Check network and try again");
@@ -96,7 +97,7 @@ export default function Login() {
   const handleSignUP = e => {
     e.preventDefault();
     if (username.trim().length < 5) {
-      setError("Kindly add a username");
+      setError("Kindly add a username with atleast 4 characters");
       setTimeout(() => setError(""), 3000);
     } else if (useremail.trim().length < 6 || !useremail.trim().includes("@")) {
       useremail.trim().length < 6
@@ -129,30 +130,30 @@ export default function Login() {
         })
         .then(res => {
           const { data } = res;
-          setTimeout(() => {
-            if (data.status === 200) {
-              setSpinner(false);
-              setSpinner(false);
-              setSuccess(data.msg);
-              setUserPassword("");
-              setUsercPassword("");
-              setUserEmail("");
-              if (form.current) form.current.reset();
-              setTimeout(() => setSuccess(""), 3000);
-            } else {
-              throw new Error(data.msg);
-            }
-          }, 2000);
+
+          if (data.status === 200) {
+            setSpinner(false);
+            setSpinner(false);
+            setSuccess(data.msg);
+            setUserPassword("");
+            setUsercPassword("");
+            setUserEmail("");
+            if (form.current) form.current.reset();
+            setTimeout(() => setSuccess(""), 3000);
+          } else {
+            //setError(data.msg);
+            //setSpinner(false);
+            throw new ReferenceError(data.msg);
+          }
         })
         .catch(error => {
-          setSpinner(false);
-          console.log(error);
           !!error.message
             ? setError(error.message)
             : setError("Error signing up. Check network and try again");
         })
         .finally(() => {
-          setTimeout(() => setError(""), 3000);
+          setSpinner(false);
+          setTimeout(() => setError(""), 5000);
         });
     } else {
       setError("All fields are required");
